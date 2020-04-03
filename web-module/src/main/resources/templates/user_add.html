@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+
+<head>
+    <title>Add user</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}"/>
+</head>
+
+<body>
+<div class="container">
+    <nav nav class="navbar navbar-expand-lg navbar-light bg-light" aria-label="Site navigation">
+        <a class="navbar-brand">ShopProject</a>
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" th:href="@{/login}" href="/login">Login</a>
+            <a class="nav-item nav-link" th:href="@{/users}" href="/users">Users</a>
+            <a class="nav-item nav-link active">Add user</a>
+            <a class="nav-item nav-link" th:href="@{/reviews}" href="/reviews">Reviews</a>
+        </div>
+    </nav>
+    <br>
+    <form th:action="@{/users/add}"
+          action="/users/add"
+          th:object="${user}"
+          method="post">
+        <span th:if="${#fields.hasErrors ('lastName')}"
+              th:errors="*{lastName}"
+              style="color:red">
+        </span>
+        <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input th:field="*{lastName}" type="text" class="form-control" id="lastName" name="lastName">
+        </div>
+        <span th:if="${#fields.hasErrors ('firstName')}"
+              th:errors="*{firstName}"
+              style="color:red">
+        </span>
+        <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input th:field="*{firstName}" type="text" class="form-control" id="firstName" name="firstName">
+        </div>
+        <span th:if="${#fields.hasErrors ('patronymicName')}"
+              th:errors="*{patronymicName}"
+              style="color:red">
+        </span>
+        <div class="form-group">
+            <label for="patronymicName">Patronymic Name</label>
+            <input th:field="*{patronymicName}" type="text" class="form-control" id="patronymicName" name="patronymicName">
+        </div>
+        <span th:if="${#fields.hasErrors ('email')}"
+              th:errors="*{email}"
+              style="color:red">
+        </span>
+        <div class="form-group">
+            <label for="email">E-mail</label>
+            <input th:field="*{email}" type="text" class="form-control" id="email" name="email">
+        </div>
+        <span th:if="${#fields.hasErrors ('role')}"
+              th:errors="*{role}"
+              style="color:red">
+        </span>
+        <div class="form-check form-check-inline">
+            <input th:field="*{role}" class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
+                   value="ADMINISTRATOR">
+            <label class="form-check-label" for="inlineRadio1">Administrator</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input th:field="*{role}" class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="SALE_USER">
+            <label class="form-check-label" for="inlineRadio2">Sale user</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input th:field="*{role}" class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3"
+                   value="CUSTOMER_USER">
+            <label class="form-check-label" for="inlineRadio3">Customer user</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input th:field="*{role}" class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4"
+                   value="SECURE_API_USER">
+            <label class="form-check-label" for="inlineRadio4">Secure API user</label>
+        </div>
+        <br>
+        <br>
+        <button type="submit" class="btn btn-outline-success">Add user</button>
+    </form>
+</div>
+<script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
+</body>
+</html>
