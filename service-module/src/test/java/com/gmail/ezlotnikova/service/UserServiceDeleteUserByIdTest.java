@@ -37,7 +37,7 @@ public class UserServiceDeleteUserByIdTest {
     @BeforeEach
     public void setUp() {
         userService = new UserServiceImpl(
-                        userRepository, userConverter, validator, passwordService);
+                userRepository, userConverter, validator, passwordService);
     }
 
     @Test

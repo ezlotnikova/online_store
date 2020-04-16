@@ -17,7 +17,7 @@ public interface UserService {
 
     UserDTO loadUserByEmail(String email);
 
-    ExecutionResult changeUserPasswordByIdAndSendEmail(Long id);
+    ExecutionResult generatePasswordAndSendEmail(Long userId);
 
     ExecutionResult updateUserRoleById(Long id, UserRoleEnum newRoleEnum);
 

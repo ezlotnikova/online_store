@@ -126,13 +126,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ExecutionResult changeUserPasswordByIdAndSendEmail(Long id) {
+    public ExecutionResult generatePasswordAndSendEmail(Long userId) {
         try {
-            passwordService.changeUserPasswordByIdAndSendEmail(id);
+            passwordService.generatePasswordAndSendEmail(userId);
             return ExecutionResult.ok();
         } catch (MailException e) {
             logger.error(e.getMessage(), e);
-            return ExecutionResult.error(FAILED_TO_EXECUTE, "Email can't be sent. Password wasn't changed");
+            return ExecutionResult.error(FAILED_TO_EXECUTE, "Email to user can't be sent. Password wasn't changed");
         }
     }
 

@@ -4,20 +4,26 @@ import java.lang.invoke.MethodHandles;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import com.gmail.ezlotnikova.repository.UserRepository;
 import com.gmail.ezlotnikova.repository.model.User;
 import com.gmail.ezlotnikova.repository.model.сonstant.UserRoleEnum;
+import com.gmail.ezlotnikova.repository.util.PaginationUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-import com.gmail.ezlotnikova.repository.UserRepository;
 
 @Repository
 public class UserRepositoryImpl extends GenericRepositoryImpl<Long, User> implements UserRepository {
 
     private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
+    private final PaginationUtil paginationUtil;
+
+    public UserRepositoryImpl(PaginationUtil paginationUtil) {
+        this.paginationUtil = paginationUtil;
+    }
 
     @Override
     public Long countAdministrators() {
@@ -31,7 +37,8 @@ public class UserRepositoryImpl extends GenericRepositoryImpl<Long, User> implem
     @Override
     @SuppressWarnings("unchecked")
     public Page<User> findPaginatedAndOrderedByEmail(Pageable pageRequest) {
-        int startPosition = (pageRequest.getPageNumber() - 1) * pageRequest.getPageSize();
+        int startPosition = paginationUtil.getQueryStartPosition(
+                pageRequest.getPageNumber(), pageRequest.getPageSize());
         int maxResult = pageRequest.getPageSize();
         Long count = countTotal();
         String hql = "FROM User as u ORDER BY u.email";

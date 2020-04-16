@@ -46,7 +46,7 @@
                 <constraints primaryKey="true"/>
             </column>
             <column name="user_id" type="BIGINT"/>
-            <column name="review_text" type="BLOB"/>
+            <column name="review_text" type="TEXT"/>
             <column name="created_on" type="TIMESTAMP" defaultValue="NOW()"/>
             <column name="is_visible" type="TINYINT"/>
         </createTable>
@@ -60,6 +60,75 @@
                                  onUpdate="NO ACTION"
                                  referencedColumnNames="user_id"
                                  referencedTableName="user_details"
+                                 validate="true"/>
+    </changeSet>
+
+    <changeSet id="6" author="e.zlotnikova@gmail.com">
+        <addColumn tableName="user_details">
+            <column name="address" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="7" author="e.zlotnikova@gmail.com">
+        <addColumn tableName="user_details">
+            <column name="telephone" type="varchar(20)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="8" author="e.zlotnikova@gmail.com">
+        <createTable tableName="article">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="user_id" type="BIGINT"/>
+            <column name="header" type="VARCHAR(255)"/>
+            <column name="content" type="TEXT"/>
+            <column name="created_on" type="TIMESTAMP" defaultValue="NOW()"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="9" author="e.zlotnikova@gmail.com">
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="article"
+                                 constraintName="fk_article_to_user_details"
+                                 onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="user_id"
+                                 referencedTableName="user_details"
+                                 validate="true"/>
+    </changeSet>
+
+    <changeSet id="10" author="e.zlotnikova@gmail.com">
+        <createTable tableName="comment">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="article_id" type="BIGINT"/>
+            <column name="user_id" type="BIGINT"/>
+            <column name="created_on" type="TIMESTAMP" defaultValue="NOW()"/>
+            <column name="content" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="11" author="e.zlotnikova@gmail.com">
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="comment"
+                                 constraintName="fk_comment_to_user_details"
+                                 onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="user_id"
+                                 referencedTableName="user_details"
+                                 validate="true"/>
+    </changeSet>
+
+    <changeSet id="12" author="e.zlotnikova@gmail.com">
+        <addForeignKeyConstraint baseColumnNames="article_id"
+                                 baseTableName="comment"
+                                 constraintName="fk_comment_to_article"
+                                 onDelete="CASCADE"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="id"
+                                 referencedTableName="article"
                                  validate="true"/>
     </changeSet>
 

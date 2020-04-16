@@ -2,10 +2,9 @@ package com.gmail.ezlotnikova.service.constant;
 
 public class ExecutionResult {
 
-    private static int NO_ERROR = 0;
-
     public static ExecutionResult ok() {
-        return new ExecutionResult(ResultTypeEnum.EXECUTED_SUCCESSFULLY, NO_ERROR, "");
+        return new ExecutionResult(
+                ResultTypeEnum.EXECUTED_SUCCESSFULLY, ErrorCodeConstant.NO_ERROR, null);
     }
 
     public static ExecutionResult error(int errorCode) {

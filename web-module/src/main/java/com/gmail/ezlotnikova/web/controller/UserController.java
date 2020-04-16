@@ -76,7 +76,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/{id}/update-role")
+    @GetMapping("/{id}")
     public String showUpdateRoleForm(
             Model model,
             @PathVariable(name = "id") String idString) {
@@ -88,7 +88,7 @@ public class UserController {
         return "user_change_role";
     }
 
-    @PostMapping("/{id}/update-role")
+    @PostMapping("/{id}")
     public String showUpdateRoleForm(
             @PathVariable(name = "id") String idString,
             @RequestParam(value = "newRole") String newRole,
@@ -110,7 +110,7 @@ public class UserController {
             RedirectAttributes redirectAttributes
     ) {
         Long id = Long.parseLong(idString);
-        ExecutionResult result = userService.changeUserPasswordByIdAndSendEmail(id);
+        ExecutionResult result = userService.generatePasswordAndSendEmail(id);
         if (result.getResultType().equals(EXECUTED_SUCCESSFULLY)) {
             redirectAttributes.addFlashAttribute(
                     "successMessage", "New password was sent to user's email");

@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+
+<head>
+    <title>Articles</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}"/>
+</head>
+
+<body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" aria-label="Site navigation">
+        <a class="navbar-brand">ShopProject</a>
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" th:href="@{/users}" href="/users">Users</a>
+            <a class="nav-item nav-link" th:href="@{/users/add}" href="/users/add">Add user</a>
+            <a class="nav-item nav-link" th:href="@{/reviews}" href="/reviews">Reviews</a>
+            <a class="nav-item nav-link active">Articles</a>
+            <a class="nav-item nav-link" th:href="@{/profile}" href="/profile">Profile</a>
+            <a class="nav-item nav-link" th:href="@{/login}" href="/login">Log in</a>
+            <a class="nav-item nav-link" th:href="@{/logout}" href="/logout">Log out</a>
+        </div>
+    </nav>
+    <br>
+
+    <div align="center" th:if="${articles.empty}">
+        No articles are currently available.
+    </div>
+
+    <div th:each="article:${articles}" th:object="${article}">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title" th:text="*{header}">Header</h5>
+            </div>
+            <div class="card-body">
+                <b><span th:text="|*{authorFirstName} *{authorLastName}|"></span></b><br>
+                <small><i><span th:text="*{createdOn}"></span></i></small><br>
+                <br>
+                <p class="card-text" th:text="*{contentPreview}">Content</p>
+                <a th:href="@{/articles/{id}(id=*{id})}" href="/articles">Read more</a>
+            </div>
+        </div>
+        <br>
+    </div>
+    <br>
+
+    <nav aria-label="Search result pages">
+        <ul class="pagination pg-blue"
+            th:if="${articles.totalPages > 0}">
+            <span th:each="pageNumber : ${pageNumbers}">
+                <li th:class="${pageNumber==articles.number} ? 'page-item disabled' : 'page-item'">
+                    <a class="page-link"
+                       th:href="@{/articles(page=${pageNumber})}" href="#"
+                       th:text=${pageNumber}>
+                    </a>
+                </li>
+             </span>
+        </ul>
+    </nav>
+
+</div>
+<script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
+</body>
+</html>

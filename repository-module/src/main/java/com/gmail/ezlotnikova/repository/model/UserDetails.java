@@ -39,6 +39,12 @@ public class UserDetails {
     @Column(name = "patronymic_name")
     private String patronymicName;
 
+    @Column
+    private String address;
+
+    @Column
+    private String telephone;
+
     @OneToOne
     @PrimaryKeyJoinColumn
     private User user;
@@ -75,6 +81,22 @@ public class UserDetails {
         this.patronymicName = patronymicName;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
     public User getUser() {
         return user;
     }
@@ -95,12 +117,14 @@ public class UserDetails {
         return Objects.equals(userId, that.userId) &&
                 Objects.equals(lastName, that.lastName) &&
                 Objects.equals(firstName, that.firstName) &&
-                Objects.equals(patronymicName, that.patronymicName);
+                Objects.equals(patronymicName, that.patronymicName) &&
+                Objects.equals(address, that.address) &&
+                Objects.equals(telephone, that.telephone);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, lastName, firstName, patronymicName);
+        return Objects.hash(userId, lastName, firstName, patronymicName, address, telephone);
     }
 
 }

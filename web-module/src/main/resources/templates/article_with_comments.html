@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+
+<head>
+    <title>Articles</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}"/>
+</head>
+
+<body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" aria-label="Site navigation">
+        <a class="navbar-brand">ShopProject</a>
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" th:href="@{/users}" href="/users">Users</a>
+            <a class="nav-item nav-link" th:href="@{/users/add}" href="/users/add">Add user</a>
+            <a class="nav-item nav-link" th:href="@{/reviews}" href="/reviews">Reviews</a>
+            <a class="nav-item nav-link" th:href="@{/articles}" href="/articles">Articles</a>
+            <a class="nav-item nav-link active">Read</a>
+            <a class="nav-item nav-link" th:href="@{/profile}" href="/profile">Profile</a>
+            <a class="nav-item nav-link" th:href="@{/login}" href="/login">Log in</a>
+            <a class="nav-item nav-link" th:href="@{/logout}" href="/logout">Log out</a>
+        </div>
+    </nav>
+    <br>
+
+    <div th:object="${article}">
+        <div class="card">
+            <div class="card-header">
+                <small><i><span th:text="*{createdOn}"></span></i></small><br>
+                <h5 class="card-title" th:text="*{header}">Header</h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text" th:text="*{content}">Content</p>
+                <i><span th:text="|*{authorFirstName} *{authorLastName}|"></span></i>
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <div th:if="${comments.empty}">
+        No comments yet.
+    </div>
+
+    <div th:each="comment:${comments}" th:object="${comment}">
+        <div class="card">
+            <div class="card-header">
+                <b><span th:text="|*{authorFirstName} *{authorLastName}|"></span></b><br>
+                <small><i><span th:text="*{createdOn}"></span></i></small><br>
+            </div>
+            <div class="card-body">
+                <p class="card-text" th:text="*{content}">Content</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
+</body>
+</html>
