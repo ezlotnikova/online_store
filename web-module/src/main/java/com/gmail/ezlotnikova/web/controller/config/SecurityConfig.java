@@ -1,5 +1,6 @@
 package com.gmail.ezlotnikova.web.controller.config;
 
+import com.gmail.ezlotnikova.repository.model.сonstant.UserRoleEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -26,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/reviews", "/users")
-                .hasRole("ADMINISTRATOR")
+                .hasRole(String.valueOf(UserRoleEnum.ADMINISTRATOR))
                 .and()
                 .formLogin()
                 .loginPage("/login")
