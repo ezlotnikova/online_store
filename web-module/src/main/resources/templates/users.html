@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+
+<head>
+    <title>Users</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}"/>
+</head>
+
+<body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" aria-label="Site navigation">
+        <a class="navbar-brand">ShopProject</a>
+            <div class="navbar-nav">
+                <a class="nav-item nav-link" th:href="@{/login}" href="/login">Login</a>
+                <a class="nav-item nav-link active">Users</a>
+                <a class="nav-item nav-link" th:href="@{/users/add}" href="/users/add">Add user</a>
+                <a class="nav-item nav-link" th:href="@{/reviews}" href="/reviews">Reviews</a>
+            </div>
+    </nav>
+    <br>
+    <div th:if="${successMessage}" th:text="${successMessage}" class="alert alert-success" role="alert">
+        Success Alert
+    </div>
+    <div th:if="${failureMessage}" th:text="${failureMessage}" class="alert alert-danger" role="alert">
+        Failure Alert
+    </div>
+    <form th:action="@{/users/delete}"
+          action="/users/delete"
+          method="post">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>Last name</th>
+                <th>First Name</th>
+                <th>Patronymic name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Change role</th>
+                <th>Change password</th>
+                <th>Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user:${users}" th:object="${user}">
+                <td th:text="*{lastName}">Last name</td>
+                <td th:text="*{firstName}">First Name</td>
+                <td th:text="*{patronymicName}">Patronymic name</td>
+                <td th:text="*{email}">Email</td>
+                <td th:text="*{role}">Role</td>
+                <td>
+                    <a class="btn btn-outline-warning"
+                       th:href="@{/users/{id}/update-role(id=*{id})}"
+                       href="@{/users}"
+                       role="button">
+                        Change Role
+                    </a>
+                </td>
+                <td>
+                    <a class="btn btn-outline-warning"
+                       th:href="@{/users/{id}/change-password(id=*{id})}"
+                       href="@{/users}"
+                       role="button">
+                        Change Password
+                    </a>
+                </td>
+                <td>
+                    <div class="form-check">
+                        <input type="checkbox" name="idList" th:value="*{id}">
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div align="right">
+            <input type="submit" class="btn btn-outline-danger" value="Delete selected"/>
+        </div>
+    </form>
+    <nav aria-label="Users search result pages">
+        <ul class="pagination"
+            th:if="${users.totalPages > 0}">
+            <span th:each="pageNumber : ${pageNumbers}">
+                <li th:class="${pageNumber==users.number} ? 'page-item active' : 'page-item'" aria-current="page">
+                    <a class="page-link"
+                       th:href="@{/users(page=${pageNumber})}" href="#"
+                       th:text=${pageNumber}>
+                    </a>
+                </li>
+            </span>
+        </ul>
+    </nav>
+</div>
+<script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
+</body>
+</html>

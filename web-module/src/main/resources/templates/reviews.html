@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+
+<head>
+    <title>Reviews</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}"/>
+</head>
+
+<body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" aria-label="Site navigation">
+        <a class="navbar-brand">ShopProject</a>
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" th:href="@{/login}" href="/login">Login</a>
+            <a class="nav-item nav-link" th:href="@{/users}" href="/users">Users</a>
+            <a class="nav-item nav-link" th:href="@{/users/add}" href="/users/add">Add user</a>
+            <a class="nav-item nav-link active">Reviews</a>
+        </div>
+    </nav>
+    <form th:action="@{/reviews/delete}"
+          action="/reviews/delete"
+          method="post">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>Last name</th>
+                <th>First Name</th>
+                <th>Patronymic name</th>
+                <th>Review</th>
+                <th>Added</th>
+                <th>Visible</th>
+                <th>Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="review, itemStat :${reviews}" th:object="${review}">
+                <td th:text="*{lastName}">Last name</td>
+                <td th:text="*{firstName}">First Name</td>
+                <td th:text="*{patronymicName}">Patronymic name</td>
+                <td th:text="*{reviewText}">Review</td>
+                <td th:text="*{createdOn}">Created</td>
+                <td>
+                    <div class="form-check">
+                        <input type="checkbox" th:checked="*{visible}" disabled="disabled">
+                    </div>
+                </td>
+                <td>
+                    <div class="form-check">
+                        <input type="checkbox" name="idList" th:value="*{id}">
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div align="right">
+            <input type="submit"
+                   class="btn btn-outline-danger"
+                   value="Delete Selected">
+        </div>
+    </form>
+    <nav aria-label="Review search result pages">
+        <ul class="pagination"
+            th:if="${reviews.totalPages > 0}">
+            <span th:each="pageNumber : ${pageNumbers}">
+                <li th:class="${pageNumber==reviews.number} ? 'page-item active' : 'page-item'" aria-current="page">
+                    <a class="page-link"
+                       th:href="@{/reviews(page=${pageNumber})}" href="#"
+                       th:text=${pageNumber}>
+                    </a>
+                </li>
+            </span>
+        </ul>
+    </nav>
+</div>
+</div>
+<script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
+</body>
+</html>

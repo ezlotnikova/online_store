@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1" author="e.zlotnikova@gmail.com">
+        <createTable tableName="user">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="email" type="varchar(50)"/>
+            <column name="password" type="varchar(80)"/>
+            <column name="role" type="varchar(40)"/>
+            <column name="is_enabled" type="TINYINT" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="e.zlotnikova@gmail.com">
+        <createTable tableName="user_details">
+            <column name="user_id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="last_name" type="varchar(40)"/>
+            <column name="first_name" type="varchar(20)"/>
+            <column name="patronymic_name" type="varchar(40)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="e.zlotnikova@gmail.com">
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="user_details"
+                                 constraintName="fk_user_details_to_user"
+                                 onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user"
+                                 validate="true"/>
+    </changeSet>
+
+    <changeSet id="4" author="e.zlotnikova@gmail.com">
+        <createTable tableName="review">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="user_id" type="BIGINT"/>
+            <column name="review_text" type="BLOB"/>
+            <column name="created_on" type="TIMESTAMP" defaultValue="NOW()"/>
+            <column name="is_visible" type="TINYINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="5" author="e.zlotnikova@gmail.com">
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="review"
+                                 constraintName="fk_review_to_user_details"
+                                 onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="user_id"
+                                 referencedTableName="user_details"
+                                 validate="true"/>
+    </changeSet>
+
+</databaseChangeLog>
