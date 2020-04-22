@@ -7,8 +7,10 @@ import com.gmail.ezlotnikova.service.constant.ExecutionResult;
 import com.gmail.ezlotnikova.service.model.AddArticleDTO;
 import com.gmail.ezlotnikova.service.model.ArticlePreviewDTO;
 import com.gmail.ezlotnikova.service.model.ArticleWithCommentsDTO;
+import com.gmail.ezlotnikova.service.security.AppUser;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,9 +41,14 @@ public class ArticleAPIController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public AddArticleDTO addArticle(
-            @Valid @RequestBody AddArticleDTO articleDTO
+            @AuthenticationPrincipal AppUser appUser,
+            @Valid @RequestBody AddArticleDTO article
     ) {
-        return articleService.add(articleDTO);
+        if (article.getAuthorEmail() == null){
+            String email = appUser.getUsername();
+            article.setAuthorEmail(email);
+        }
+        return articleService.add(article);
     }
 
     @GetMapping("/{id}")

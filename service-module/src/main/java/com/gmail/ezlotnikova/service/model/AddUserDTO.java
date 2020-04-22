@@ -11,8 +11,8 @@ import static com.gmail.ezlotnikova.service.model.validation.ModelValidationCons
 import static com.gmail.ezlotnikova.service.model.validation.ModelValidationConstant.MAX_FIRST_NAME_SIZE;
 import static com.gmail.ezlotnikova.service.model.validation.ModelValidationConstant.MAX_LAST_NAME_SIZE;
 import static com.gmail.ezlotnikova.service.model.validation.ModelValidationConstant.MAX_PATRONYMIC_NAME_SIZE;
-import static com.gmail.ezlotnikova.service.model.validation.ValidationMessageConstant.INVALID_EMAIL_ADDRESS_MESSAGE;
-import static com.gmail.ezlotnikova.service.model.validation.ValidationMessageConstant.NOT_EMPTY_MESSAGE;
+import static com.gmail.ezlotnikova.service.model.validation.ModelValidationMessageConstant.INVALID_EMAIL_ADDRESS_MESSAGE;
+import static com.gmail.ezlotnikova.service.model.validation.ModelValidationMessageConstant.NOT_EMPTY_MESSAGE;
 
 public class AddUserDTO {
 

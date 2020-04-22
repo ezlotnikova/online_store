@@ -7,7 +7,7 @@ public class ArticlePreviewDTO {
     private String authorLastName;
     private String header;
     private String contentPreview;
-    private String createdOn;
+    private String date;
 
     public Long getId() {
         return id;
@@ -49,12 +49,12 @@ public class ArticlePreviewDTO {
         this.contentPreview = content;
     }
 
-    public String getCreatedOn() {
-        return createdOn;
+    public String getDate() {
+        return date;
     }
 
-    public void setCreatedOn(String createdOn) {
-        this.createdOn = createdOn;
+    public void setDate(String date) {
+        this.date = date;
     }
 
 }

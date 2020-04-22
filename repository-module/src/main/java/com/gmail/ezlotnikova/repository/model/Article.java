@@ -28,8 +28,8 @@ public class Article {
     private String header;
     @Column
     private String content;
-    @Column(name = "created_on")
-    private Timestamp createdOn;
+    @Column
+    private Timestamp date;
     @ManyToOne(
             fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -66,12 +66,12 @@ public class Article {
         this.content = content;
     }
 
-    public Timestamp getCreatedOn() {
-        return createdOn;
+    public Timestamp getDate() {
+        return date;
     }
 
-    public void setCreatedOn(Timestamp createdOn) {
-        this.createdOn = createdOn;
+    public void setDate(Timestamp date) {
+        this.date = date;
     }
 
     public UserDetails getUserDetails() {
@@ -102,12 +102,12 @@ public class Article {
         return Objects.equals(id, article.id) &&
                 Objects.equals(header, article.header) &&
                 Objects.equals(content, article.content) &&
-                Objects.equals(createdOn, article.createdOn);
+                Objects.equals(date, article.date);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, header, content, createdOn);
+        return Objects.hash(id, header, content, date);
     }
 
 }

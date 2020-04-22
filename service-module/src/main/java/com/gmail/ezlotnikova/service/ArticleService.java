@@ -16,4 +16,6 @@ public interface ArticleService {
 
     ExecutionResult deleteArticleById(Long id);
 
+    ExecutionResult deleteComment(Long commentId);
+
 }

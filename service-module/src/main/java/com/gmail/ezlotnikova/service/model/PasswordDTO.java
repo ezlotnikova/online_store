@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 
 import com.gmail.ezlotnikova.service.model.validation.PasswordMatches;
 
-import static com.gmail.ezlotnikova.service.model.validation.ValidationMessageConstant.NOT_EMPTY_MESSAGE;
+import static com.gmail.ezlotnikova.service.model.validation.ModelValidationMessageConstant.NOT_EMPTY_MESSAGE;
 
 @PasswordMatches
 public class PasswordDTO {

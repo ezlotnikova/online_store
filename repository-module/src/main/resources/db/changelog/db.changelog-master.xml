@@ -83,7 +83,7 @@
             <column name="user_id" type="BIGINT"/>
             <column name="header" type="VARCHAR(255)"/>
             <column name="content" type="TEXT"/>
-            <column name="created_on" type="TIMESTAMP" defaultValue="NOW()"/>
+            <column name="date" type="TIMESTAMP" defaultValue="NOW()"/>
         </createTable>
     </changeSet>
 
@@ -129,6 +129,40 @@
                                  onUpdate="NO ACTION"
                                  referencedColumnNames="id"
                                  referencedTableName="article"
+                                 validate="true"/>
+    </changeSet>
+
+
+    <changeSet id="13" author="e.zlotnikova@gmail.com">
+        <createTable tableName="item">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="unique_number" type="UUID">
+                <constraints unique="true"/>
+            </column>
+            <column name="name" type="varchar(100)"/>
+            <column name="price" type="DECIMAL(10, 2)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="14" author="e.zlotnikova@gmail.com">
+        <createTable tableName="item_details">
+            <column name="item_id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="description" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="15" author="e.zlotnikova@gmail.com">
+        <addForeignKeyConstraint baseColumnNames="item_id"
+                                 baseTableName="item_details"
+                                 constraintName="fk_item_details_to_item"
+                                 onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="id"
+                                 referencedTableName="item"
                                  validate="true"/>
     </changeSet>
 

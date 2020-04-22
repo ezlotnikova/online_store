@@ -10,9 +10,9 @@ import static com.gmail.ezlotnikova.service.model.validation.ModelValidationCons
 import static com.gmail.ezlotnikova.service.model.validation.ModelValidationConstant.MAX_FIRST_NAME_SIZE;
 import static com.gmail.ezlotnikova.service.model.validation.ModelValidationConstant.MAX_LAST_NAME_SIZE;
 import static com.gmail.ezlotnikova.service.model.validation.ModelValidationConstant.PHONE_NUMBER_PATTERN;
-import static com.gmail.ezlotnikova.service.model.validation.ValidationMessageConstant.INVALID_PHONE_NUMBER_MESSAGE;
-import static com.gmail.ezlotnikova.service.model.validation.ValidationMessageConstant.NOT_EMPTY_MESSAGE;
-import static com.gmail.ezlotnikova.service.model.validation.ValidationMessageConstant.TOO_LONG_ADDRESS_MESSAGE;
+import static com.gmail.ezlotnikova.service.model.validation.ModelValidationMessageConstant.INVALID_PHONE_NUMBER_MESSAGE;
+import static com.gmail.ezlotnikova.service.model.validation.ModelValidationMessageConstant.NOT_EMPTY_MESSAGE;
+import static com.gmail.ezlotnikova.service.model.validation.ModelValidationMessageConstant.TOO_LONG_ADDRESS_MESSAGE;
 
 public class UserDetailsDTO {
 
