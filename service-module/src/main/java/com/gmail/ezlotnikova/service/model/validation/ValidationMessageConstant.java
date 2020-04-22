@@ -1,4 +1,4 @@
-package com.gmail.ezlotnikova.service.model.constant;
+package com.gmail.ezlotnikova.service.model.validation;
 
 public interface ValidationMessageConstant {
 

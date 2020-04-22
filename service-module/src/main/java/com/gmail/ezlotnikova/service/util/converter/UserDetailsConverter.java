@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserDetailsConverter {
 
-    public UserDetailsDTO convertDatabaseObjectToUserDetailsDTO(User user) {
+    public static UserDetailsDTO convertToUserDetailsDTO(User user) {
         UserDetailsDTO profile = new UserDetailsDTO();
         profile.setId(
                 user.getId());
@@ -21,7 +21,7 @@ public class UserDetailsConverter {
             profile.setAddress("");
         } else {
             profile.setAddress(
-            userDetails.getAddress());
+                    userDetails.getAddress());
         }
         if (userDetails.getTelephone() == null) {
             profile.setTelephone("");

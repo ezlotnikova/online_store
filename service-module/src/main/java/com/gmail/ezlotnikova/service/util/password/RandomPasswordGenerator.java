@@ -1,10 +1,12 @@
-package com.gmail.ezlotnikova.service.util;
+package com.gmail.ezlotnikova.service.util.password;
 
 import org.passay.CharacterData;
 import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
 import org.passay.PasswordGenerator;
 import org.springframework.stereotype.Component;
+
+import static com.gmail.ezlotnikova.service.util.password.PasswordGeneratorConstant.GENERATED_PASSWORD_LENGTH;
 
 @Component
 public class RandomPasswordGenerator {
@@ -24,7 +26,7 @@ public class RandomPasswordGenerator {
         CharacterRule digitRule = new CharacterRule(digitChars);
         digitRule.setNumberOfCharacters(2);
 
-        return generator.generatePassword(10, lowerCaseRule, upperCaseRule, digitRule);
+        return generator.generatePassword(GENERATED_PASSWORD_LENGTH, lowerCaseRule, upperCaseRule, digitRule);
     }
 
 }

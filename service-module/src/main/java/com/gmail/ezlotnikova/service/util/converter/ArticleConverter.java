@@ -13,31 +13,25 @@ import com.gmail.ezlotnikova.service.model.AddArticleDTO;
 import com.gmail.ezlotnikova.service.model.ArticlePreviewDTO;
 import com.gmail.ezlotnikova.service.model.ArticleWithCommentsDTO;
 import com.gmail.ezlotnikova.service.model.CommentDTO;
-import org.springframework.stereotype.Component;
 
-import static com.gmail.ezlotnikova.service.util.converter.constant.ArticleConstant.ARTICLE_PREVIEW_LENGTH;
+import static com.gmail.ezlotnikova.service.constant.ArticlePreviewConstant.ARTICLE_PREVIEW_LENGTH;
+import static com.gmail.ezlotnikova.service.util.converter.DateTimeUtil.convertTimestampToString;
+import static com.gmail.ezlotnikova.service.util.converter.DateTimeUtil.getCurrentTimestamp;
 
-@Component
 public class ArticleConverter {
 
-    private final DateTimeConverter dateTimeConverter;
-
-    public ArticleConverter(DateTimeConverter dateTimeConverter) {
-        this.dateTimeConverter = dateTimeConverter;
-    }
-
-    public Article convertToDatabaseObject(AddArticleDTO articleDTO) {
+    public static Article convertToDatabaseObject(AddArticleDTO articleDTO) {
         Article article = new Article();
         article.setHeader(
                 articleDTO.getHeader());
         article.setContent(
                 articleDTO.getContent());
         article.setCreatedOn(
-                dateTimeConverter.getCurrentTimestamp());
+                getCurrentTimestamp());
         return article;
     }
 
-    public AddArticleDTO convertToAddArticleDTO(Article article) {
+    public static AddArticleDTO convertToAddArticleDTO(Article article) {
         AddArticleDTO articleDTO = new AddArticleDTO();
         articleDTO.setId(
                 article.getId());
@@ -45,16 +39,16 @@ public class ArticleConverter {
                 article.getHeader());
         articleDTO.setContent(
                 article.getContent());
-        articleDTO.setCreatedOn(dateTimeConverter.convertTimestampToString(
+        articleDTO.setCreatedOn(convertTimestampToString(
                 article.getCreatedOn()));
         return articleDTO;
     }
 
-    public ArticlePreviewDTO convertToArticlePreviewDTO(Article article) {
+    public static ArticlePreviewDTO convertToArticlePreviewDTO(Article article) {
         ArticlePreviewDTO articlePreview = new ArticlePreviewDTO();
         articlePreview.setId(
                 article.getId());
-        articlePreview.setCreatedOn(dateTimeConverter.convertTimestampToString(
+        articlePreview.setCreatedOn(convertTimestampToString(
                 article.getCreatedOn()));
         articlePreview.setHeader(
                 article.getHeader());
@@ -68,11 +62,11 @@ public class ArticleConverter {
         return articlePreview;
     }
 
-    public ArticleWithCommentsDTO convertToArticleWithCommentsDTO(Article article) {
+    public static ArticleWithCommentsDTO convertToArticleWithCommentsDTO(Article article) {
         ArticleWithCommentsDTO articleDTO = new ArticleWithCommentsDTO();
         articleDTO.setId(
                 article.getId());
-        articleDTO.setCreatedOn(dateTimeConverter.convertTimestampToString(
+        articleDTO.setCreatedOn(convertTimestampToString(
                 article.getCreatedOn()));
         articleDTO.setHeader(
                 article.getHeader());
@@ -86,14 +80,14 @@ public class ArticleConverter {
         List<CommentDTO> commentDTOList = new ArrayList<>();
         if (comments != null) {
             commentDTOList = comments.stream()
-                    .map(this::convertDatabaseObjectToCommentDTO)
+                    .map(ArticleConverter::convertToCommentDTO)
                     .collect(Collectors.toList());
         }
         articleDTO.setComments(commentDTOList);
         return articleDTO;
     }
 
-    private CommentDTO convertDatabaseObjectToCommentDTO(Comment comment) {
+    private static CommentDTO convertToCommentDTO(Comment comment) {
         CommentDTO commentDTO = new CommentDTO();
         commentDTO.setId(
                 comment.getId());
@@ -102,14 +96,14 @@ public class ArticleConverter {
                 userDetails.getFirstName());
         commentDTO.setAuthorLastName(
                 userDetails.getLastName());
-        commentDTO.setCreatedOn(dateTimeConverter.convertTimestampToString(
+        commentDTO.setCreatedOn(convertTimestampToString(
                 comment.getCreatedOn()));
         commentDTO.setContent(
                 comment.getContent());
         return commentDTO;
     }
 
-    private String getPreview(String content) {
+    private static String getPreview(String content) {
         if (content.length() <= ARTICLE_PREVIEW_LENGTH) {
             return content;
         } else {

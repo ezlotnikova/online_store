@@ -1,4 +1,4 @@
-package com.gmail.ezlotnikova.service.validation;
+package com.gmail.ezlotnikova.service.model.validation;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

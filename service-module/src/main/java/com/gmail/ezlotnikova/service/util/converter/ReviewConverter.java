@@ -3,18 +3,12 @@ package com.gmail.ezlotnikova.service.util.converter;
 import com.gmail.ezlotnikova.repository.model.Review;
 import com.gmail.ezlotnikova.repository.model.UserDetails;
 import com.gmail.ezlotnikova.service.model.ShowReviewDTO;
-import org.springframework.stereotype.Component;
 
-@Component
+import static com.gmail.ezlotnikova.service.util.converter.DateTimeUtil.convertTimestampToString;
+
 public class ReviewConverter {
 
-    private final DateTimeConverter dateTimeConverter;
-
-    public ReviewConverter(DateTimeConverter dateTimeConverter) {
-        this.dateTimeConverter = dateTimeConverter;
-    }
-
-    public ShowReviewDTO convertDatabaseObjectToDTO(Review review) {
+    public static ShowReviewDTO convertToReviewDTO(Review review) {
         ShowReviewDTO reviewDTO = new ShowReviewDTO();
         reviewDTO.setId(
                 review.getId());
@@ -28,7 +22,7 @@ public class ReviewConverter {
                 userDetails.getPatronymicName());
         reviewDTO.setReviewText(
                 review.getReviewText());
-        reviewDTO.setCreatedOn(dateTimeConverter.convertTimestampToString(
+        reviewDTO.setCreatedOn(convertTimestampToString(
                 review.getCreatedOn()));
         reviewDTO.setVisible(
                 review.getVisible());

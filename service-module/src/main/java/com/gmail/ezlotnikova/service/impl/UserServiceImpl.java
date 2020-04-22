@@ -1,9 +1,6 @@
 package com.gmail.ezlotnikova.service.impl;
 
 import java.lang.invoke.MethodHandles;
-import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
 
 import com.gmail.ezlotnikova.repository.UserRepository;
 import com.gmail.ezlotnikova.repository.model.User;
@@ -28,6 +25,11 @@ import org.springframework.transaction.annotation.Transactional;
 import static com.gmail.ezlotnikova.service.constant.ErrorCodeConstant.ACTION_FORBIDDEN;
 import static com.gmail.ezlotnikova.service.constant.ErrorCodeConstant.FAILED_TO_EXECUTE;
 import static com.gmail.ezlotnikova.service.constant.ErrorCodeConstant.NO_OBJECT_FOUND;
+import static com.gmail.ezlotnikova.service.constant.PaginationConstant.USERS_BY_PAGE;
+import static com.gmail.ezlotnikova.service.util.converter.UserConverter.convertToAddUserDTO;
+import static com.gmail.ezlotnikova.service.util.converter.UserConverter.convertToDatabaseObject;
+import static com.gmail.ezlotnikova.service.util.converter.UserConverter.convertToShowUserDTO;
+import static com.gmail.ezlotnikova.service.util.converter.UserConverter.convertToUserDTO;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -35,38 +37,32 @@ public class UserServiceImpl implements UserService {
     private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
     private final UserRepository userRepository;
-    private final UserConverter userConverter;
-    private final Validator validator;
     private final PasswordService passwordService;
 
     public UserServiceImpl(
-            UserRepository userRepository, UserConverter userConverter,
-            Validator validator, PasswordService passwordService) {
+            UserRepository userRepository,
+            PasswordService passwordService
+    ) {
         this.userRepository = userRepository;
-        this.userConverter = userConverter;
-        this.validator = validator;
         this.passwordService = passwordService;
     }
 
     @Override
     @Transactional
     public AddUserDTO add(AddUserDTO userDTO) {
-        Set<ConstraintViolation<AddUserDTO>> violations = validator.validate(userDTO);
-        if (violations.isEmpty()) {
-            User user = userConverter.convertAddUserDTOToDatabaseObject(userDTO);
-            User addedUser = userRepository.persist(user);
-            return userConverter.convertDatabaseObjectToAddUserDTO(addedUser);
-        } else {
-            throw new IllegalArgumentException("Can't add user: invalid data provided");
-        }
+        User user = convertToDatabaseObject(userDTO);
+        User addedUser = userRepository.persist(user);
+        return convertToAddUserDTO(addedUser);
     }
 
     @Override
     @Transactional
-    public Page<ShowUserDTO> findPaginatedAndOrderedByEmail(int pageNumber, int pageSize) {
-        Pageable pageRequest = PageRequest.of(pageNumber, pageSize);
+    public Page<ShowUserDTO> findPaginatedAndOrderedByEmail(int pageNumber) {
+        /* page numeration in UI starts from 1, but in Pageable and Page objects it starts from zero,
+        so parameter passed to PageRequest constructor is "pageNumber - 1" */
+        Pageable pageRequest = PageRequest.of(pageNumber - 1, USERS_BY_PAGE);
         return userRepository.findPaginatedAndOrderedByEmail(pageRequest)
-                .map(userConverter::convertDatabaseObjectToShowUserDTO);
+                .map(UserConverter::convertToShowUserDTO);
     }
 
     @Override
@@ -75,7 +71,7 @@ public class UserServiceImpl implements UserService {
     public ShowUserDTO findUserById(Long id) {
         User user = userRepository.findById(id);
         if (user != null) {
-            return userConverter.convertDatabaseObjectToShowUserDTO(user);
+            return convertToShowUserDTO(user);
         } else {
             return null;
         }
@@ -86,7 +82,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO loadUserByEmail(String email) {
         User user = userRepository.loadUserByEmail(email);
         if (user != null) {
-            return userConverter.getUserDTOFromDatabaseObject(user);
+            return convertToUserDTO(user);
         } else {
             return null;
         }
@@ -136,9 +132,8 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Transactional
     private boolean isTheOnlyAdministrator() {
-        return userRepository.countAdministrators() == 1L;
+        return userRepository.getCountOfUsersByRole(UserRoleEnum.ADMINISTRATOR) == 1L;
     }
 
 }

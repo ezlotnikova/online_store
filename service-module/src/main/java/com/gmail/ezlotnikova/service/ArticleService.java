@@ -12,7 +12,7 @@ public interface ArticleService {
 
     ArticleWithCommentsDTO findById(Long id);
 
-    Page<ArticlePreviewDTO> findPaginatedAndOrderedByDate(int pageNumber, int pageSize);
+    Page<ArticlePreviewDTO> findPaginatedAndOrderedByDate(int pageNumber);
 
     ExecutionResult deleteArticleById(Long id);
 

@@ -1,6 +1,6 @@
-package com.gmail.ezlotnikova.service.model.constant;
+package com.gmail.ezlotnikova.service.model.validation;
 
-public interface ValidationConstant {
+public interface ModelValidationConstant {
 
     int MAX_LAST_NAME_SIZE = 40;
     int MAX_FIRST_NAME_SIZE = 20;

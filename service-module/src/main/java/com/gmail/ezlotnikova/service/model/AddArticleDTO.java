@@ -5,11 +5,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import static com.gmail.ezlotnikova.service.model.constant.ValidationConstant.EMAIL_ADDRESS_PATTERN;
-import static com.gmail.ezlotnikova.service.model.constant.ValidationConstant.MAX_ARTICLE_CONTENT_SIZE;
-import static com.gmail.ezlotnikova.service.model.constant.ValidationConstant.MAX_ARTICLE_HEADER_SIZE;
-import static com.gmail.ezlotnikova.service.model.constant.ValidationMessageConstant.INVALID_EMAIL_ADDRESS_MESSAGE;
-import static com.gmail.ezlotnikova.service.model.constant.ValidationMessageConstant.NOT_EMPTY_MESSAGE;
+import static com.gmail.ezlotnikova.service.model.validation.ModelValidationConstant.EMAIL_ADDRESS_PATTERN;
+import static com.gmail.ezlotnikova.service.model.validation.ModelValidationConstant.MAX_ARTICLE_CONTENT_SIZE;
+import static com.gmail.ezlotnikova.service.model.validation.ModelValidationConstant.MAX_ARTICLE_HEADER_SIZE;
+import static com.gmail.ezlotnikova.service.model.validation.ValidationMessageConstant.INVALID_EMAIL_ADDRESS_MESSAGE;
+import static com.gmail.ezlotnikova.service.model.validation.ValidationMessageConstant.NOT_EMPTY_MESSAGE;
 
 public class AddArticleDTO {
 

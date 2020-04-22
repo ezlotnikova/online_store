@@ -19,6 +19,6 @@ public interface GenericRepository<I, T> {
 
     Page<T> findPaginated(Pageable pageRequest);
 
-    Long countTotal();
+    Long getTotalCount();
 
 }

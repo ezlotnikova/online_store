@@ -5,7 +5,7 @@ import com.gmail.ezlotnikova.repository.model.User;
 import com.gmail.ezlotnikova.service.PasswordService;
 import com.gmail.ezlotnikova.service.constant.ExecutionResult;
 import com.gmail.ezlotnikova.service.mail.MailService;
-import com.gmail.ezlotnikova.service.util.RandomPasswordGenerator;
+import com.gmail.ezlotnikova.service.util.password.RandomPasswordGenerator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,8 +22,11 @@ public class PasswordServiceImpl implements PasswordService {
     private final MailService mailService;
 
     public PasswordServiceImpl(
-            RandomPasswordGenerator passwordGenerator, PasswordEncoder passwordEncoder,
-            UserRepository userRepository, MailService mailService) {
+            RandomPasswordGenerator passwordGenerator,
+            PasswordEncoder passwordEncoder,
+            UserRepository userRepository,
+            MailService mailService
+    ) {
         this.passwordGenerator = passwordGenerator;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;

@@ -1,4 +1,4 @@
-package com.gmail.ezlotnikova.service.validation;
+package com.gmail.ezlotnikova.service.model.validation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;

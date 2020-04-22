@@ -3,9 +3,9 @@ package com.gmail.ezlotnikova.service.model;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import com.gmail.ezlotnikova.service.validation.PasswordMatches;
+import com.gmail.ezlotnikova.service.model.validation.PasswordMatches;
 
-import static com.gmail.ezlotnikova.service.model.constant.ValidationMessageConstant.NOT_EMPTY_MESSAGE;
+import static com.gmail.ezlotnikova.service.model.validation.ValidationMessageConstant.NOT_EMPTY_MESSAGE;
 
 @PasswordMatches
 public class PasswordDTO {

@@ -1,6 +1,5 @@
 package com.gmail.ezlotnikova.web.controller.api;
 
-import java.util.Optional;
 import javax.validation.Valid;
 
 import com.gmail.ezlotnikova.service.ArticleService;
@@ -8,7 +7,6 @@ import com.gmail.ezlotnikova.service.constant.ExecutionResult;
 import com.gmail.ezlotnikova.service.model.AddArticleDTO;
 import com.gmail.ezlotnikova.service.model.ArticlePreviewDTO;
 import com.gmail.ezlotnikova.service.model.ArticleWithCommentsDTO;
-import com.gmail.ezlotnikova.web.controller.constant.PaginationConstant;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,26 +30,31 @@ public class ArticleAPIController {
     }
 
     @GetMapping
-    public Page<ArticlePreviewDTO> showAllItems(@RequestParam("page") Optional<Integer> page) {
-        int currentPage = page.orElse(1);
-        int pageSize = PaginationConstant.ARTICLES_BY_PAGE;
-        return articleService.findPaginatedAndOrderedByDate(currentPage, pageSize);
+    public Page<ArticlePreviewDTO> showAllArticles(
+            @RequestParam(value = "page", defaultValue = "1") int page
+    ) {
+        return articleService.findPaginatedAndOrderedByDate(page);
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public AddArticleDTO addArticle(
-            @Valid @RequestBody AddArticleDTO articleDTO) {
+            @Valid @RequestBody AddArticleDTO articleDTO
+    ) {
         return articleService.add(articleDTO);
     }
 
     @GetMapping("/{id}")
-    public ArticleWithCommentsDTO showArticleWithComments(@PathVariable(name = "id") Long id) {
+    public ArticleWithCommentsDTO showArticleWithComments(
+            @PathVariable(name = "id") Long id
+    ) {
         return articleService.findById(id);
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public ExecutionResult deleteArticleById(@PathVariable(name = "id") Long id) {
+    public ExecutionResult deleteArticleById(
+            @PathVariable(name = "id") Long id
+    ) {
         return articleService.deleteArticleById(id);
     }
 

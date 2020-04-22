@@ -1,9 +1,5 @@
 package com.gmail.ezlotnikova.service.impl;
 
-import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-
 import com.gmail.ezlotnikova.repository.ArticleRepository;
 import com.gmail.ezlotnikova.repository.UserRepository;
 import com.gmail.ezlotnikova.repository.model.Article;
@@ -22,42 +18,40 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.gmail.ezlotnikova.service.constant.ErrorCodeConstant.NO_OBJECT_FOUND;
+import static com.gmail.ezlotnikova.service.constant.PaginationConstant.ARTICLES_BY_PAGE;
+import static com.gmail.ezlotnikova.service.util.converter.ArticleConverter.convertToDatabaseObject;
+import static com.gmail.ezlotnikova.service.util.converter.ArticleConverter.convertToAddArticleDTO;
+import static com.gmail.ezlotnikova.service.util.converter.ArticleConverter.convertToArticleWithCommentsDTO;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
-    private final ArticleConverter articleConverter;
-    private final Validator validator;
 
-    public ArticleServiceImpl(ArticleRepository articleRepository, UserRepository userRepository, ArticleConverter articleConverter, Validator validator) {
+    public ArticleServiceImpl(
+            ArticleRepository articleRepository,
+            UserRepository userRepository
+    ) {
         this.articleRepository = articleRepository;
         this.userRepository = userRepository;
-        this.articleConverter = articleConverter;
-        this.validator = validator;
     }
 
     @Override
     @Transactional
     public AddArticleDTO add(AddArticleDTO articleDTO) {
-        Set<ConstraintViolation<AddArticleDTO>> violations = validator.validate(articleDTO);
-        if (violations.isEmpty()) {
-            User user = userRepository.loadUserByEmail(
-                    articleDTO.getAuthorEmail());
-            if (user != null) {
-                Article article = articleConverter.convertToDatabaseObject(articleDTO);
-                article.setUserDetails(
-                        user.getUserDetails());
-                Article addedArticle = articleRepository.persist(article);
-                AddArticleDTO addedArticleDTO =  articleConverter.convertToAddArticleDTO(addedArticle);
-                addedArticleDTO.setAuthorEmail(articleDTO.getAuthorEmail());
-                return addedArticleDTO;
-            } else {
-                throw new IllegalArgumentException("No user found with specified email address");
-            }
+        User user = userRepository.loadUserByEmail(
+                articleDTO.getAuthorEmail());
+        if (user != null) {
+            Article article = convertToDatabaseObject(articleDTO);
+            article.setUserDetails(
+                    user.getUserDetails());
+            Article addedArticle = articleRepository.persist(article);
+            AddArticleDTO addedArticleDTO = convertToAddArticleDTO(addedArticle);
+            addedArticleDTO.setAuthorEmail(articleDTO.getAuthorEmail());
+            return addedArticleDTO;
         } else {
-            throw new IllegalArgumentException("Can't add article: invalid data provided");
+            throw new IllegalArgumentException("No user found with specified email address");
         }
     }
 
@@ -67,7 +61,7 @@ public class ArticleServiceImpl implements ArticleService {
     public ArticleWithCommentsDTO findById(Long id) {
         Article article = articleRepository.findById(id);
         if (article != null) {
-            return articleConverter.convertToArticleWithCommentsDTO(article);
+            return convertToArticleWithCommentsDTO(article);
         } else {
             return null;
         }
@@ -75,10 +69,12 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
-    public Page<ArticlePreviewDTO> findPaginatedAndOrderedByDate(int pageNumber, int pageSize) {
-        Pageable pageRequest = PageRequest.of(pageNumber, pageSize);
+    public Page<ArticlePreviewDTO> findPaginatedAndOrderedByDate(int pageNumber) {
+        /* page numeration in UI starts from 1, but in Pageable and Page objects it starts from zero,
+        so parameter passed to PageRequest constructor is "pageNumber - 1" */
+        Pageable pageRequest = PageRequest.of(pageNumber - 1, ARTICLES_BY_PAGE);
         return articleRepository.findPaginatedAndOrderedByDate(pageRequest)
-                .map(articleConverter::convertToArticlePreviewDTO);
+                .map(ArticleConverter::convertToArticlePreviewDTO);
     }
 
     @Override

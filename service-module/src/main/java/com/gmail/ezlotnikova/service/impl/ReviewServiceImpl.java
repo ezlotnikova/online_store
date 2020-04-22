@@ -14,24 +14,25 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import static com.gmail.ezlotnikova.service.constant.ErrorCodeConstant.NO_OBJECT_FOUND;
+import static com.gmail.ezlotnikova.service.constant.PaginationConstant.REVIEWS_BY_PAGE;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
-    private final ReviewConverter reviewConverter;
 
-    public ReviewServiceImpl(ReviewRepository reviewRepository, ReviewConverter reviewConverter) {
+    public ReviewServiceImpl(ReviewRepository reviewRepository) {
         this.reviewRepository = reviewRepository;
-        this.reviewConverter = reviewConverter;
     }
 
     @Override
     @Transactional
-    public Page<ShowReviewDTO> findPaginated(int pageNumber, int pageSize) {
-        Pageable pageRequest = PageRequest.of(pageNumber, pageSize);
+    public Page<ShowReviewDTO> findPaginated(int pageNumber) {
+        /* page numeration in UI starts from 1, but in Pageable and Page objects it starts from zero,
+        so parameter passed to PageRequest constructor is "pageNumber - 1" */
+        Pageable pageRequest = PageRequest.of(pageNumber - 1, REVIEWS_BY_PAGE);
         return reviewRepository.findPaginated(pageRequest)
-                .map(reviewConverter::convertDatabaseObjectToDTO);
+                .map(ReviewConverter::convertToReviewDTO);
     }
 
     @Override

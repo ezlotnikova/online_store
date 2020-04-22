@@ -48,7 +48,7 @@
             <column name="user_id" type="BIGINT"/>
             <column name="review_text" type="TEXT"/>
             <column name="created_on" type="TIMESTAMP" defaultValue="NOW()"/>
-            <column name="is_visible" type="TINYINT"/>
+            <column name="is_visible" type="TINYINT" defaultValue="0"/>
         </createTable>
     </changeSet>
 

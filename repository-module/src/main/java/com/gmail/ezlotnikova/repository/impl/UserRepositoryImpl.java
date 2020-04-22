@@ -7,7 +7,6 @@ import javax.persistence.Query;
 import com.gmail.ezlotnikova.repository.UserRepository;
 import com.gmail.ezlotnikova.repository.model.User;
 import com.gmail.ezlotnikova.repository.model.сonstant.UserRoleEnum;
-import com.gmail.ezlotnikova.repository.util.PaginationUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
@@ -15,32 +14,29 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import static com.gmail.ezlotnikova.repository.util.PaginationUtil.getQueryStartPosition;
+
 @Repository
 public class UserRepositoryImpl extends GenericRepositoryImpl<Long, User> implements UserRepository {
 
     private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
-    private final PaginationUtil paginationUtil;
-
-    public UserRepositoryImpl(PaginationUtil paginationUtil) {
-        this.paginationUtil = paginationUtil;
-    }
 
     @Override
-    public Long countAdministrators() {
+    public Long getCountOfUsersByRole(UserRoleEnum role) {
         String hql = "SELECT COUNT(u.id) FROM User as u " +
-                "WHERE u.role LIKE : administratorRole";
+                "WHERE u.role = : role";
         Query query = entityManager.createQuery(hql);
-        query.setParameter("administratorRole", UserRoleEnum.ADMINISTRATOR);
+        query.setParameter("role", role);
         return (Long) query.getSingleResult();
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public Page<User> findPaginatedAndOrderedByEmail(Pageable pageRequest) {
-        int startPosition = paginationUtil.getQueryStartPosition(
+        int startPosition = getQueryStartPosition(
                 pageRequest.getPageNumber(), pageRequest.getPageSize());
         int maxResult = pageRequest.getPageSize();
-        Long count = countTotal();
+        Long count = getTotalCount();
         String hql = "FROM User as u ORDER BY u.email";
         Query query = entityManager.createQuery(hql);
         query.setFirstResult(startPosition);

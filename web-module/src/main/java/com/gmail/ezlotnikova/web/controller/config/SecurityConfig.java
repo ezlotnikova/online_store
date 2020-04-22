@@ -1,7 +1,6 @@
 package com.gmail.ezlotnikova.web.controller.config;
 
 import com.gmail.ezlotnikova.repository.model.сonstant.UserRoleEnum;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,10 +11,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private UserDetailsService userDetailsService;
-    @Autowired
-    private PasswordEncoder bCryptPasswordEncoder;
+    private final UserDetailsService userDetailsService;
+    private final PasswordEncoder bCryptPasswordEncoder;
+
+    public SecurityConfig(
+            UserDetailsService userDetailsService,
+            PasswordEncoder bCryptPasswordEncoder
+    ) {
+        this.userDetailsService = userDetailsService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -29,16 +34,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/reviews/**", "/users/**")
-                .hasRole(String.valueOf(UserRoleEnum.ADMINISTRATOR))
+                .hasRole(UserRoleEnum.ADMINISTRATOR.name())
                 .antMatchers("/articles/**")
-                .hasRole(String.valueOf(UserRoleEnum.CUSTOMER_USER))
+                .hasRole(UserRoleEnum.CUSTOMER_USER.name())
                 .antMatchers("/profile/**")
                 .hasAnyRole(
-                        String.valueOf(UserRoleEnum.ADMINISTRATOR),
-                        String.valueOf(UserRoleEnum.CUSTOMER_USER),
-                        String.valueOf(UserRoleEnum.SECURE_API_USER))
+                        UserRoleEnum.ADMINISTRATOR.name(),
+                        UserRoleEnum.CUSTOMER_USER.name(),
+                        UserRoleEnum.SECURE_API_USER.name())
                 .antMatchers("/api/**")
-                .hasRole(String.valueOf(UserRoleEnum.SECURE_API_USER))
+                .hasRole(UserRoleEnum.SECURE_API_USER.name())
                 .antMatchers("login")
                 .permitAll()
                 .and()

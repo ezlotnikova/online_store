@@ -6,13 +6,13 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import static com.gmail.ezlotnikova.service.model.constant.ValidationConstant.MAX_ADDRESS_SIZE;
-import static com.gmail.ezlotnikova.service.model.constant.ValidationConstant.MAX_FIRST_NAME_SIZE;
-import static com.gmail.ezlotnikova.service.model.constant.ValidationConstant.MAX_LAST_NAME_SIZE;
-import static com.gmail.ezlotnikova.service.model.constant.ValidationConstant.PHONE_NUMBER_PATTERN;
-import static com.gmail.ezlotnikova.service.model.constant.ValidationMessageConstant.INVALID_PHONE_NUMBER_MESSAGE;
-import static com.gmail.ezlotnikova.service.model.constant.ValidationMessageConstant.NOT_EMPTY_MESSAGE;
-import static com.gmail.ezlotnikova.service.model.constant.ValidationMessageConstant.TOO_LONG_ADDRESS_MESSAGE;
+import static com.gmail.ezlotnikova.service.model.validation.ModelValidationConstant.MAX_ADDRESS_SIZE;
+import static com.gmail.ezlotnikova.service.model.validation.ModelValidationConstant.MAX_FIRST_NAME_SIZE;
+import static com.gmail.ezlotnikova.service.model.validation.ModelValidationConstant.MAX_LAST_NAME_SIZE;
+import static com.gmail.ezlotnikova.service.model.validation.ModelValidationConstant.PHONE_NUMBER_PATTERN;
+import static com.gmail.ezlotnikova.service.model.validation.ValidationMessageConstant.INVALID_PHONE_NUMBER_MESSAGE;
+import static com.gmail.ezlotnikova.service.model.validation.ValidationMessageConstant.NOT_EMPTY_MESSAGE;
+import static com.gmail.ezlotnikova.service.model.validation.ValidationMessageConstant.TOO_LONG_ADDRESS_MESSAGE;
 
 public class UserDetailsDTO {
 

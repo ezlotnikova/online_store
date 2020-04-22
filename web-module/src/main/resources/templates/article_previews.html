@@ -12,6 +12,7 @@
 
 <body>
 <div class="container">
+
     <nav class="navbar navbar-expand-lg navbar-light bg-light" aria-label="Site navigation">
         <a class="navbar-brand">ShopProject</a>
         <div class="navbar-nav">
@@ -47,17 +48,27 @@
     </div>
     <br>
 
-    <nav aria-label="Search result pages">
-        <ul class="pagination pg-blue"
-            th:if="${articles.totalPages > 0}">
-            <span th:each="pageNumber : ${pageNumbers}">
-                <li th:class="${pageNumber==articles.number} ? 'page-item disabled' : 'page-item'">
-                    <a class="page-link"
-                       th:href="@{/articles(page=${pageNumber})}" href="#"
-                       th:text=${pageNumber}>
-                    </a>
-                </li>
-             </span>
+    <nav aria-label="Search result pages" th:if="${articles.totalPages gt 0}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${articles.number eq 0} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/articles?page={id}(id=${articles.number lt 2 ? 1 : articles.number})}"
+                   aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item" th:classappend="${i eq articles.number + 1} ? 'disabled'"
+                th:each="i : ${#numbers.sequence( 1, articles.totalPages, 1)}">
+                <a class="page-link" th:href="@{/articles?page={id}(id=${i})}" th:text="${i}"
+                   th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+            </li>
+            <li class="page-item" th:classappend="${articles.number + 1 eq articles.totalPages} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/articles?page={id}(id=${articles.number + 2})}"
+                   aria-label="Next" title="Next Page" data-toggle="tooltip">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
         </ul>
     </nav>
 

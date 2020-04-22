@@ -6,22 +6,20 @@ import com.gmail.ezlotnikova.repository.model.UserDetails;
 import com.gmail.ezlotnikova.service.UserDetailsService;
 import com.gmail.ezlotnikova.service.constant.ExecutionResult;
 import com.gmail.ezlotnikova.service.model.UserDetailsDTO;
-import com.gmail.ezlotnikova.service.util.converter.UserDetailsConverter;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.gmail.ezlotnikova.service.constant.ErrorCodeConstant.NO_OBJECT_FOUND;
+import static com.gmail.ezlotnikova.service.util.converter.UserDetailsConverter.convertToUserDetailsDTO;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
-    private final UserDetailsConverter userDetailsConverter;
 
-    public UserDetailsServiceImpl(UserRepository userRepository, UserDetailsConverter userDetailsConverter) {
+    public UserDetailsServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.userDetailsConverter = userDetailsConverter;
     }
 
     @Override
@@ -30,7 +28,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetailsDTO getUserDetailsById(Long id) {
         User user = userRepository.findById(id);
         if (user != null) {
-            return userDetailsConverter.convertDatabaseObjectToUserDetailsDTO(user);
+            return convertToUserDetailsDTO(user);
         } else {
             return null;
         }

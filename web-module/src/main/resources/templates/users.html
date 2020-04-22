@@ -11,25 +11,28 @@
 
 <body>
 <div class="container">
+
     <nav class="navbar navbar-expand-lg navbar-light bg-light" aria-label="Site navigation">
         <a class="navbar-brand">ShopProject</a>
-            <div class="navbar-nav">
-                <a class="nav-item nav-link active">Users</a>
-                <a class="nav-item nav-link" th:href="@{/users/add}" href="/users/add">Add user</a>
-                <a class="nav-item nav-link" th:href="@{/reviews}" href="/reviews">Reviews</a>
-                <a class="nav-item nav-link" th:href="@{/articles}" href="/articles">Articles</a>
-                <a class="nav-item nav-link" th:href="@{/profile}" href="/profile">Profile</a>
-                <a class="nav-item nav-link" th:href="@{/login}" href="/login">Log in</a>
-                <a class="nav-item nav-link" th:href="@{/logout}" href="/logout">Log out</a>
-            </div>
+        <div class="navbar-nav">
+            <a class="nav-item nav-link active">Users</a>
+            <a class="nav-item nav-link" th:href="@{/users/add}" href="/users/add">Add user</a>
+            <a class="nav-item nav-link" th:href="@{/reviews}" href="/reviews">Reviews</a>
+            <a class="nav-item nav-link" th:href="@{/articles}" href="/articles">Articles</a>
+            <a class="nav-item nav-link" th:href="@{/profile}" href="/profile">Profile</a>
+            <a class="nav-item nav-link" th:href="@{/login}" href="/login">Log in</a>
+            <a class="nav-item nav-link" th:href="@{/logout}" href="/logout">Log out</a>
+        </div>
     </nav>
     <br>
+
     <div th:if="${successMessage}" th:text="${successMessage}" class="alert alert-success" role="alert">
         Success Alert
     </div>
     <div th:if="${failureMessage}" th:text="${failureMessage}" class="alert alert-danger" role="alert">
         Failure Alert
     </div>
+
     <form th:action="@{/users/delete}"
           action="/users/delete"
           method="post">
@@ -81,19 +84,31 @@
             <input type="submit" class="btn btn-outline-danger" value="Delete selected"/>
         </div>
     </form>
-    <nav aria-label="Users search result pages">
-        <ul class="pagination"
-            th:if="${users.totalPages > 0}">
-            <span th:each="pageNumber : ${pageNumbers}">
-                <li th:class="${pageNumber==users.number} ? 'page-item active' : 'page-item'" aria-current="page">
-                    <a class="page-link"
-                       th:href="@{/users(page=${pageNumber})}" href="#"
-                       th:text=${pageNumber}>
-                    </a>
-                </li>
-            </span>
+
+    <nav aria-label="Search result pages" th:if="${users.totalPages gt 0}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${users.number eq 0} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/users?page={id}(id=${users.number lt 2 ? 1 : users.number})}"
+                   aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item" th:classappend="${i eq users.number + 1} ? 'disabled'"
+                th:each="i : ${#numbers.sequence( 1, users.totalPages, 1)}">
+                <a class="page-link" th:href="@{/users?page={id}(id=${i})}" th:text="${i}"
+                   th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+            </li>
+            <li class="page-item" th:classappend="${users.number + 1 eq users.totalPages} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/users?page={id}(id=${users.number + 2})}"
+                   aria-label="Next" title="Next Page" data-toggle="tooltip">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
         </ul>
     </nav>
+
 </div>
 <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
 <script th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>

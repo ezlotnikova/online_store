@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static com.gmail.ezlotnikova.service.constant.ResultTypeEnum.EXECUTED_SUCCESSFULLY;
+import static com.gmail.ezlotnikova.web.controller.constant.ResultMessagesConstant.FAILURE_MESSAGE;
+import static com.gmail.ezlotnikova.web.controller.constant.ResultMessagesConstant.SUCCESS_MESSAGE;
 
 @Controller
 @RequestMapping("/profile")
@@ -27,7 +29,9 @@ public class ProfileController {
     private final UserDetailsService userDetailsService;
     private final PasswordService passwordService;
 
-    public ProfileController(UserDetailsService userDetailsService, PasswordService passwordService) {
+    public ProfileController(
+            UserDetailsService userDetailsService,
+            PasswordService passwordService) {
         this.userDetailsService = userDetailsService;
         this.passwordService = passwordService;
     }
@@ -35,7 +39,8 @@ public class ProfileController {
     @GetMapping()
     public String showUserProfile(
             @AuthenticationPrincipal AppUser appUser,
-            Model model) {
+            Model model
+    ) {
         Long id = appUser.getId();
         UserDetailsDTO profile = userDetailsService.getUserDetailsById(id);
         model.addAttribute("profile", profile);
@@ -45,21 +50,21 @@ public class ProfileController {
     @PostMapping()
     public String updateUserProfile(
             @AuthenticationPrincipal AppUser appUser,
-            @Valid @ModelAttribute("profile") UserDetailsDTO pageProfile,
+            @Valid @ModelAttribute(name = "profile") UserDetailsDTO profile,
             BindingResult errors,
             RedirectAttributes redirectAttributes
     ) {
         Long id = appUser.getId();
-        pageProfile.setId(id);
+        profile.setId(id);
         UserDetailsDTO databaseProfile = userDetailsService.getUserDetailsById(id);
         if (!errors.hasErrors()) {
-            if (!pageProfile.equals(databaseProfile)) {
-                ExecutionResult result = userDetailsService.updateUserDetails(id, pageProfile);
-                if (result.getResultType().equals(EXECUTED_SUCCESSFULLY)) {
-                    redirectAttributes.addFlashAttribute("successMessage", "Profile updated successfully");
+            if (!profile.equals(databaseProfile)) {
+                ExecutionResult result = userDetailsService.updateUserDetails(id, profile);
+                if (result.getResultType() == EXECUTED_SUCCESSFULLY) {
+                    redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Profile updated successfully");
                 } else {
-                    redirectAttributes.addFlashAttribute("failureMessage",
-                            "Something went wrong and password wasn't changed. Please try again.");
+                    redirectAttributes.addFlashAttribute(FAILURE_MESSAGE,
+                            "Something went wrong and changes wasn't saved. Please try again.");
                 }
                 return "redirect:/profile";
             }
@@ -77,7 +82,7 @@ public class ProfileController {
     @PostMapping("/password")
     public String changeUserPassword(
             @AuthenticationPrincipal AppUser appUser,
-            @Valid @ModelAttribute("password") PasswordDTO password,
+            @Valid @ModelAttribute(name = "password") PasswordDTO password,
             BindingResult errors,
             RedirectAttributes redirectAttributes
     ) {
@@ -86,10 +91,10 @@ public class ProfileController {
         } else {
             Long id = appUser.getId();
             ExecutionResult result = passwordService.changePasswordByUserId(id, password.getNewPassword());
-            if (result.getResultType().equals(EXECUTED_SUCCESSFULLY)) {
-                redirectAttributes.addFlashAttribute("successMessage", "Password changed successfully");
+            if (result.getResultType() == EXECUTED_SUCCESSFULLY) {
+                redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Password changed successfully");
             } else {
-                redirectAttributes.addFlashAttribute("failureMessage",
+                redirectAttributes.addFlashAttribute(FAILURE_MESSAGE,
                         "Something went wrong and password wasn't changed. Please try again.");
             }
             return "redirect:/profile";
