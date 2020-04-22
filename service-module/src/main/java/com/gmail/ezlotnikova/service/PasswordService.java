@@ -4,6 +4,8 @@ import com.gmail.ezlotnikova.service.constant.ExecutionResult;
 
 public interface PasswordService {
 
-    ExecutionResult changeUserPasswordByIdAndSendEmail(Long id);
+    ExecutionResult generatePasswordAndSendEmail(Long userId);
+
+    ExecutionResult changePasswordByUserId(Long id, String newPassword);
 
 }

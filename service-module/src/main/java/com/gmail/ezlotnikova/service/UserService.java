@@ -11,13 +11,13 @@ public interface UserService {
 
     AddUserDTO add(AddUserDTO user);
 
-    Page<ShowUserDTO> findPaginatedAndOrderedByEmail(int pageNumber, int pageSize);
+    Page<ShowUserDTO> findPaginatedAndOrderedByEmail(int pageNumber);
 
     ShowUserDTO findUserById(Long id);
 
     UserDTO loadUserByEmail(String email);
 
-    ExecutionResult changeUserPasswordByIdAndSendEmail(Long id);
+    ExecutionResult generatePasswordAndSendEmail(Long userId);
 
     ExecutionResult updateUserRoleById(Long id, UserRoleEnum newRoleEnum);
 

@@ -11,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import static com.gmail.ezlotnikova.repository.util.PaginationUtil.getQueryStartPosition;
+
 public abstract class GenericRepositoryImpl<I, T> implements GenericRepository<I, T> {
 
     protected Class<T> entityClass;
@@ -57,9 +59,10 @@ public abstract class GenericRepositoryImpl<I, T> implements GenericRepository<I
     @Override
     @SuppressWarnings("unchecked")
     public Page<T> findPaginated(Pageable pageRequest) {
-        int startPosition = (pageRequest.getPageNumber() - 1) * pageRequest.getPageSize();
+        int startPosition = getQueryStartPosition(
+                pageRequest.getPageNumber(), pageRequest.getPageSize());
         int maxResult = pageRequest.getPageSize();
-        Long count = countTotal();
+        Long count = getTotalCount();
         String hql = "from " + entityClass.getName();
         Query query = entityManager.createQuery(hql);
         query.setFirstResult(startPosition);
@@ -68,7 +71,7 @@ public abstract class GenericRepositoryImpl<I, T> implements GenericRepository<I
     }
 
     @Override
-    public Long countTotal() {
+    public Long getTotalCount() {
         String hql = "SELECT COUNT(e.id) FROM " + entityClass.getName() + " as e";
         Query query = entityManager.createQuery(hql);
         return (Long) query.getSingleResult();

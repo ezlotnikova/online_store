@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 
 public interface ReviewService {
 
-    Page<ShowReviewDTO> findPaginated(int pageNumber, int pageSize);
+    Page<ShowReviewDTO> findPaginated(int pageNumber);
 
     ExecutionResult deleteById(Long id);
 

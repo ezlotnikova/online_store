@@ -5,12 +5,10 @@ import com.gmail.ezlotnikova.repository.model.UserDetails;
 import com.gmail.ezlotnikova.service.model.AddUserDTO;
 import com.gmail.ezlotnikova.service.model.ShowUserDTO;
 import com.gmail.ezlotnikova.service.model.UserDTO;
-import org.springframework.stereotype.Component;
 
-@Component
 public class UserConverter {
 
-    public User convertAddUserDTOToDatabaseObject(AddUserDTO userDTO) {
+    public static User convertToDatabaseObject(AddUserDTO userDTO) {
         User user = new User();
         user.setEmail(
                 userDTO.getEmail());
@@ -28,7 +26,7 @@ public class UserConverter {
         return user;
     }
 
-    public AddUserDTO convertDatabaseObjectToAddUserDTO(User user) {
+    public static AddUserDTO convertToAddUserDTO(User user) {
         AddUserDTO userDTO = new AddUserDTO();
         userDTO.setId(
                 user.getId());
@@ -46,7 +44,7 @@ public class UserConverter {
         return userDTO;
     }
 
-    public ShowUserDTO convertDatabaseObjectToShowUserDTO(User user) {
+    public static ShowUserDTO convertToShowUserDTO(User user) {
         ShowUserDTO userDTO = new ShowUserDTO();
         userDTO.setId(
                 user.getId());
@@ -64,7 +62,7 @@ public class UserConverter {
         return userDTO;
     }
 
-    public UserDTO getUserDTOFromDatabaseObject(User user) {
+    public static UserDTO convertToUserDTO(User user) {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(
                 user.getId());

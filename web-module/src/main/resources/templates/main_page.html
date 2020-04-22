@@ -15,13 +15,17 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light" aria-label="Site navigation">
         <a class="navbar-brand">ShopProject</a>
         <div class="navbar-nav">
+            <a class="nav-item nav-link" th:href="@{/users}" href="/users">Users</a>
+            <a class="nav-item nav-link" th:href="@{/users/add}" href="/users/add">Add user</a>
+            <a class="nav-item nav-link" th:href="@{/reviews}" href="/reviews">Reviews</a>
+            <a class="nav-item nav-link" th:href="@{/articles}" href="/articles">Articles</a>
+            <a class="nav-item nav-link" th:href="@{/profile}" href="/profile">Profile</a>
             <a class="nav-item nav-link" th:href="@{/login}" href="/login">Log in</a>
+            <a class="nav-item nav-link" th:href="@{/logout}" href="/logout">Log out</a>
         </div>
     </nav>
     <br>
-    <a th:href="@{/users}" href="/users">Users</a>
-    <br>
-    <a th:href="@{/reviews}" href="/reviews">Reviews</a>
+    <h4>Welcome!</h4>
 </div>
 <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
 <script th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>

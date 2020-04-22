@@ -16,6 +16,7 @@
 
 	<properties>
 		<repository-module.version>0.0.1-SNAPSHOT</repository-module.version>
+		<passay.version>1.6.0</passay.version>
 	</properties>
 
 	<dependencies>
@@ -23,6 +24,11 @@
 			<groupId>com.gmail.ezlotnikova.repository</groupId>
 			<artifactId>repository-module</artifactId>
 			<version>${repository-module.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.passay</groupId>
+			<artifactId>passay</artifactId>
+			<version>${passay.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

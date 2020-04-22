@@ -7,12 +7,12 @@ import javax.validation.constraints.Size;
 
 import com.gmail.ezlotnikova.repository.model.сonstant.UserRoleEnum;
 
-import static com.gmail.ezlotnikova.service.model.constant.ValidationConstant.EMAIL_ADDRESS_PATTERN;
-import static com.gmail.ezlotnikova.service.model.constant.ValidationConstant.MAX_FIRST_NAME_SIZE;
-import static com.gmail.ezlotnikova.service.model.constant.ValidationConstant.MAX_LAST_NAME_SIZE;
-import static com.gmail.ezlotnikova.service.model.constant.ValidationConstant.MAX_PATRONYMIC_NAME_SIZE;
-import static com.gmail.ezlotnikova.service.model.constant.ValidationMessageConstant.INVALID_EMAIL_ADDRESS_MESSAGE;
-import static com.gmail.ezlotnikova.service.model.constant.ValidationMessageConstant.NOT_EMPTY_MESSAGE;
+import static com.gmail.ezlotnikova.service.model.validation.ModelValidationConstant.EMAIL_ADDRESS_PATTERN;
+import static com.gmail.ezlotnikova.service.model.validation.ModelValidationConstant.MAX_FIRST_NAME_SIZE;
+import static com.gmail.ezlotnikova.service.model.validation.ModelValidationConstant.MAX_LAST_NAME_SIZE;
+import static com.gmail.ezlotnikova.service.model.validation.ModelValidationConstant.MAX_PATRONYMIC_NAME_SIZE;
+import static com.gmail.ezlotnikova.service.model.validation.ValidationMessageConstant.INVALID_EMAIL_ADDRESS_MESSAGE;
+import static com.gmail.ezlotnikova.service.model.validation.ValidationMessageConstant.NOT_EMPTY_MESSAGE;
 
 public class AddUserDTO {
 

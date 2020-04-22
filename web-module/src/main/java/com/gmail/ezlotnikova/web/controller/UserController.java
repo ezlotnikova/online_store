@@ -1,10 +1,6 @@
 package com.gmail.ezlotnikova.web.controller;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import javax.validation.Valid;
 
 import com.gmail.ezlotnikova.repository.model.сonstant.UserRoleEnum;
@@ -12,7 +8,6 @@ import com.gmail.ezlotnikova.service.UserService;
 import com.gmail.ezlotnikova.service.constant.ExecutionResult;
 import com.gmail.ezlotnikova.service.model.AddUserDTO;
 import com.gmail.ezlotnikova.service.model.ShowUserDTO;
-import com.gmail.ezlotnikova.web.controller.constant.PaginationConstant;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +22,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static com.gmail.ezlotnikova.service.constant.ResultTypeEnum.EXECUTED_SUCCESSFULLY;
 import static com.gmail.ezlotnikova.service.constant.ResultTypeEnum.EXECUTION_FAILED;
+import static com.gmail.ezlotnikova.web.controller.constant.ResultMessagesConstant.FAILURE_MESSAGE;
+import static com.gmail.ezlotnikova.web.controller.constant.ResultMessagesConstant.SUCCESS_MESSAGE;
 
 @Controller
 @RequestMapping("/users")
@@ -41,19 +38,10 @@ public class UserController {
     @GetMapping()
     public String showUserByPage(
             Model model,
-            @RequestParam("page") Optional<Integer> page
+            @RequestParam(value = "page", defaultValue = "1") int pageNumber
     ) {
-        int currentPage = page.orElse(1);
-        int pageSize = PaginationConstant.USERS_BY_PAGE;
-        Page<ShowUserDTO> users = userService.findPaginatedAndOrderedByEmail(currentPage, pageSize);
+        Page<ShowUserDTO> users = userService.findPaginatedAndOrderedByEmail(pageNumber);
         model.addAttribute("users", users);
-        int totalPages = users.getTotalPages();
-        if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-                    .boxed()
-                    .collect(Collectors.toList());
-            model.addAttribute("pageNumbers", pageNumbers);
-        }
         return "users";
     }
 
@@ -67,7 +55,8 @@ public class UserController {
     @PostMapping("/add")
     public String addNewUser(
             @Valid @ModelAttribute(name = "user") AddUserDTO user,
-            BindingResult errors) {
+            BindingResult errors
+    ) {
         if (errors.hasErrors()) {
             return "user_add";
         } else {
@@ -76,70 +65,65 @@ public class UserController {
         }
     }
 
-    @GetMapping("/{id}/update-role")
+    @GetMapping("/{id}")
     public String showUpdateRoleForm(
             Model model,
-            @PathVariable(name = "id") String idString) {
-        Long id = Long.parseLong(idString);
+            @PathVariable(name = "id") Long id
+    ) {
         ShowUserDTO user = userService.findUserById(id);
         model.addAttribute("user", user);
-        List<UserRoleEnum> roles = Arrays.asList(UserRoleEnum.values());
-        model.addAttribute("roles", roles);
+        model.addAttribute("roles", UserRoleEnum.values());
         return "user_change_role";
     }
 
-    @PostMapping("/{id}/update-role")
+    @PostMapping("/{id}")
     public String showUpdateRoleForm(
-            @PathVariable(name = "id") String idString,
-            @RequestParam(value = "newRole") String newRole,
+            @PathVariable(name = "id") Long id,
+            @RequestParam(value = "newRole") UserRoleEnum newRole,
             RedirectAttributes redirectAttributes
     ) {
-        Long id = Long.parseLong(idString);
-        UserRoleEnum newRoleEnum = UserRoleEnum.valueOf(newRole);
-        ExecutionResult result = userService.updateUserRoleById(id, newRoleEnum);
-        if (result.getResultType().equals(EXECUTION_FAILED)) {
+        ExecutionResult result = userService.updateUserRoleById(id, newRole);
+        if (result.getResultType() == EXECUTION_FAILED) {
             redirectAttributes.addFlashAttribute(
-                    "failureMessage", result.getErrorMessage());
+                    FAILURE_MESSAGE, result.getErrorMessage());
         }
         return "redirect:/users";
     }
 
     @GetMapping("/{id}/change-password")
     public String changeUserPassword(
-            @PathVariable(name = "id") String idString,
+            @PathVariable(name = "id") Long id,
             RedirectAttributes redirectAttributes
     ) {
-        Long id = Long.parseLong(idString);
-        ExecutionResult result = userService.changeUserPasswordByIdAndSendEmail(id);
-        if (result.getResultType().equals(EXECUTED_SUCCESSFULLY)) {
+        ExecutionResult result = userService.generatePasswordAndSendEmail(id);
+        if (result.getResultType() == EXECUTED_SUCCESSFULLY) {
             redirectAttributes.addFlashAttribute(
-                    "successMessage", "New password was sent to user's email");
+                    SUCCESS_MESSAGE, "New password was sent to user's email");
         } else {
             redirectAttributes.addFlashAttribute(
-                    "failureMessage", result.getErrorMessage());
+                    FAILURE_MESSAGE, result.getErrorMessage());
         }
         return "redirect:/users";
     }
 
     @PostMapping("/delete")
     public String deleteSelectedUsers(
-            @RequestParam(name = "idList", required = false) List<String> idList,
+            @RequestParam(name = "idList", required = false) List<Long> idList,
             RedirectAttributes redirectAttributes
     ) {
         if (idList != null) {
             boolean allUsersDeleted = true;
             StringBuilder errorMessage = new StringBuilder();
-            for (String idString : idList) {
-                Long id = Long.parseLong(idString);
+            for (Long id : idList) {
                 ExecutionResult result = userService.deleteById(id);
-                if (result.getResultType().equals(EXECUTION_FAILED)) {
+                if (result.getResultType() == EXECUTION_FAILED) {
                     allUsersDeleted = false;
-                    errorMessage.append(result.getErrorMessage());
+                    errorMessage.append(result.getErrorMessage()).append(" ");
                 }
             }
             if (!allUsersDeleted) {
                 redirectAttributes.addFlashAttribute(
-                        "failureMessage", errorMessage.toString());
+                        FAILURE_MESSAGE, errorMessage.toString());
             }
         }
         return "redirect:/users";

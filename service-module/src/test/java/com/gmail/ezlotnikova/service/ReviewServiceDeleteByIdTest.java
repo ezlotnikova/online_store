@@ -8,7 +8,6 @@ import com.gmail.ezlotnikova.service.constant.ErrorCodeConstant;
 import com.gmail.ezlotnikova.service.constant.ResultTypeEnum;
 import com.gmail.ezlotnikova.service.constant.ServiceTestConstant;
 import com.gmail.ezlotnikova.service.impl.ReviewServiceImpl;
-import com.gmail.ezlotnikova.service.util.converter.ReviewConverter;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,15 +22,12 @@ public class ReviewServiceDeleteByIdTest {
 
     @Mock
     private ReviewRepository reviewRepository;
-    @Mock
-    private ReviewConverter reviewConverter;
 
     private ReviewService reviewService;
 
     @BeforeEach
     public void setUp() {
-        reviewService = new ReviewServiceImpl(
-                reviewRepository, reviewConverter);
+        reviewService = new ReviewServiceImpl(reviewRepository);
     }
 
     @Test
@@ -41,8 +37,8 @@ public class ReviewServiceDeleteByIdTest {
         review.setId(id);
         when(reviewRepository.findById(id))
                 .thenReturn(review);
-        Assertions.assertThat(reviewService.deleteById(id).getResultType())
-                .isEqualTo(ResultTypeEnum.EXECUTED_SUCCESSFULLY);
+        Assertions.assertThat(reviewService.deleteById(id).getResultType()
+                == ResultTypeEnum.EXECUTED_SUCCESSFULLY);
     }
 
     @Test
@@ -52,8 +48,8 @@ public class ReviewServiceDeleteByIdTest {
         review.setId(id);
         when(reviewRepository.findById(id))
                 .thenReturn(null);
-        Assertions.assertThat(reviewService.deleteById(id).getErrorCode())
-                .isEqualTo(ErrorCodeConstant.NO_OBJECT_FOUND);
+        Assertions.assertThat(reviewService.deleteById(id).getErrorCode()
+                == ErrorCodeConstant.NO_OBJECT_FOUND);
     }
 
     private Review getReview() {

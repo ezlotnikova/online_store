@@ -1,7 +1,5 @@
 package com.gmail.ezlotnikova.service;
 
-import javax.validation.Validator;
-
 import com.gmail.ezlotnikova.repository.UserRepository;
 import com.gmail.ezlotnikova.repository.model.User;
 import com.gmail.ezlotnikova.repository.model.UserDetails;
@@ -10,7 +8,6 @@ import com.gmail.ezlotnikova.service.constant.ErrorCodeConstant;
 import com.gmail.ezlotnikova.service.constant.ResultTypeEnum;
 import com.gmail.ezlotnikova.service.constant.ServiceTestConstant;
 import com.gmail.ezlotnikova.service.impl.UserServiceImpl;
-import com.gmail.ezlotnikova.service.util.converter.UserConverter;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,10 +23,6 @@ public class UserServiceUpdateRoleTest {
     @Mock
     private UserRepository userRepository;
     @Mock
-    private UserConverter userConverter;
-    @Mock
-    private Validator validator;
-    @Mock
     private PasswordService passwordService;
 
     private UserService userService;
@@ -37,7 +30,7 @@ public class UserServiceUpdateRoleTest {
     @BeforeEach
     public void setUp() {
         userService = new UserServiceImpl(
-                        userRepository, userConverter, validator, passwordService);
+                userRepository, passwordService);
     }
 
     @Test
@@ -50,8 +43,8 @@ public class UserServiceUpdateRoleTest {
         user.setId(id);
         when(userRepository.findById(id))
                 .thenReturn(user);
-        Assertions.assertThat(userService.updateUserRoleById(id, newRole).getResultType())
-                .isEqualTo(ResultTypeEnum.EXECUTED_SUCCESSFULLY);
+        Assertions.assertThat(userService.updateUserRoleById(id, newRole).getResultType()
+                == ResultTypeEnum.EXECUTED_SUCCESSFULLY);
     }
 
     @Test
@@ -63,8 +56,8 @@ public class UserServiceUpdateRoleTest {
         UserRoleEnum newRole = UserRoleEnum.CUSTOMER_USER;
         when(userRepository.findById(id))
                 .thenReturn(null);
-        Assertions.assertThat(userService.updateUserRoleById(id, newRole).getErrorCode())
-                .isEqualTo(ErrorCodeConstant.NO_OBJECT_FOUND);
+        Assertions.assertThat(userService.updateUserRoleById(id, newRole).getErrorCode()
+                == ErrorCodeConstant.NO_OBJECT_FOUND);
     }
 
     @Test
@@ -76,10 +69,10 @@ public class UserServiceUpdateRoleTest {
         UserRoleEnum newRole = UserRoleEnum.CUSTOMER_USER;
         when(userRepository.findById(id))
                 .thenReturn(user);
-        when(userRepository.countAdministrators())
+        when(userRepository.getCountOfUsersByRole(UserRoleEnum.ADMINISTRATOR))
                 .thenReturn(1L);
-        Assertions.assertThat(userService.updateUserRoleById(id, newRole).getErrorCode())
-                .isEqualTo(ErrorCodeConstant.ACTION_FORBIDDEN);
+        Assertions.assertThat(userService.updateUserRoleById(id, newRole).getErrorCode()
+                == ErrorCodeConstant.ACTION_FORBIDDEN);
     }
 
     private User getUser() {

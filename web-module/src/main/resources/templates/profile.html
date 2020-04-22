@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+
+<head>
+    <title>Profile</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}"/>
+</head>
+
+<body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" aria-label="Site navigation">
+        <a class="navbar-brand">ShopProject</a>
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" th:href="@{/users}" href="/users">Users</a>
+            <a class="nav-item nav-link" th:href="@{/users/add}" href="/users/add">Add user</a>
+            <a class="nav-item nav-link" th:href="@{/reviews}" href="/reviews">Reviews</a>
+            <a class="nav-item nav-link" th:href="@{/articles}" href="/articles">Articles</a>
+            <a class="nav-item nav-link active">Profile</a>
+            <a class="nav-item nav-link" th:href="@{/login}" href="/login">Log in</a>
+            <a class="nav-item nav-link" th:href="@{/logout}" href="/logout">Log out</a>
+        </div>
+    </nav>
+    <br>
+    <div th:if="${successMessage}" th:text="${successMessage}" class="alert alert-success" role="alert">
+        Success Alert
+    </div>
+    <div th:if="${failureMessage}" th:text="${failureMessage}" class="alert alert-danger" role="alert">
+        Failure Alert
+    </div>
+    <form th:action="@{/profile}"
+          action="/profile"
+          th:object="${profile}"
+          method="post">
+        <span th:if="${#fields.hasErrors ('firstName')}"
+              th:errors="*{firstName}"
+              style="color:red">
+        </span>
+        <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input th:field="*{firstName}" type="text" class="form-control" id="firstName" name="firstName">
+        </div>
+        <span th:if="${#fields.hasErrors ('lastName')}"
+              th:errors="*{lastName}"
+              style="color:red">
+        </span>
+        <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input th:field="*{lastName}" type="text" class="form-control" id="lastName" name="lastName">
+        </div>
+        <span th:if="${#fields.hasErrors ('address')}"
+              th:errors="*{address}"
+              style="color:red">
+        </span>
+        <div class="form-group">
+            <label for="address">Address</label>
+            <input th:field="*{address}" type="text" class="form-control" id="address" name="address">
+        </div>
+        <span th:if="${#fields.hasErrors ('telephone')}"
+              th:errors="*{telephone}"
+              style="color:red">
+        </span>
+        <div class="form-group">
+            <label for="telephone">Telephone</label>
+            <input th:field="*{telephone}" type="tel" class="form-control" id="telephone" name="telephone">
+            <small id="telephoneHelpBlock" class="form-text text-muted">
+                Please use the following format for telephone number: +375(12)345-67-89
+            </small>
+        </div>
+        <button type="submit" class="btn btn-outline-success">Submit changes</button>
+    </form>
+    <br>
+    <a th:href="@{/profile/password}" href="/profile/password" class="btn btn-outline-primary">Change password</a>
+</div>
+<script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
+</body>
+</html>

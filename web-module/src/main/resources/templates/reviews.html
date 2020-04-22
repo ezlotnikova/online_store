@@ -12,15 +12,20 @@
 
 <body>
 <div class="container">
+
     <nav class="navbar navbar-expand-lg navbar-light bg-light" aria-label="Site navigation">
         <a class="navbar-brand">ShopProject</a>
         <div class="navbar-nav">
-            <a class="nav-item nav-link" th:href="@{/login}" href="/login">Login</a>
             <a class="nav-item nav-link" th:href="@{/users}" href="/users">Users</a>
             <a class="nav-item nav-link" th:href="@{/users/add}" href="/users/add">Add user</a>
             <a class="nav-item nav-link active">Reviews</a>
+            <a class="nav-item nav-link" th:href="@{/articles}" href="/articles">Articles</a>
+            <a class="nav-item nav-link" th:href="@{/profile}" href="/profile">Profile</a>
+            <a class="nav-item nav-link" th:href="@{/login}" href="/login">Log in</a>
+            <a class="nav-item nav-link" th:href="@{/logout}" href="/logout">Log out</a>
         </div>
     </nav>
+
     <form th:action="@{/reviews/delete}"
           action="/reviews/delete"
           method="post">
@@ -62,19 +67,31 @@
                    value="Delete Selected">
         </div>
     </form>
-    <nav aria-label="Review search result pages">
-        <ul class="pagination"
-            th:if="${reviews.totalPages > 0}">
-            <span th:each="pageNumber : ${pageNumbers}">
-                <li th:class="${pageNumber==reviews.number} ? 'page-item active' : 'page-item'" aria-current="page">
-                    <a class="page-link"
-                       th:href="@{/reviews(page=${pageNumber})}" href="#"
-                       th:text=${pageNumber}>
-                    </a>
-                </li>
-            </span>
+
+    <nav aria-label="Search result pages" th:if="${reviews.totalPages gt 0}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${reviews.number eq 0} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/reviews?page={id}(id=${reviews.number lt 2 ? 1 : reviews.number})}"
+                   aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item" th:classappend="${i eq reviews.number + 1} ? 'disabled'"
+                th:each="i : ${#numbers.sequence( 1, reviews.totalPages, 1)}">
+                <a class="page-link" th:href="@{/reviews?page={id}(id=${i})}" th:text="${i}"
+                   th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+            </li>
+            <li class="page-item" th:classappend="${reviews.number + 1 eq reviews.totalPages} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/reviews?page={id}(id=${reviews.number + 2})}"
+                   aria-label="Next" title="Next Page" data-toggle="tooltip">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
         </ul>
     </nav>
+
 </div>
 </div>
 <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
