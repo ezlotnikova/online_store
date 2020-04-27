@@ -6,5 +6,6 @@ public interface PaginationConstant {
     int USERS_BY_PAGE = 3;
     int ARTICLES_BY_PAGE = 3;
     int ITEMS_BY_PAGE = 3;
+    int ORDERS_BY_PAGE = 3;
 
 }

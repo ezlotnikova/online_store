@@ -80,7 +80,7 @@ public class UserController {
     }
 
     @PostMapping("/{id}")
-    public String showUpdateRoleForm(
+    public String updateUserRole(
             @PathVariable(name = "id") Long id,
             @RequestParam(value = "newRole") UserRoleEnum newRole,
             RedirectAttributes redirectAttributes

@@ -1,5 +1,6 @@
 package com.gmail.ezlotnikova.service.model;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -28,7 +29,8 @@ public class AddUserDTO {
     @Size(max = MAX_PATRONYMIC_NAME_SIZE)
     private String patronymicName;
     @NotNull
-    @Pattern(regexp = EMAIL_ADDRESS_PATTERN, message = INVALID_EMAIL_ADDRESS_MESSAGE)
+//    @Pattern(regexp = EMAIL_ADDRESS_PATTERN, message = INVALID_EMAIL_ADDRESS_MESSAGE)
+    @Email(regexp = EMAIL_ADDRESS_PATTERN, message = INVALID_EMAIL_ADDRESS_MESSAGE)
     private String email;
     @NotNull(message = NOT_EMPTY_MESSAGE)
     private UserRoleEnum role;
