@@ -55,12 +55,15 @@ public class UserController {
     @PostMapping("/add")
     public String addNewUser(
             @Valid @ModelAttribute(name = "user") AddUserDTO user,
-            BindingResult errors
+            BindingResult errors,
+            RedirectAttributes redirectAttributes
     ) {
         if (errors.hasErrors()) {
             return "user_add";
         } else {
             userService.add(user);
+            redirectAttributes.addFlashAttribute(
+                    SUCCESS_MESSAGE, "User was added successfully");
             return "redirect:/users";
         }
     }

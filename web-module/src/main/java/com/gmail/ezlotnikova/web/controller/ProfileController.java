@@ -76,7 +76,7 @@ public class ProfileController {
     public String showChangePasswordForm(Model model) {
         PasswordDTO password = new PasswordDTO();
         model.addAttribute("password", password);
-        return "change_password";
+        return "password_change";
     }
 
     @PostMapping("/password")
@@ -87,7 +87,7 @@ public class ProfileController {
             RedirectAttributes redirectAttributes
     ) {
         if (errors.hasErrors()) {
-            return "change_password";
+            return "password_change";
         } else {
             Long id = appUser.getId();
             ExecutionResult result = passwordService.changePasswordByUserId(id, password.getNewPassword());
