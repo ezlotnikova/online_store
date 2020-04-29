@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 
 public interface OrderService {
 
+    ShowOrderDTO saveNewOrder(Long userId, Long itemId, Integer amount);
+
     Page<OrderPreviewDTO> findPaginatedAndOrderedByDate(int pageNumber);
 
     ShowOrderDTO findById(Long id);

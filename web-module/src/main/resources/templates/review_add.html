@@ -46,7 +46,7 @@
         </span>
         <div class="form-group">
             <label for="reviewText">Your review:</label>
-            <input th:field="*{reviewText}" type="text" class="form-control" id="reviewText" name="reviewText">
+            <textarea class="form-control" rows="5" th:field="*{reviewText}" id="reviewText" name="reviewText"></textarea>
         </div>
         <br>
         <button type="submit" class="btn btn-outline-success">Add review</button>

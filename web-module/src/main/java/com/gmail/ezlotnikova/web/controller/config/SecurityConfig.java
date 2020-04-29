@@ -40,7 +40,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         UserRoleEnum.CUSTOMER_USER.name(),
                         UserRoleEnum.SALE_USER.name())
                 .antMatchers("/items/**")
-                .hasRole(UserRoleEnum.SALE_USER.name())
+                .hasAnyRole(
+                        UserRoleEnum.SALE_USER.name(),
+                        UserRoleEnum.CUSTOMER_USER.name())
                 .antMatchers("/profile/**")
                 .hasAnyRole(
                         UserRoleEnum.ADMINISTRATOR.name(),

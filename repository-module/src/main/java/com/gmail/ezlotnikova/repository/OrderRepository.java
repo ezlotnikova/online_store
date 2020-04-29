@@ -10,4 +10,6 @@ public interface OrderRepository extends GenericRepository<Long, Order> {
 
     Page<Order> findPaginatedAndOrderedByDate(Pageable pageRequest);
 
+    Page<Order> findPaginatedForUser(Pageable pageRequest, Long id);
+
 }

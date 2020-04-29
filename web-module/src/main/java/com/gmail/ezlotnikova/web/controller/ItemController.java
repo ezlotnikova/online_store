@@ -38,7 +38,7 @@ public class ItemController {
     }
 
     @GetMapping("/{uuid}")
-    public String showArticleWithComments(
+    public String showItemByUniqueNumber(
             @PathVariable(name = "uuid") String uuid,
             Model model
     ) {

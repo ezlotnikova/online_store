@@ -34,12 +34,22 @@ public class OrderController {
     @GetMapping
     public String showAllOrders(
             @RequestParam(value = "page", defaultValue = "1") int page,
-            @AuthenticationPrincipal AppUser appUser,
             Model model
     ) {
         Page<OrderPreviewDTO> orders = orderService.findPaginatedAndOrderedByDate(page);
         model.addAttribute("orders", orders);
         return "order_previews";
+    }
+
+    @PostMapping
+    public String createNewOrder(
+            @AuthenticationPrincipal AppUser appUser,
+            @RequestParam(value = "itemId") Long itemId,
+            @RequestParam(value = "amount") Integer amount
+    ) {
+        Long userId = appUser.getId();
+        ShowOrderDTO order = orderService.saveNewOrder(userId, itemId, amount);
+        return "redirect:/orders";
     }
 
     @GetMapping("/{id}")
