@@ -38,24 +38,24 @@ public class ArticleAPIController {
         return articleService.findPaginatedAndOrderedByDate(page);
     }
 
+    @GetMapping("/{id}")
+    public ArticleWithCommentsDTO showArticleWithComments(
+            @PathVariable(name = "id") Long id
+    ) {
+        return articleService.findById(id);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public AddArticleDTO addArticle(
             @AuthenticationPrincipal AppUser appUser,
             @Valid @RequestBody AddArticleDTO article
     ) {
-        if (article.getAuthorEmail() == null){
+        if (article.getAuthorEmail() == null) {
             String email = appUser.getUsername();
             article.setAuthorEmail(email);
         }
         return articleService.add(article);
-    }
-
-    @GetMapping("/{id}")
-    public ArticleWithCommentsDTO showArticleWithComments(
-            @PathVariable(name = "id") Long id
-    ) {
-        return articleService.findById(id);
     }
 
     @DeleteMapping("/{id}")

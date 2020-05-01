@@ -49,7 +49,7 @@
                 </a>
                 <div class="collapse" id="editHeader">
                     <div class="card card-body">
-                        <form th:action="@{/articles/{id}/header(id=*{id})}"
+                        <form th:action="@{/articles/{id}(id=*{id})}"
                               action="/articles"
                               method="post">
                             <input type="text" class="form-control" id="header" name="header"
@@ -72,7 +72,7 @@
                 </a>
                 <div class="collapse" id="editContent">
                     <div class="card card-body">
-                        <form th:action="@{/articles/{id}/content(id=*{id})}"
+                        <form th:action="@{/articles/{id}(id=*{id})}"
                               action="/articles"
                               method="post">
                             <!--                                    <span th:if="${#fields.hasErrors ('content')}"-->

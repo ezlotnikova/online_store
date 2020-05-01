@@ -21,9 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static com.gmail.ezlotnikova.service.constant.ErrorCodeConstant.NO_OBJECT_FOUND;
 import static com.gmail.ezlotnikova.service.constant.PaginationConstant.ARTICLES_BY_PAGE;
-import static com.gmail.ezlotnikova.service.util.converter.ArticleConverter.convertToDatabaseObject;
 import static com.gmail.ezlotnikova.service.util.converter.ArticleConverter.convertToAddArticleDTO;
 import static com.gmail.ezlotnikova.service.util.converter.ArticleConverter.convertToArticleWithCommentsDTO;
+import static com.gmail.ezlotnikova.service.util.converter.ArticleConverter.convertToDatabaseObject;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
@@ -52,7 +52,7 @@ public class ArticleServiceImpl implements ArticleService {
                     user.getUserDetails());
             Article addedArticle = articleRepository.persist(article);
             AddArticleDTO addedArticleDTO = convertToAddArticleDTO(addedArticle);
-            addedArticleDTO.setAuthorEmail(articleDTO.getAuthorEmail());
+            addedArticleDTO.setAuthorEmail(user.getEmail());
             return addedArticleDTO;
         } else {
             throw new IllegalArgumentException("No user found with specified email address");

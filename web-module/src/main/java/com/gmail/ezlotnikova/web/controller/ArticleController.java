@@ -9,6 +9,7 @@ import com.gmail.ezlotnikova.service.model.AddArticleDTO;
 import com.gmail.ezlotnikova.service.model.ArticlePreviewDTO;
 import com.gmail.ezlotnikova.service.model.ArticleWithCommentsDTO;
 import com.gmail.ezlotnikova.service.model.CommentDTO;
+import com.gmail.ezlotnikova.service.model.UpdateArticleDTO;
 import com.gmail.ezlotnikova.service.security.AppUser;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -53,11 +54,30 @@ public class ArticleController {
             Model model
     ) {
         ArticleWithCommentsDTO article = articleService.findById(id);
+        UpdateArticleDTO updatedArticle = new UpdateArticleDTO();
         model.addAttribute("article", article);
+        model.addAttribute("updatedArticle", updatedArticle);
         List<CommentDTO> comments = article.getComments();
         model.addAttribute("comments", comments);
         return "article_with_comments";
     }
+
+    //    @PostMapping("/{id}")
+    //    public String editArticle(
+    //            @PathVariable(name = "id") Long id,
+    //            @Valid @ModelAttribute(name = "updatedArticle") UpdateArticleDTO updatedArticle,
+    //            BindingResult errors,
+    //            RedirectAttributes redirectAttributes
+    //    ) {
+    //        if (errors.hasErrors()) {
+    //            return "article_with_comments";
+    //        } else {
+    //            System.out.println(updatedArticle.getNewHeader());
+    ////            articleService.save(updatedArticle);
+    //            redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Article updated successfully");
+    //            return "redirect:/articles/" + id;
+    //        }
+    //    }
 
     @GetMapping("/{id}/delete")
     public String deleteArticle(
