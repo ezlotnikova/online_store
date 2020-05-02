@@ -51,7 +51,7 @@
                     <div class="col text-right" sec:authorize="hasRole('SALE_USER')">
                         <a class="btn btn-outline-danger"
                            th:href="@{/articles/{id}/delete(id=*{id})}"
-                           href="@{/items}"
+                           href="@{/articles}"
                            role="button">
                             Delete
                         </a>
@@ -61,7 +61,7 @@
 
             <div class="card-body">
                 <b><span th:text="|*{authorFirstName} *{authorLastName}|"></span></b><br>
-                <small><i><span th:text="*{date}"></span></i></small><br>
+                <small><i><span th:text="|Last modified on *{date}|"></span></i></small><br>
                 <br>
                 <p class="card-text" th:text="*{contentPreview}">Content</p>
                 <a th:href="@{/articles/{id}(id=*{id})}" href="/articles">Read more</a>

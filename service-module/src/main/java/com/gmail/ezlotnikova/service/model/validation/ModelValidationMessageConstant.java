@@ -11,6 +11,7 @@ public interface ModelValidationMessageConstant {
     String TOO_LONG_ITEM_DESCRIPTION = "Item description must be no longer than 200 characters";
     String TOO_LONG_ARTICLE_HEADER_MESSAGE = "Header must be no longer than 100 characters";
     String TOO_LONG_ARTICLE_CONTENT_MESSAGE = "Article must be no longer than 1000 characters";
+    String TOO_LONG_COMMENT_TEXT = "Comment must be no longer then 200 characters";
     String INVALID_DATE_FORMAT = "Please use format shown below";
     String TOO_LONG_REVIEW_TEXT = "Review must be no longer then 1000 characters";
 

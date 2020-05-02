@@ -9,9 +9,11 @@ import com.gmail.ezlotnikova.repository.model.User;
 import com.gmail.ezlotnikova.service.ArticleService;
 import com.gmail.ezlotnikova.service.constant.ExecutionResult;
 import com.gmail.ezlotnikova.service.model.AddArticleDTO;
+import com.gmail.ezlotnikova.service.model.AddCommentDTO;
 import com.gmail.ezlotnikova.service.model.ArticlePreviewDTO;
 import com.gmail.ezlotnikova.service.model.ArticleWithCommentsDTO;
 import com.gmail.ezlotnikova.service.util.converter.ArticleConverter;
+import com.gmail.ezlotnikova.service.util.converter.DateTimeUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,11 +21,14 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.gmail.ezlotnikova.service.constant.ErrorCodeConstant.FAILED_TO_EXECUTE;
 import static com.gmail.ezlotnikova.service.constant.ErrorCodeConstant.NO_OBJECT_FOUND;
 import static com.gmail.ezlotnikova.service.constant.PaginationConstant.ARTICLES_BY_PAGE;
 import static com.gmail.ezlotnikova.service.util.converter.ArticleConverter.convertToAddArticleDTO;
 import static com.gmail.ezlotnikova.service.util.converter.ArticleConverter.convertToArticleWithCommentsDTO;
 import static com.gmail.ezlotnikova.service.util.converter.ArticleConverter.convertToDatabaseObject;
+import static com.gmail.ezlotnikova.service.util.converter.CommentConverter.convertToAddCommentDTO;
+import static com.gmail.ezlotnikova.service.util.converter.CommentConverter.convertToDatabaseObject;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
@@ -62,7 +67,19 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     @Transactional
     @Nullable
-    public ArticleWithCommentsDTO findById(Long id) {
+    public AddArticleDTO findArticleById(Long id) {
+        Article article = articleRepository.findById(id);
+        if (article != null) {
+            return convertToAddArticleDTO(article);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    @Transactional
+    @Nullable
+    public ArticleWithCommentsDTO findArticleWithCommentsById(Long id) {
         Article article = articleRepository.findById(id);
         if (article != null) {
             return convertToArticleWithCommentsDTO(article);
@@ -83,6 +100,24 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
+    public ExecutionResult saveChanges(AddArticleDTO articleDTO) {
+        Long id = articleDTO.getId();
+        Article article = articleRepository.findById(id);
+        if (article != null) {
+            article.setHeader(
+                    articleDTO.getHeader());
+            article.setContent(
+                    articleDTO.getContent());
+            article.setDate(DateTimeUtil.getCurrentTimestamp());
+            articleRepository.merge(article);
+            return ExecutionResult.ok();
+        } else {
+            return ExecutionResult.error(NO_OBJECT_FOUND, "No article with id " + id + " found. ");
+        }
+    }
+
+    @Override
+    @Transactional
     public ExecutionResult deleteArticleById(Long id) {
         Article article = articleRepository.findById(id);
         if (article != null) {
@@ -91,6 +126,32 @@ public class ArticleServiceImpl implements ArticleService {
         } else {
             return ExecutionResult.error(NO_OBJECT_FOUND, "No article with id " + id + " found. ");
         }
+    }
+
+    @Override
+    @Transactional
+    public ExecutionResult addComment(AddCommentDTO commentDTO) {
+        Article article = articleRepository.findById(commentDTO.getArticleId());
+        if (article != null) {
+            User user = userRepository.findById(
+                    commentDTO.getUserId());
+            if (user != null) {
+                Comment comment = convertToDatabaseObject(commentDTO);
+                comment.setUserDetails(
+                        user.getUserDetails());
+                comment.setCreatedOn(DateTimeUtil.getCurrentTimestamp());
+                Comment addedComment = commentRepository.persist(comment);
+                AddCommentDTO addedCommentDTO = convertToAddCommentDTO(addedComment);
+                if (addedCommentDTO.getId() != null) {
+                    return ExecutionResult.ok();
+                } else {
+                    return ExecutionResult.error(FAILED_TO_EXECUTE, "Saving comment failed. Please try again.");
+                }
+            } else {
+                return ExecutionResult.error(NO_OBJECT_FOUND, "No user found.");
+            }
+        }
+        return ExecutionResult.error(NO_OBJECT_FOUND, "No article found.");
     }
 
     @Override

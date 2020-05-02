@@ -69,7 +69,7 @@ public class ArticleAPIControllerShowByIdTest {
                 get("/api/articles/" + VALID_ID)
         ).andExpect(status().isOk());
         Long id = Long.parseLong(VALID_ID);
-        verify(articleService, times(1)).findById(id);
+        verify(articleService, times(1)).findArticleWithCommentsById(id);
     }
 
     @Test
@@ -77,7 +77,7 @@ public class ArticleAPIControllerShowByIdTest {
     void whenValidRequest_returnArticle() throws Exception {
         ArticleWithCommentsDTO article = getArticleWithCommentsDTO();
         Long id = Long.parseLong(VALID_ID);
-        when(articleService.findById(id)).thenReturn(article);
+        when(articleService.findArticleWithCommentsById(id)).thenReturn(article);
 
         MvcResult mvcResult = mockMvc.perform(
                 get("/api/articles/" + VALID_ID)

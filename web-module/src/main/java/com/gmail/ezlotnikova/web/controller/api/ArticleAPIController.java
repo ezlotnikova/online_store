@@ -42,7 +42,7 @@ public class ArticleAPIController {
     public ArticleWithCommentsDTO showArticleWithComments(
             @PathVariable(name = "id") Long id
     ) {
-        return articleService.findById(id);
+        return articleService.findArticleWithCommentsById(id);
     }
 
     @PostMapping

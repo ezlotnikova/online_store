@@ -38,54 +38,25 @@
 
     <div th:object="${article}">
         <div class="card">
-
             <div class="card-header">
-                <small><i><span th:text="*{date}"></span></i></small><br>
-                <h5 class="card-title" th:text="*{header}">Header</h5>
-                <a sec:authorize="hasRole('SALE_USER')" class="btn btn-link" data-toggle="collapse" href="#editHeader"
-                   role="button" aria-expanded="false"
-                   aria-controls="editHeader">
-                    Edit
-                </a>
-                <div class="collapse" id="editHeader">
-                    <div class="card card-body">
-                        <form th:action="@{/articles/{id}(id=*{id})}"
-                              action="/articles"
-                              method="post">
-                            <input type="text" class="form-control" id="header" name="header"
-                                   th:field="*{header}" th:value="*{header}">
-                            <br>
-                            <button type="submit" class="btn btn-outline-success">Save</button>
-                        </form>
+                <div class="row">
+                    <div class="col text-left">
+                        <small><i><span th:text="|Last modified on *{date}|"></span></i></small><br>
+                        <h5 class="card-title" th:text="*{header}">Header</h5>
+                    </div>
+                    <div class="col text-right" sec:authorize="hasRole('SALE_USER')">
+                        <a class="btn btn-outline-warning"
+                           th:href="@{/articles/{id}/edit(id=*{id})}"
+                           href="@{/articles}"
+                           role="button">
+                            Edit
+                        </a>
                     </div>
                 </div>
             </div>
-
             <div class="card-body">
                 <i><span th:text="|*{authorFirstName} *{authorLastName}|"></span></i>
                 <p class="card-text" th:text="*{content}">Content</p>
-                <br>
-                <a sec:authorize="hasRole('SALE_USER')" class="btn btn-link" data-toggle="collapse" href="#editContent"
-                   role="button" aria-expanded="false"
-                   aria-controls="editContent">
-                    Edit
-                </a>
-                <div class="collapse" id="editContent">
-                    <div class="card card-body">
-                        <form th:action="@{/articles/{id}(id=*{id})}"
-                              action="/articles"
-                              method="post">
-                            <!--                                    <span th:if="${#fields.hasErrors ('content')}"-->
-                            <!--                                          th:errors="*{content}"-->
-                            <!--                                          style="color:red">-->
-                            <!--                                    </span>-->
-                            <input type="text" class="form-control" id="content" name="content"
-                                   th:field="*{content}" th:value="*{content}">
-                            <br>
-                            <button type="submit" class="btn btn-outline-success">Save</button>
-                        </form>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -118,8 +89,17 @@
             </div>
         </div>
     </div>
+    <br>
+
+    <a class="btn btn-outline-success"
+       th:href="@{/articles/{id}/comments(id=*{id})}"
+       href="@{/articles}"
+       role="button">
+        Add comment
+    </a>
 
 </div>
+
 <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
 <script th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
 </body>
