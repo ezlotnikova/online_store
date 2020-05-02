@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.gmail.ezlotnikova.service.UserService;
 import com.gmail.ezlotnikova.service.model.ShowUserDTO;
-import com.gmail.ezlotnikova.web.controller.web.UserController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

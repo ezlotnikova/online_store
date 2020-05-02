@@ -3,7 +3,6 @@ package com.gmail.ezlotnikova.web.controller.web;
 import com.gmail.ezlotnikova.service.UserService;
 import com.gmail.ezlotnikova.service.constant.ExecutionResult;
 import com.gmail.ezlotnikova.service.model.ShowUserDTO;
-import com.gmail.ezlotnikova.web.controller.web.UserController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -95,7 +94,6 @@ public class UserControllerChangePasswordTest {
     void whenExecutionFailed_returnFailureMessage() throws Exception {
         Long id = Long.parseLong(VALID_ID);
         ExecutionResult result = ExecutionResult.error(FAILED_TO_EXECUTE, "Email to user can't be sent. Password wasn't changed");
-        ;
         when(userService.generatePasswordAndSendEmail(id)).thenReturn(result);
         mockMvc.perform(
                 get("/users/" + VALID_ID + "/change-password")

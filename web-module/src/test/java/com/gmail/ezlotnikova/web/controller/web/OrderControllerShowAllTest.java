@@ -4,11 +4,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gmail.ezlotnikova.service.ItemService;
 import com.gmail.ezlotnikova.service.OrderService;
-import com.gmail.ezlotnikova.service.model.ItemPreviewDTO;
 import com.gmail.ezlotnikova.service.model.OrderPreviewDTO;
-import com.gmail.ezlotnikova.web.controller.web.OrderController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -22,7 +19,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static com.gmail.ezlotnikova.web.controller.constant.ControllerTestConstant.INVALID_PAGE_NUMBER;
 import static com.gmail.ezlotnikova.web.controller.constant.ControllerTestConstant.ITEM_NAME;
-import static com.gmail.ezlotnikova.web.controller.constant.ControllerTestConstant.ITEM_UNIQUE_NUMBER;
 import static com.gmail.ezlotnikova.web.controller.constant.ControllerTestConstant.OBJECTS_BY_PAGE;
 import static com.gmail.ezlotnikova.web.controller.constant.ControllerTestConstant.ORDER_STATUS;
 import static com.gmail.ezlotnikova.web.controller.constant.ControllerTestConstant.VALID_PAGE_NUMBER;

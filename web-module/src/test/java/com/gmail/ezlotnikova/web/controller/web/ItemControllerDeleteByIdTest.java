@@ -2,7 +2,6 @@ package com.gmail.ezlotnikova.web.controller.web;
 
 import com.gmail.ezlotnikova.service.ItemService;
 import com.gmail.ezlotnikova.service.constant.ExecutionResult;
-import com.gmail.ezlotnikova.web.controller.web.ItemController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

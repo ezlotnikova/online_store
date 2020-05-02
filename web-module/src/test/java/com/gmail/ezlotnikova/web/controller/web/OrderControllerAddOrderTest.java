@@ -6,7 +6,6 @@ import com.gmail.ezlotnikova.service.OrderService;
 import com.gmail.ezlotnikova.service.model.ShowOrderDTO;
 import com.gmail.ezlotnikova.service.model.UserDTO;
 import com.gmail.ezlotnikova.service.security.AppUser;
-import com.gmail.ezlotnikova.web.controller.web.OrderController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -91,7 +90,7 @@ class OrderControllerAddOrderTest {
 
     @Test
     @WithMockUser(roles = "SALE_USER")
-    void whenValidRequest_showDuplicatedItem() throws Exception {
+    void whenValidRequest_showSuccessMessage() throws Exception {
         ShowOrderDTO order = getShowOrderDTO();
         AppUser appUser = getAppUser();
         Long itemId = Long.parseLong(VALID_ID);

@@ -2,7 +2,6 @@ package com.gmail.ezlotnikova.web.controller.web;
 
 import com.gmail.ezlotnikova.service.UserService;
 import com.gmail.ezlotnikova.service.constant.ExecutionResult;
-import com.gmail.ezlotnikova.web.controller.web.UserController;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;

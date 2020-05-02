@@ -3,7 +3,6 @@ package com.gmail.ezlotnikova.web.controller.web;
 import com.gmail.ezlotnikova.service.UserService;
 import com.gmail.ezlotnikova.service.constant.ExecutionResult;
 import com.gmail.ezlotnikova.service.model.ShowUserDTO;
-import com.gmail.ezlotnikova.web.controller.web.UserController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -49,7 +48,7 @@ public class UserControllerUpdateRoleTest {
 
     @Test
     @WithMockUser(roles = "ADMINISTRATOR")
-    void whenRequest_returnAddUserForm() throws Exception {
+    void whenRequest_returnUpdateRoleForm() throws Exception {
         ShowUserDTO user = getShowUserDTO();
         Long id = Long.parseLong(VALID_ID);
         when(userService.findUserById(id)).thenReturn(user);

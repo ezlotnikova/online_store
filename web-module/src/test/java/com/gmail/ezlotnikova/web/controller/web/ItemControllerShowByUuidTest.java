@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 
 import com.gmail.ezlotnikova.service.ItemService;
 import com.gmail.ezlotnikova.service.model.ItemDTO;
-import com.gmail.ezlotnikova.web.controller.web.ItemController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
