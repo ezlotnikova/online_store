@@ -1,4 +1,4 @@
-package com.gmail.ezlotnikova.web.controller;
+package com.gmail.ezlotnikova.web.controller.web;
 
 import javax.validation.Valid;
 

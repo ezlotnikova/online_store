@@ -28,6 +28,14 @@
             <a class="nav-item nav-link" th:href="@{/logout}" href="/logout">Log out</a>
         </div>
     </nav>
+    <br>
+
+    <div th:if="${successMessage}" th:text="${successMessage}" class="alert alert-success" role="alert">
+        Success Alert
+    </div>
+    <div th:if="${failureMessage}" th:text="${failureMessage}" class="alert alert-danger" role="alert">
+        Failure Alert
+    </div>
 
     <form th:action="@{/reviews/delete}"
           action="/reviews/delete"

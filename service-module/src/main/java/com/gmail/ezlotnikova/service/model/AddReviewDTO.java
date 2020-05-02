@@ -1,5 +1,6 @@
 package com.gmail.ezlotnikova.service.model;
 
+import java.util.Objects;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -39,6 +40,25 @@ public class AddReviewDTO {
 
     public void setReviewText(String reviewText) {
         this.reviewText = reviewText;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        AddReviewDTO reviewDTO = (AddReviewDTO) o;
+        return Objects.equals(id, reviewDTO.id) &&
+                Objects.equals(userId, reviewDTO.userId) &&
+                Objects.equals(reviewText, reviewDTO.reviewText);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, userId, reviewText);
     }
 
 }

@@ -43,7 +43,7 @@ class ItemAPIControllerAddItemTest {
 
     @Test
     @WithMockUser(roles = "SECURE_API_USER")
-    void whenValidItem_returnStatusOk() throws Exception {
+    void whenValidItem_returnStatusCreated() throws Exception {
         ItemDTO item = getValidItemDTO();
         String content = objectMapper.writeValueAsString(item);
         mockMvc.perform(

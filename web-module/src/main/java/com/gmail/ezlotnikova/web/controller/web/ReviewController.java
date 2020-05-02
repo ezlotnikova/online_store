@@ -1,9 +1,10 @@
-package com.gmail.ezlotnikova.web.controller;
+package com.gmail.ezlotnikova.web.controller.web;
 
 import java.util.List;
 import javax.validation.Valid;
 
 import com.gmail.ezlotnikova.service.ReviewService;
+import com.gmail.ezlotnikova.service.constant.ExecutionResult;
 import com.gmail.ezlotnikova.service.model.AddReviewDTO;
 import com.gmail.ezlotnikova.service.model.ShowReviewDTO;
 import com.gmail.ezlotnikova.service.security.AppUser;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import static com.gmail.ezlotnikova.service.constant.ResultTypeEnum.EXECUTION_FAILED;
+import static com.gmail.ezlotnikova.web.controller.constant.ResultMessagesConstant.FAILURE_MESSAGE;
 import static com.gmail.ezlotnikova.web.controller.constant.ResultMessagesConstant.SUCCESS_MESSAGE;
 
 @Controller
@@ -63,16 +66,32 @@ public class ReviewController {
             reviewService.add(review);
             redirectAttributes.addFlashAttribute(
                     SUCCESS_MESSAGE, "Thank you for your opinion! Your review will appear on our site after moderation.");
-            return "redirect:/reviews/add";
+            return "redirect:/reviews";
         }
     }
 
     @PostMapping("/delete")
     public String deleteSelectedReviews(
-            @RequestParam(name = "idList", required = false) List<Long> idList
+            @RequestParam(name = "idList", required = false) List<Long> idList,
+            RedirectAttributes redirectAttributes
     ) {
         if (idList != null) {
-            idList.forEach(reviewService::deleteById);
+            boolean allReviewsDeleted = true;
+            StringBuilder errorMessage = new StringBuilder();
+            for (Long id : idList) {
+                ExecutionResult result = reviewService.deleteById(id);
+                if (result.getResultType().equals(EXECUTION_FAILED)) {
+                    allReviewsDeleted = false;
+                    errorMessage.append(result.getErrorMessage());
+                }
+            }
+            if (!allReviewsDeleted) {
+                redirectAttributes.addFlashAttribute(
+                        FAILURE_MESSAGE, errorMessage.toString());
+            } else {
+                redirectAttributes.addFlashAttribute(
+                        SUCCESS_MESSAGE, "Review(s) deleted successfully");
+            }
         }
         return "redirect:/reviews";
     }

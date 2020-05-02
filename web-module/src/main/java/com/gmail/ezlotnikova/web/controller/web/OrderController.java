@@ -1,4 +1,4 @@
-package com.gmail.ezlotnikova.web.controller;
+package com.gmail.ezlotnikova.web.controller.web;
 
 import com.gmail.ezlotnikova.repository.model.сonstant.OrderStatusEnum;
 import com.gmail.ezlotnikova.service.OrderService;
@@ -7,6 +7,7 @@ import com.gmail.ezlotnikova.service.model.OrderPreviewDTO;
 import com.gmail.ezlotnikova.service.model.ShowOrderDTO;
 import com.gmail.ezlotnikova.service.security.AppUser;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static com.gmail.ezlotnikova.service.constant.ResultTypeEnum.EXECUTION_FAILED;
@@ -45,10 +47,12 @@ public class OrderController {
     public String createNewOrder(
             @AuthenticationPrincipal AppUser appUser,
             @RequestParam(value = "itemId") Long itemId,
-            @RequestParam(value = "amount") Integer amount
+            @RequestParam(value = "amount") Integer amount,
+            RedirectAttributes redirectAttributes
     ) {
         Long userId = appUser.getId();
         ShowOrderDTO order = orderService.saveNewOrder(userId, itemId, amount);
+        redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "New order was successfully processed");
         return "redirect:/orders";
     }
 
@@ -58,9 +62,16 @@ public class OrderController {
             @PathVariable(name = "id") Long id
     ) {
         ShowOrderDTO order = orderService.findById(id);
-        model.addAttribute("order", order);
-        model.addAttribute("statuses", OrderStatusEnum.values());
-        return "order_details";
+        if (order != null) {
+            model.addAttribute("order", order);
+            model.addAttribute("statuses", OrderStatusEnum.values());
+            return "order_details";
+        } else {
+            WebExceptionHandler.ResponseError error = new WebExceptionHandler.ResponseError();
+            error.setMessage("Order not found");
+            model.addAttribute("error", error);
+            return "error";
+        }
     }
 
     @PostMapping("/{id}")

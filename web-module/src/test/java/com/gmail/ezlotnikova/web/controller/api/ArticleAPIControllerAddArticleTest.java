@@ -42,7 +42,7 @@ class ArticleAPIControllerAddArticleTest {
 
     @Test
     @WithMockUser(roles = "SECURE_API_USER")
-    void whenValidArticle_returnStatusOk() throws Exception {
+    void whenValidArticle_returnStatusCreated() throws Exception {
         AddArticleDTO article = getValidArticleDTO();
         String content = objectMapper.writeValueAsString(article);
         mockMvc.perform(

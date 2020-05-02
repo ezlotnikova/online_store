@@ -11,7 +11,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import static com.gmail.ezlotnikova.web.controller.constant.ExceptionHandlerConstant.ARGUMENT_TYPE_MISMATCH_MESSAGE;
 
-@ControllerAdvice
+@ControllerAdvice(basePackages = "com.gmail.ezlotnikova.web.controller.api")
 public class APIExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

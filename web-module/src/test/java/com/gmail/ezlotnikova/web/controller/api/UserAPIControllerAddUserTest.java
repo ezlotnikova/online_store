@@ -39,7 +39,7 @@ class UserAPIControllerAddUserTest {
 
     @Test
     @WithMockUser(roles = "SECURE_API_USER")
-    void whenValidUser_returnStatusOk() throws Exception {
+    void whenValidUser_returnStatusCreated() throws Exception {
         AddUserDTO user = getValidUserDTO();
         String content = objectMapper.writeValueAsString(user);
         mockMvc.perform(

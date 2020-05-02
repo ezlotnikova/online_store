@@ -39,8 +39,8 @@ public class ItemServiceImpl implements ItemService {
     @Override
     @Transactional
     @Nullable
-    public ItemDTO findById(Long id) {
-        Item item = itemRepository.findById(id);
+    public ItemDTO findByUuid(String uuid) {
+        Item item = itemRepository.findByUuid(uuid);
         if (item != null) {
             return convertToItemDTO(item);
         } else {
@@ -51,8 +51,8 @@ public class ItemServiceImpl implements ItemService {
     @Override
     @Transactional
     @Nullable
-    public ItemDTO findByUuid(String uuid) {
-        Item item = itemRepository.findByUuid(uuid);
+    public ItemDTO findById(Long id) {
+        Item item = itemRepository.findById(id);
         if (item != null) {
             return convertToItemDTO(item);
         } else {
@@ -72,11 +72,16 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
+    @Nullable
     public ItemDTO duplicateItem(Long id) {
         Item item = itemRepository.findById(id);
-        ItemDTO itemDTO = convertToItemDTO(item);
-        ItemDTO duplicateDTO = getDuplicate(itemDTO);
-        return add(duplicateDTO);
+        if (item != null) {
+            ItemDTO itemDTO = convertToItemDTO(item);
+            ItemDTO duplicateDTO = getDuplicate(itemDTO);
+            return add(duplicateDTO);
+        } else {
+            return null;
+        }
     }
 
     @Override

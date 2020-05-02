@@ -30,4 +30,6 @@ public interface ControllerTestConstant {
     String VALID_COMMENT_CONTENT = "TestCommentContent";
     String DATE = "2020-09-09 00:00:00";
 
+    String VALID_REVIEW_TEXT = "TestReviewText";
+
 }
