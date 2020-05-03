@@ -16,6 +16,7 @@ public interface ControllerTestConstant {
     String USER_EMAIL = "test@test.test";
     UserRoleEnum USER_ROLE = UserRoleEnum.ADMINISTRATOR;
     String USER_TELEPHONE = "+375(11)111-11-11";
+    String USER_ADDRESS = "TestAddress";
 
     OrderStatusEnum ORDER_STATUS = OrderStatusEnum.NEW;
 

@@ -22,6 +22,15 @@ public class WebExceptionHandler {
         return "error";
     }
 
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    String handleAccessDeniedError(
+            Model model) {
+        ResponseError responseError = new ResponseError();
+        responseError.setMessage(ARGUMENT_TYPE_MISMATCH_MESSAGE);
+        model.addAttribute("error", responseError);
+        return "error";
+    }
+
     public static class ResponseError {
 
         private String message;

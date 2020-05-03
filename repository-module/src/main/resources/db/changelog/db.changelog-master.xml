@@ -201,4 +201,13 @@
                                  validate="true"/>
     </changeSet>
 
+    <changeSet id="19" author="e.zlotnikova@gmail.com">
+        <insert tableName="user">
+            <column name="email" value="admin@shop.test"/>
+            <column name="password" value="$2y$12$SMWiA4gqXfKxy3mhTK2wUe6BLlMe82I4.l7fJMt9lPuiz4XuRWFvG"/>
+            <column name="role" value="ADMINISTRATOR"/>
+            <column name="is_enabled" valueBoolean="true"/>
+        </insert>
+    </changeSet>
+
 </databaseChangeLog>

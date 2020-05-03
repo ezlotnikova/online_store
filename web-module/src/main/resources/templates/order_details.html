@@ -18,11 +18,9 @@
             <a class="nav-item nav-link" th:href="@{/items}" href="/items">Items</a>
             <a class="nav-item nav-link" th:href="@{/orders}" href="/orders">Orders</a>
             <a class="nav-item nav-link active">Order details</a>
-            <a class="nav-item nav-link" th:href="@{/reviews}" href="/reviews">Reviews</a>
             <a class="nav-item nav-link" th:href="@{/articles}" href="/articles">Articles</a>
             <a class="nav-item nav-link" th:href="@{/articles/add}" href="/articles/add">Add article</a>
-            <a class="nav-item nav-link" th:href="@{/users}" href="/users">Users</a>
-            <a class="nav-item nav-link" th:href="@{/users/add}" href="/users/add">Add user</a>
+            <a class="nav-item nav-link" th:href="@{/reviews/add}" href="/reviews/add">Add review</a>
             <a class="nav-item nav-link" th:href="@{/profile}" href="/profile">Profile</a>
             <a class="nav-item nav-link" th:href="@{/login}" href="/login">Log in</a>
             <a class="nav-item nav-link" th:href="@{/logout}" href="/logout">Log out</a>
@@ -49,7 +47,6 @@
             </select>
             <input type="submit" class="btn btn-outline-success" value="Update status"/>
         </form>
-        </p>
         <p>
             <span class="font-weight-bold">User Id</span>
             <span class="font-weight-normal" th:text="*{userId}"></span>

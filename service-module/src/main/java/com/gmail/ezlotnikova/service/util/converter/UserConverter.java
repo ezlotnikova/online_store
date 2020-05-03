@@ -35,12 +35,14 @@ public class UserConverter {
         userDTO.setRole(
                 user.getRole());
         UserDetails userDetails = user.getUserDetails();
-        userDTO.setLastName(
-                userDetails.getLastName());
-        userDTO.setFirstName(
-                userDetails.getFirstName());
-        userDTO.setPatronymicName(
-                userDetails.getPatronymicName());
+        if (userDetails != null) {
+            userDTO.setLastName(
+                    userDetails.getLastName());
+            userDTO.setFirstName(
+                    userDetails.getFirstName());
+            userDTO.setPatronymicName(
+                    userDetails.getPatronymicName());
+        }
         return userDTO;
     }
 
@@ -49,12 +51,14 @@ public class UserConverter {
         userDTO.setId(
                 user.getId());
         UserDetails userDetails = user.getUserDetails();
-        userDTO.setLastName(
-                userDetails.getLastName());
-        userDTO.setFirstName(
-                userDetails.getFirstName());
-        userDTO.setPatronymicName(
-                userDetails.getPatronymicName());
+        if (userDetails != null) {
+            userDTO.setLastName(
+                    userDetails.getLastName());
+            userDTO.setFirstName(
+                    userDetails.getFirstName());
+            userDTO.setPatronymicName(
+                    userDetails.getPatronymicName());
+        }
         userDTO.setEmail(
                 user.getEmail());
         userDTO.setRole(
