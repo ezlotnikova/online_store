@@ -1,5 +1,6 @@
 package com.gmail.ezlotnikova.service.util.converter;
 
+import java.sql.Timestamp;
 import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +15,9 @@ import com.gmail.ezlotnikova.service.model.ArticlePreviewDTO;
 import com.gmail.ezlotnikova.service.model.ArticleWithCommentsDTO;
 import com.gmail.ezlotnikova.service.model.CommentDTO;
 
-import static com.gmail.ezlotnikova.service.constant.ArticlePreviewConstant.ARTICLE_PREVIEW_LENGTH;
 import static com.gmail.ezlotnikova.service.util.converter.DateTimeUtil.convertTimestampToString;
 import static com.gmail.ezlotnikova.service.util.converter.DateTimeUtil.getCurrentTimestamp;
+import static com.gmail.ezlotnikova.service.util.converter.constant.ArticlePreviewConstant.ARTICLE_PREVIEW_LENGTH;
 
 public class ArticleConverter {
 
@@ -26,8 +27,13 @@ public class ArticleConverter {
                 articleDTO.getHeader());
         article.setContent(
                 articleDTO.getContent());
-        article.setCreatedOn(
-                getCurrentTimestamp());
+        if (articleDTO.getDate() != null && !articleDTO.getDate().trim().isEmpty()) {
+            article.setDate(Timestamp.valueOf(
+                    articleDTO.getDate()));
+        } else {
+            article.setDate(
+                    getCurrentTimestamp());
+        }
         return article;
     }
 
@@ -39,8 +45,8 @@ public class ArticleConverter {
                 article.getHeader());
         articleDTO.setContent(
                 article.getContent());
-        articleDTO.setCreatedOn(convertTimestampToString(
-                article.getCreatedOn()));
+        articleDTO.setDate(convertTimestampToString(
+                article.getDate()));
         return articleDTO;
     }
 
@@ -48,8 +54,8 @@ public class ArticleConverter {
         ArticlePreviewDTO articlePreview = new ArticlePreviewDTO();
         articlePreview.setId(
                 article.getId());
-        articlePreview.setCreatedOn(convertTimestampToString(
-                article.getCreatedOn()));
+        articlePreview.setDate(convertTimestampToString(
+                article.getDate()));
         articlePreview.setHeader(
                 article.getHeader());
         UserDetails userDetails = article.getUserDetails();
@@ -66,8 +72,8 @@ public class ArticleConverter {
         ArticleWithCommentsDTO articleDTO = new ArticleWithCommentsDTO();
         articleDTO.setId(
                 article.getId());
-        articleDTO.setCreatedOn(convertTimestampToString(
-                article.getCreatedOn()));
+        articleDTO.setDate(convertTimestampToString(
+                article.getDate()));
         articleDTO.setHeader(
                 article.getHeader());
         UserDetails userDetails = article.getUserDetails();

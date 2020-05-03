@@ -9,7 +9,7 @@ public class ArticleWithCommentsDTO {
     private String authorLastName;
     private String header;
     private String content;
-    private String createdOn;
+    private String date;
     List<CommentDTO> comments;
 
     public Long getId() {
@@ -52,12 +52,12 @@ public class ArticleWithCommentsDTO {
         this.content = content;
     }
 
-    public String getCreatedOn() {
-        return createdOn;
+    public String getDate() {
+        return date;
     }
 
-    public void setCreatedOn(String createdOn) {
-        this.createdOn = createdOn;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public List<CommentDTO> getComments() {

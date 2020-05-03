@@ -4,7 +4,7 @@
       xsi:schemaLocation="http://www.thymeleaf.org">
 
 <head>
-    <title>Change password</title>
+    <title>Add user</title>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}"/>
 </head>
@@ -17,37 +17,53 @@
             <a class="nav-item nav-link" th:href="@{/items}" href="/items">Items</a>
             <a class="nav-item nav-link" th:href="@{/reviews}" href="/reviews">Reviews</a>
             <a class="nav-item nav-link" th:href="@{/articles}" href="/articles">Articles</a>
-            <a class="nav-item nav-link" th:href="@{/articles/add}" href="/articles/add">Add article</a>
+            <a class="nav-item nav-link active">Add article</a>
             <a class="nav-item nav-link" th:href="@{/users}" href="/users">Users</a>
             <a class="nav-item nav-link" th:href="@{/users/add}" href="/users/add">Add user</a>
             <a class="nav-item nav-link" th:href="@{/profile}" href="/profile">Profile</a>
-            <a class="nav-item nav-link active">Change password</a>
             <a class="nav-item nav-link" th:href="@{/login}" href="/login">Log in</a>
             <a class="nav-item nav-link" th:href="@{/logout}" href="/logout">Log out</a>
+
         </div>
     </nav>
     <br>
-    <form th:action="@{/profile/password}"
-          action="/profile/password"
-          th:object="${password}"
+    <form th:action="@{/articles/add}"
+          action="/articles/add"
+          th:object="${article}"
           method="post">
+        <span th:if="${#fields.hasErrors ('date')}"
+              th:errors="*{date}"
+              style="color:red">
+        </span>
         <p th:if="${#fields.hasGlobalErrors()}"
            th:errors="*{global}"
            style="color:red">
         </p>
-        <p th:if="${#fields.hasErrors ('newPassword')}"
-           th:errors="*{newPassword}"
-           style="color:red">
-        </p>
         <div class="form-group">
-            <label for="newPassword">Enter new password:</label>
-            <input th:field="*{newPassword}" type="password" class="form-control" id="newPassword" name="newPassword" required>
+            <label for="date">Date</label>
+            <small id="dateHelpBlock" class="form-text text-muted">
+                Please insert date in format yyyy-MM-dd hh:mm:ss or leave the field empty for article to be published with current date and time.
+            </small>
+            <input th:field="*{date}" type="text" class="form-control" id="date" name="date">
         </div>
+        <span th:if="${#fields.hasErrors ('header')}"
+              th:errors="*{header}"
+              style="color:red">
+        </span>
         <div class="form-group">
-            <label for="matchingPassword">Confirm password:</label>
-            <input th:field="*{matchingPassword}" type="password" class="form-control" id="matchingPassword" name="matchingPassword">
+            <label for="header">Header</label>
+            <input th:field="*{header}" type="text" class="form-control" id="header" name="header">
         </div>
-        <button type="submit" class="btn btn-outline-success">Change password</button>
+        <span th:if="${#fields.hasErrors ('content')}"
+              th:errors="*{content}"
+              style="color:red">
+        </span>
+        <div class="form-group">
+            <label for="content">Content</label>
+            <input th:field="*{content}" type="text" class="form-control" id="content" name="content">
+        </div>
+        <br>
+        <button type="submit" class="btn btn-outline-success">Add article</button>
     </form>
 </div>
 <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>

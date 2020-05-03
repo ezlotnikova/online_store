@@ -1,11 +1,11 @@
 <!DOCTYPE HTML>
 
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sec="http://www.w3.org/1999/xhtml"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.thymeleaf.org">
 
 <head>
-    <title>Articles</title>
+    <title>Items</title>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}"/>
 </head>
@@ -16,9 +16,9 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light" aria-label="Site navigation">
         <a class="navbar-brand">ShopProject</a>
         <div class="navbar-nav">
-            <a class="nav-item nav-link" th:href="@{/items}" href="/items">Items</a>
+            <a class="nav-item nav-link active">Items</a>
             <a class="nav-item nav-link" th:href="@{/reviews}" href="/reviews">Reviews</a>
-            <a class="nav-item nav-link active">Articles</a>
+            <a class="nav-item nav-link" th:href="@{/articles}" href="/articles">Articles</a>
             <a class="nav-item nav-link" th:href="@{/articles/add}" href="/articles/add">Add article</a>
             <a class="nav-item nav-link" th:href="@{/users}" href="/users">Users</a>
             <a class="nav-item nav-link" th:href="@{/users/add}" href="/users/add">Add user</a>
@@ -36,21 +36,31 @@
         Failure Alert
     </div>
 
-    <div align="center" th:if="${articles.empty}">
-        No articles are currently available.
+    <div align="center" th:if="${items.empty}">
+        No items are currently available.
     </div>
 
-    <div th:each="article:${articles}" th:object="${article}">
-        <div class="card">
-
-            <div class="card-header">
+    <div th:each="item:${items}" th:object="${item}">
+        <div class="card" style="width: 25rem;">
+            <div class="card-body">
+                <h5 class="card-title" th:text="*{name}">Name</h5>
+                <i><span class="text-muted" th:text="*{uniqueNumber}">Unique number</span></i>
+                <p class="card-text" th:text="|*{price} $|">Price</p>
+                <a href="items" th:href="@{/items/{uuid}(uuid=*{uniqueNumber})}" class="card-link">See details</a>
+            </div>
+            <div class="card-footer text-muted">
                 <div class="row">
                     <div class="col text-left">
-                        <h5 class="card-title" th:text="*{header}">Header</h5>
+                        <a class="btn btn-outline-warning"
+                           th:href="@{/items/{id}/duplicate(id=*{id})}"
+                           href="@{/items}"
+                           role="button">
+                            Duplicate
+                        </a>
                     </div>
-                    <div class="col text-right" sec:authorize="hasRole('SALE_USER')">
+                    <div class="col text-right">
                         <a class="btn btn-outline-danger"
-                           th:href="@{/articles/{id}/delete(id=*{id})}"
+                           th:href="@{/items/{id}/delete(id=*{id})}"
                            href="@{/items}"
                            role="button">
                             Delete
@@ -58,36 +68,28 @@
                     </div>
                 </div>
             </div>
-
-            <div class="card-body">
-                <b><span th:text="|*{authorFirstName} *{authorLastName}|"></span></b><br>
-                <small><i><span th:text="*{date}"></span></i></small><br>
-                <br>
-                <p class="card-text" th:text="*{contentPreview}">Content</p>
-                <a th:href="@{/articles/{id}(id=*{id})}" href="/articles">Read more</a>
-            </div>
         </div>
         <br>
     </div>
     <br>
 
-    <nav aria-label="Search result pages" th:if="${articles.totalPages gt 0}">
+    <nav aria-label="Search result pages" th:if="${items.totalPages gt 0}">
         <ul class="pagination justify-content-center">
-            <li class="page-item" th:classappend="${articles.number eq 0} ? 'disabled'">
+            <li class="page-item" th:classappend="${items.number eq 0} ? 'disabled'">
                 <a class="page-link"
-                   th:href="@{/articles?page={id}(id=${articles.number lt 2 ? 1 : articles.number})}"
+                   th:href="@{/items?page={id}(id=${items.number lt 2 ? 1 : items.number})}"
                    aria-label="Previous" title="Previous Page" data-toggle="tooltip">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
-            <li class="page-item" th:classappend="${i eq articles.number + 1} ? 'disabled'"
-                th:each="i : ${#numbers.sequence( 1, articles.totalPages, 1)}">
-                <a class="page-link" th:href="@{/articles?page={id}(id=${i})}" th:text="${i}"
+            <li class="page-item" th:classappend="${i eq items.number + 1} ? 'disabled'"
+                th:each="i : ${#numbers.sequence( 1, items.totalPages, 1)}">
+                <a class="page-link" th:href="@{/items?page={id}(id=${i})}" th:text="${i}"
                    th:title="${'Page '+ i}" data-toggle="tooltip"></a>
             </li>
-            <li class="page-item" th:classappend="${articles.number + 1 eq articles.totalPages} ? 'disabled'">
+            <li class="page-item" th:classappend="${items.number + 1 eq items.totalPages} ? 'disabled'">
                 <a class="page-link"
-                   th:href="@{/articles?page={id}(id=${articles.number + 2})}"
+                   th:href="@{/items?page={id}(id=${items.number + 2})}"
                    aria-label="Next" title="Next Page" data-toggle="tooltip">
                     <span aria-hidden="true">&raquo;</span>
                 </a>

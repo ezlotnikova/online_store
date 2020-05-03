@@ -21,7 +21,7 @@ public class ArticleRepositoryImpl extends GenericRepositoryImpl<Long, Article> 
                 pageRequest.getPageNumber(), pageRequest.getPageSize());
         int maxResult = pageRequest.getPageSize();
         Long count = getTotalCount();
-        String hql = "FROM Article as a ORDER BY a.createdOn";
+        String hql = "FROM Article as A ORDER BY A.date DESC";
         Query query = entityManager.createQuery(hql);
         query.setFirstResult(startPosition);
         query.setMaxResults(maxResult);

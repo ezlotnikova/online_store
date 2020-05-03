@@ -1,8 +1,10 @@
 package com.gmail.ezlotnikova.service.impl;
 
 import com.gmail.ezlotnikova.repository.ArticleRepository;
+import com.gmail.ezlotnikova.repository.CommentRepository;
 import com.gmail.ezlotnikova.repository.UserRepository;
 import com.gmail.ezlotnikova.repository.model.Article;
+import com.gmail.ezlotnikova.repository.model.Comment;
 import com.gmail.ezlotnikova.repository.model.User;
 import com.gmail.ezlotnikova.service.ArticleService;
 import com.gmail.ezlotnikova.service.constant.ExecutionResult;
@@ -28,13 +30,15 @@ public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
 
     public ArticleServiceImpl(
             ArticleRepository articleRepository,
-            UserRepository userRepository
-    ) {
+            UserRepository userRepository,
+            CommentRepository commentRepository) {
         this.articleRepository = articleRepository;
         this.userRepository = userRepository;
+        this.commentRepository = commentRepository;
     }
 
     @Override
@@ -87,6 +91,19 @@ public class ArticleServiceImpl implements ArticleService {
         } else {
             return ExecutionResult.error(NO_OBJECT_FOUND, "No article with id " + id + " found. ");
         }
+    }
+
+    @Override
+    @Transactional
+    public ExecutionResult deleteComment(Long commentId) {
+        Comment comment = commentRepository.findById(commentId);
+        if (comment != null) {
+            commentRepository.remove(comment);
+            return ExecutionResult.ok();
+        } else {
+            return ExecutionResult.error(NO_OBJECT_FOUND, "No comment with id " + commentId + " found. ");
+        }
+
     }
 
 }

@@ -5,7 +5,7 @@
       xsi:schemaLocation="http://www.thymeleaf.org">
 
 <head>
-    <title>Shop Project</title>
+    <title>Item</title>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}"/>
 </head>
@@ -16,6 +16,7 @@
         <a class="navbar-brand">ShopProject</a>
         <div class="navbar-nav">
             <a class="nav-item nav-link" th:href="@{/items}" href="/items">Items</a>
+            <a class="nav-item nav-link active">Item</a>
             <a class="nav-item nav-link" th:href="@{/reviews}" href="/reviews">Reviews</a>
             <a class="nav-item nav-link" th:href="@{/articles}" href="/articles">Articles</a>
             <a class="nav-item nav-link" th:href="@{/articles/add}" href="/articles/add">Add article</a>
@@ -27,7 +28,29 @@
         </div>
     </nav>
     <br>
-    <h4>Welcome!</h4>
+
+    <div th:if="${successMessage}" th:text="${successMessage}" class="alert alert-success" role="alert">
+        Success Alert
+    </div>
+    <div th:if="${failureMessage}" th:text="${failureMessage}" class="alert alert-danger" role="alert">
+        Failure Alert
+    </div>
+
+    <div th:object="${item}">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title" th:text="*{name}">Header</h5>
+                <small><i><span th:text="*{uniqueNumber}"></span></i></small><br>
+            </div>
+            <div class="card-body">
+                <p class="card-text" th:text="|*{price} $|">Content</p>
+                <i><span th:text="*{description}"></span></i>
+            </div>
+        </div>
+    </div>
+    <br>
+    <a th:href="@{/items}" href="/items">Back to item list</a>
+
 </div>
 <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
 <script th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>

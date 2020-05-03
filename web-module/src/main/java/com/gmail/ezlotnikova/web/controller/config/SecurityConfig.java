@@ -36,11 +36,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/reviews/**", "/users/**")
                 .hasRole(UserRoleEnum.ADMINISTRATOR.name())
                 .antMatchers("/articles/**")
-                .hasRole(UserRoleEnum.CUSTOMER_USER.name())
+                .hasAnyRole(
+                        UserRoleEnum.CUSTOMER_USER.name(),
+                        UserRoleEnum.SALE_USER.name())
+                .antMatchers("/items/**")
+                .hasRole(UserRoleEnum.SALE_USER.name())
                 .antMatchers("/profile/**")
                 .hasAnyRole(
                         UserRoleEnum.ADMINISTRATOR.name(),
                         UserRoleEnum.CUSTOMER_USER.name(),
+                        UserRoleEnum.SALE_USER.name(),
                         UserRoleEnum.SECURE_API_USER.name())
                 .antMatchers("/api/**")
                 .hasRole(UserRoleEnum.SECURE_API_USER.name())
