@@ -1,4 +1,4 @@
-package com.gmail.ezlotnikova.web.controller.integration;
+package com.gmail.ezlotnikova.web.controller.integration.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gmail.ezlotnikova.service.model.AddUserDTO;
@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -32,6 +33,7 @@ public class UserAPIControllerIntTest {
     private MockMvc mockMvc;
 
     @Test
+    @WithMockUser(roles = "SECURE_API_USER")
     public void addUser_returnAddedUser() throws Exception {
         AddUserDTO user = getValidUserDTO();
         String content = objectMapper.writeValueAsString(user);

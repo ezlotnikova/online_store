@@ -1,7 +1,6 @@
 package com.gmail.ezlotnikova.web.controller.config;
 
 import com.gmail.ezlotnikova.repository.model.сonstant.UserRoleEnum;
-import com.gmail.ezlotnikova.web.controller.web.WebExceptionHandler;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Order(1)
+    @Order(2)
     @Configuration
     public static class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -70,9 +69,8 @@ public class SecurityConfig {
                     .and()
                     .logout()
                     .permitAll()
-//                    .and().exceptionHandling()
-//                    .accessDeniedHandler(accessDeniedHandler)
-//                    .authenticationEntryPoint(unauthorizedHandler)
+                    .and().exceptionHandling()
+                    .accessDeniedPage("/forbidden")
                     .and()
                     .csrf()
                     .disable();
@@ -80,7 +78,7 @@ public class SecurityConfig {
 
     }
 
-    @Order(2)
+    @Order(1)
     @Configuration
     public static class APISecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -103,7 +101,8 @@ public class SecurityConfig {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.httpBasic()
+            http.antMatcher("/api/**")
+                    .httpBasic()
                     .and()
                     .authorizeRequests()
                     .antMatchers("/api/**")
@@ -118,6 +117,9 @@ public class SecurityConfig {
                     .and()
                     .logout()
                     .permitAll()
+                    //                    .and()
+                    //                    .exceptionHandling()
+                    //                    .accessDeniedPage("/api/forbidden")
                     .and()
                     .csrf()
                     .disable();
