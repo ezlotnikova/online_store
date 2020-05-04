@@ -4,22 +4,21 @@
       xsi:schemaLocation="http://www.thymeleaf.org">
 
 <head>
-    <title>Add user</title>
+    <title>Add article</title>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}"/>
 </head>
 
 <body>
 <div class="container">
-    <nav nav class="navbar navbar-expand-lg navbar-light bg-light" aria-label="Site navigation">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" aria-label="Site navigation">
         <a class="navbar-brand">ShopProject</a>
         <div class="navbar-nav">
             <a class="nav-item nav-link" th:href="@{/items}" href="/items">Items</a>
-            <a class="nav-item nav-link" th:href="@{/reviews}" href="/reviews">Reviews</a>
+            <a class="nav-item nav-link" th:href="@{/orders}" href="/orders">Orders</a>
             <a class="nav-item nav-link" th:href="@{/articles}" href="/articles">Articles</a>
             <a class="nav-item nav-link active">Add article</a>
-            <a class="nav-item nav-link" th:href="@{/users}" href="/users">Users</a>
-            <a class="nav-item nav-link" th:href="@{/users/add}" href="/users/add">Add user</a>
+            <a class="nav-item nav-link" th:href="@{/reviews/add}" href="/reviews/add">Add review</a>
             <a class="nav-item nav-link" th:href="@{/profile}" href="/profile">Profile</a>
             <a class="nav-item nav-link" th:href="@{/login}" href="/login">Log in</a>
             <a class="nav-item nav-link" th:href="@{/logout}" href="/logout">Log out</a>
@@ -60,7 +59,7 @@
         </span>
         <div class="form-group">
             <label for="content">Content</label>
-            <input th:field="*{content}" type="text" class="form-control" id="content" name="content">
+            <textarea class="form-control" rows="5" th:field="*{content}" id="content" name="content"></textarea>
         </div>
         <br>
         <button type="submit" class="btn btn-outline-success">Add article</button>

@@ -1,4 +1,4 @@
-package com.gmail.ezlotnikova.service.util.converter;
+package com.gmail.ezlotnikova.service.util;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;

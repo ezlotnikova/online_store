@@ -1,4 +1,4 @@
-package com.gmail.ezlotnikova.web.controller;
+package com.gmail.ezlotnikova.web.controller.web;
 
 import com.gmail.ezlotnikova.service.ItemService;
 import com.gmail.ezlotnikova.service.constant.ExecutionResult;
@@ -38,13 +38,20 @@ public class ItemController {
     }
 
     @GetMapping("/{uuid}")
-    public String showArticleWithComments(
+    public String showItemByUniqueNumber(
             @PathVariable(name = "uuid") String uuid,
             Model model
     ) {
         ItemDTO item = itemService.findByUuid(uuid);
-        model.addAttribute("item", item);
-        return "item_description";
+        if (item != null) {
+            model.addAttribute("item", item);
+            return "item_description";
+        } else {
+            WebExceptionHandler.ResponseError error = new WebExceptionHandler.ResponseError();
+            error.setMessage("Item not found");
+            model.addAttribute("error", error);
+            return "error";
+        }
     }
 
     @GetMapping("/{id}/duplicate")
@@ -54,10 +61,17 @@ public class ItemController {
             RedirectAttributes redirectAttributes
     ) {
         ItemDTO addedItem = itemService.duplicateItem(id);
-        model.addAttribute("item", addedItem);
-        redirectAttributes.addFlashAttribute(
-                SUCCESS_MESSAGE, "Item added successfully");
-        return "redirect:/items/" + addedItem.getUniqueNumber();
+        if (addedItem != null) {
+            model.addAttribute("item", addedItem);
+            redirectAttributes.addFlashAttribute(
+                    SUCCESS_MESSAGE, "Item added successfully");
+            return "redirect:/items/" + addedItem.getUniqueNumber();
+        } else {
+            WebExceptionHandler.ResponseError error = new WebExceptionHandler.ResponseError();
+            error.setMessage("Item not found");
+            model.addAttribute("error", error);
+            return "error";
+        }
     }
 
     @GetMapping("/{id}/delete")
@@ -66,7 +80,7 @@ public class ItemController {
             RedirectAttributes redirectAttributes
     ) {
         ExecutionResult result = itemService.deleteItemById(id);
-        if (result.getResultType() == EXECUTED_SUCCESSFULLY) {
+        if (result.getResultType().equals(EXECUTED_SUCCESSFULLY)) {
             redirectAttributes.addFlashAttribute(
                     SUCCESS_MESSAGE, "Item deleted successfully");
         } else {

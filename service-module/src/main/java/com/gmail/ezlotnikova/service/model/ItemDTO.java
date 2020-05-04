@@ -1,10 +1,10 @@
 package com.gmail.ezlotnikova.service.model;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import static com.gmail.ezlotnikova.service.model.validation.ModelValidationConstant.MAX_ITEM_DESCRIPTION_SIZE;
@@ -20,12 +20,10 @@ public class ItemDTO {
 
     private String uniqueNumber;
 
-    @NotNull
     @NotEmpty(message = NOT_EMPTY_MESSAGE)
     @Size(max = MAX_ITEM_NAME_SIZE, message = TOO_LONG_ITEM_NAME)
     private String name;
 
-    @NotNull
     @DecimalMin(value = "0.0", inclusive = false, message = PRICE_LESS_THEN_ZERO_MESSAGE)
     @Digits(integer = 8, fraction = 2)
     private BigDecimal price;
@@ -71,6 +69,27 @@ public class ItemDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ItemDTO itemDTO = (ItemDTO) o;
+        return Objects.equals(id, itemDTO.id) &&
+                Objects.equals(uniqueNumber, itemDTO.uniqueNumber) &&
+                Objects.equals(name, itemDTO.name) &&
+                Objects.equals(price, itemDTO.price) &&
+                Objects.equals(description, itemDTO.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, uniqueNumber, name, price, description);
     }
 
 }

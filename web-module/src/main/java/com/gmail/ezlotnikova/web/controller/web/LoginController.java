@@ -1,4 +1,4 @@
-package com.gmail.ezlotnikova.web.controller;
+package com.gmail.ezlotnikova.web.controller.web;
 
 import com.gmail.ezlotnikova.service.model.UserDTO;
 import org.springframework.stereotype.Controller;

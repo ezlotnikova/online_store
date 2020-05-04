@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sec="http://www.w3.org/1999/xhtml"
       xsi:schemaLocation="http://www.thymeleaf.org">
 
 <head>
@@ -16,11 +16,13 @@
         <a class="navbar-brand">ShopProject</a>
         <div class="navbar-nav">
             <a class="nav-item nav-link" th:href="@{/items}" href="/items">Items</a>
-            <a class="nav-item nav-link" th:href="@{/reviews}" href="/reviews">Reviews</a>
+            <a class="nav-item nav-link" sec:authorize="hasAnyRole('SALE_USER', 'CUSTOMER_USER')" th:href="@{/orders}" href="/orders">Orders</a>
+            <a class="nav-item nav-link" sec:authorize="hasRole('ADMINISTRATOR')" th:href="@{/reviews}" href="/reviews">Reviews</a>
             <a class="nav-item nav-link" th:href="@{/articles}" href="/articles">Articles</a>
-            <a class="nav-item nav-link" th:href="@{/articles/add}" href="/articles/add">Add article</a>
-            <a class="nav-item nav-link" th:href="@{/users}" href="/users">Users</a>
-            <a class="nav-item nav-link" th:href="@{/users/add}" href="/users/add">Add user</a>
+            <a class="nav-item nav-link" sec:authorize="hasRole('SALE_USER')" th:href="@{/articles/add}" href="/articles/add">Add article</a>
+            <a class="nav-item nav-link" sec:authorize="hasRole('ADMINISTRATOR')" th:href="@{/users}" href="/users">Users</a>
+            <a class="nav-item nav-link" sec:authorize="hasRole('ADMINISTRATOR')" th:href="@{/users/add}" href="/users/add">Add user</a>
+            <a class="nav-item nav-link" th:href="@{/reviews/add}" href="/reviews/add">Add review</a>
             <a class="nav-item nav-link active">Profile</a>
             <a class="nav-item nav-link" th:href="@{/login}" href="/login">Log in</a>
             <a class="nav-item nav-link" th:href="@{/logout}" href="/logout">Log out</a>
@@ -69,7 +71,7 @@
             <label for="telephone">Telephone</label>
             <input th:field="*{telephone}" type="tel" class="form-control" id="telephone" name="telephone">
             <small id="telephoneHelpBlock" class="form-text text-muted">
-                Please use the following format for telephone number: +375(12)345-67-89
+                Please use the following format for telephone number: +375(11)111-11-11
             </small>
         </div>
         <button type="submit" class="btn btn-outline-success">Submit changes</button>

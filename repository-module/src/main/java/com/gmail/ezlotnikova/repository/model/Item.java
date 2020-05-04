@@ -12,8 +12,15 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.SQLDelete;
+
 @Entity
 @Table(name = "item")
+@SQLDelete(sql =
+        "UPDATE item " +
+                "SET is_available = false " +
+                "WHERE id = ?")
+//@Where(clause = "is_available = true")
 public class Item {
 
     @Id
@@ -29,6 +36,9 @@ public class Item {
 
     @Column
     private BigDecimal price;
+
+    @Column(name = "is_available")
+    private Boolean isAvailable = true;
 
     @OneToOne(
             mappedBy = "item",

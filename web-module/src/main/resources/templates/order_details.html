@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+
+<head>
+    <title>Order details</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}"/>
+</head>
+
+<body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" aria-label="Site navigation">
+        <a class="navbar-brand">ShopProject</a>
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" th:href="@{/items}" href="/items">Items</a>
+            <a class="nav-item nav-link" th:href="@{/orders}" href="/orders">Orders</a>
+            <a class="nav-item nav-link active">Order details</a>
+            <a class="nav-item nav-link" th:href="@{/articles}" href="/articles">Articles</a>
+            <a class="nav-item nav-link" th:href="@{/articles/add}" href="/articles/add">Add article</a>
+            <a class="nav-item nav-link" th:href="@{/reviews/add}" href="/reviews/add">Add review</a>
+            <a class="nav-item nav-link" th:href="@{/profile}" href="/profile">Profile</a>
+            <a class="nav-item nav-link" th:href="@{/login}" href="/login">Log in</a>
+            <a class="nav-item nav-link" th:href="@{/logout}" href="/logout">Log out</a>
+        </div>
+    </nav>
+    <br>
+    <div th:object="${order}">
+        <p>
+            <span class="font-weight-bold">Order Number</span>
+            <span class="font-weight-normal" th:text="*{id}"></span>
+        </p>
+        <p>
+            <span class="font-weight-bold">Status</span>
+        <form
+                th:action="@{/orders/{id}(id=*{id})}"
+                action="/orders"
+                method="post">
+            <select th:name="newStatus">
+                <option th:each="statusEntry : ${statuses}"
+                        th:value="${statusEntry}"
+                        th:text="${statusEntry}"
+                        th:selected="(*{status} == ${statusEntry})">
+                </option>
+            </select>
+            <input type="submit" class="btn btn-outline-success" value="Update status"/>
+        </form>
+        <p>
+            <span class="font-weight-bold">User Id</span>
+            <span class="font-weight-normal" th:text="*{userId}"></span>
+        </p>
+        <p>
+            <span class="font-weight-bold">User Telephone</span>
+            <span class="font-weight-normal" th:text="*{userTelephone}"></span>
+        </p>
+        <p>
+            <span class="font-weight-bold">Item name</span>
+            <span class="font-weight-normal" th:text="*{itemName}"></span>
+        </p>
+        <p>
+            <span class="font-weight-bold">Amount</span>
+            <span class="font-weight-normal" th:text="*{amount}"></span>
+        </p>
+        <p>
+            <span class="font-weight-bold">Sum</span>
+            <span class="font-weight-normal" th:text="*{sum}"></span>
+        </p>
+    </div>
+</div>
+<script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
+</body>
+</html>

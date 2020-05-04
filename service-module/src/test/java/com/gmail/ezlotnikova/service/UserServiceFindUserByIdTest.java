@@ -8,13 +8,11 @@ import com.gmail.ezlotnikova.service.impl.UserServiceImpl;
 import com.gmail.ezlotnikova.service.model.ShowUserDTO;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static com.gmail.ezlotnikova.service.util.converter.UserConverter.convertToShowUserDTO;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,7 +31,6 @@ public class UserServiceFindUserByIdTest {
                 userRepository, passwordService);
     }
 
-    @Disabled
     @Test
     public void findExistingUserById_returnShowUserDTO() {
         Long id = 1L;
@@ -43,8 +40,6 @@ public class UserServiceFindUserByIdTest {
         expectedReturnedUserDTO.setId(id);
         when(userRepository.findById(id))
                 .thenReturn(expectedReturnedUser);
-        when(convertToShowUserDTO(expectedReturnedUser))
-                .thenReturn(expectedReturnedUserDTO);
         ShowUserDTO returnedUserDTO = userService.findUserById(id);
         Assertions.assertThat(returnedUserDTO).isNotNull();
         Assertions.assertThat(returnedUserDTO.getId().equals(id));

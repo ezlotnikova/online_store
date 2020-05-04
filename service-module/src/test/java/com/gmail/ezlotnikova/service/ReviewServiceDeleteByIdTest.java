@@ -1,6 +1,7 @@
 package com.gmail.ezlotnikova.service;
 
 import com.gmail.ezlotnikova.repository.ReviewRepository;
+import com.gmail.ezlotnikova.repository.UserRepository;
 import com.gmail.ezlotnikova.repository.model.Review;
 import com.gmail.ezlotnikova.repository.model.User;
 import com.gmail.ezlotnikova.repository.model.UserDetails;
@@ -22,12 +23,15 @@ public class ReviewServiceDeleteByIdTest {
 
     @Mock
     private ReviewRepository reviewRepository;
-
+    @Mock
+    private UserRepository userRepository;
     private ReviewService reviewService;
 
     @BeforeEach
     public void setUp() {
-        reviewService = new ReviewServiceImpl(reviewRepository);
+        reviewService = new ReviewServiceImpl(
+                reviewRepository,
+                userRepository);
     }
 
     @Test

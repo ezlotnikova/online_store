@@ -1,4 +1,4 @@
-package com.gmail.ezlotnikova.web.controller;
+package com.gmail.ezlotnikova.web.controller.web;
 
 import javax.validation.Valid;
 
@@ -56,18 +56,15 @@ public class ProfileController {
     ) {
         Long id = appUser.getId();
         profile.setId(id);
-        UserDetailsDTO databaseProfile = userDetailsService.getUserDetailsById(id);
         if (!errors.hasErrors()) {
-            if (!profile.equals(databaseProfile)) {
-                ExecutionResult result = userDetailsService.updateUserDetails(id, profile);
-                if (result.getResultType() == EXECUTED_SUCCESSFULLY) {
-                    redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Profile updated successfully");
-                } else {
-                    redirectAttributes.addFlashAttribute(FAILURE_MESSAGE,
-                            "Something went wrong and changes wasn't saved. Please try again.");
-                }
-                return "redirect:/profile";
+            ExecutionResult result = userDetailsService.updateUserDetails(id, profile);
+            if (result.getResultType() == EXECUTED_SUCCESSFULLY) {
+                redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Profile updated successfully");
+            } else {
+                redirectAttributes.addFlashAttribute(FAILURE_MESSAGE,
+                        "Something went wrong and changes wasn't saved. Please try again.");
             }
+            return "redirect:/profile";
         }
         return "profile";
     }
@@ -76,7 +73,7 @@ public class ProfileController {
     public String showChangePasswordForm(Model model) {
         PasswordDTO password = new PasswordDTO();
         model.addAttribute("password", password);
-        return "change_password";
+        return "password_change";
     }
 
     @PostMapping("/password")
@@ -87,7 +84,7 @@ public class ProfileController {
             RedirectAttributes redirectAttributes
     ) {
         if (errors.hasErrors()) {
-            return "change_password";
+            return "password_change";
         } else {
             Long id = appUser.getId();
             ExecutionResult result = passwordService.changePasswordByUserId(id, password.getNewPassword());

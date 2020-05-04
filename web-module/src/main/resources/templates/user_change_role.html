@@ -5,7 +5,7 @@
       xsi:schemaLocation="http://www.thymeleaf.org">
 
 <head>
-    <title>Item</title>
+    <title>User information</title>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}"/>
 </head>
@@ -18,9 +18,9 @@
             <a class="nav-item nav-link" th:href="@{/items}" href="/items">Items</a>
             <a class="nav-item nav-link" th:href="@{/reviews}" href="/reviews">Reviews</a>
             <a class="nav-item nav-link" th:href="@{/articles}" href="/articles">Articles</a>
-            <a class="nav-item nav-link" th:href="@{/articles/add}" href="/articles/add">Add article</a>
             <a class="nav-item nav-link" th:href="@{/users}" href="/users">Users</a>
             <a class="nav-item nav-link" th:href="@{/users/add}" href="/users/add">Add user</a>
+            <a class="nav-item nav-link" th:href="@{/reviews/add}" href="/reviews/add">Add review</a>
             <a class="nav-item nav-link" th:href="@{/profile}" href="/profile">Profile</a>
             <a class="nav-item nav-link" th:href="@{/login}" href="/login">Log in</a>
             <a class="nav-item nav-link" th:href="@{/logout}" href="/logout">Log out</a>
@@ -28,45 +28,44 @@
     </nav>
     <br>
     <div th:object="${user}">
-    <p>
-        <span class="font-weight-bold">Last Name</span>
-        <span class="font-weight-normal" th:text="*{lastName}"></span>
-    </p>
-    <p>
-        <span class="font-weight-bold">First Name</span>
-        <span class="font-weight-normal" th:text="*{firstName}"></span>
-    </p>
-    <p>
-        <span class="font-weight-bold">Patronymic Name</span>
-        <span class="font-weight-normal" th:text="*{patronymicName}"></span>
-    </p>
-    <p>
-        <span class="font-weight-bold">Email</span>
-        <span class="font-weight-normal" th:text="*{email}"></span>
-    </p>
-    <p>
-        <span class="font-weight-bold">Current role</span>
-        <span class="font-weight-normal" th:text="*{role}"></span>
-    </p>
-    <p>
-        <span class="font-weight-bold">Select new role:</span>
-    <form
-            th:action="@{/users/{id}(id=*{id})}"
-            action="/users"
-            method="post">
-        <select th:name="newRole">
-            <option th:each="roleEntry : ${roles}"
-                    th:value="${roleEntry}"
-                    th:text="${roleEntry}"
-                    th:selected="(*{role} == ${roleEntry})">
-            </option>
-        </select>
-        <br>
-        <br>
-        <input type="submit" class="btn btn-outline-success" value="Update role"/>
-    </form>
-    </p>
-</div>
+        <p>
+            <span class="font-weight-bold">Last Name</span>
+            <span class="font-weight-normal" th:text="*{lastName}"></span>
+        </p>
+        <p>
+            <span class="font-weight-bold">First Name</span>
+            <span class="font-weight-normal" th:text="*{firstName}"></span>
+        </p>
+        <p>
+            <span class="font-weight-bold">Patronymic Name</span>
+            <span class="font-weight-normal" th:text="*{patronymicName}"></span>
+        </p>
+        <p>
+            <span class="font-weight-bold">Email</span>
+            <span class="font-weight-normal" th:text="*{email}"></span>
+        </p>
+        <p>
+            <span class="font-weight-bold">Current role</span>
+            <span class="font-weight-normal" th:text="*{role}"></span>
+        </p>
+        <p>
+            <span class="font-weight-bold">Select new role:</span>
+        <form
+                th:action="@{/users/{id}(id=*{id})}"
+                action="/users"
+                method="post">
+            <select th:name="newRole">
+                <option th:each="roleEntry : ${roles}"
+                        th:value="${roleEntry}"
+                        th:text="${roleEntry}"
+                        th:selected="(*{role} == ${roleEntry})">
+                </option>
+            </select>
+            <br>
+            <br>
+            <input type="submit" class="btn btn-outline-success" value="Update role"/>
+        </form>
+    </div>
 </div>
 <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
 <script th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>

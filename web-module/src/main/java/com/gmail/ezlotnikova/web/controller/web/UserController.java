@@ -1,4 +1,4 @@
-package com.gmail.ezlotnikova.web.controller;
+package com.gmail.ezlotnikova.web.controller.web;
 
 import java.util.List;
 import javax.validation.Valid;
@@ -55,12 +55,15 @@ public class UserController {
     @PostMapping("/add")
     public String addNewUser(
             @Valid @ModelAttribute(name = "user") AddUserDTO user,
-            BindingResult errors
+            BindingResult errors,
+            RedirectAttributes redirectAttributes
     ) {
         if (errors.hasErrors()) {
             return "user_add";
         } else {
             userService.add(user);
+            redirectAttributes.addFlashAttribute(
+                    SUCCESS_MESSAGE, "User was added successfully");
             return "redirect:/users";
         }
     }
@@ -71,19 +74,29 @@ public class UserController {
             @PathVariable(name = "id") Long id
     ) {
         ShowUserDTO user = userService.findUserById(id);
-        model.addAttribute("user", user);
-        model.addAttribute("roles", UserRoleEnum.values());
-        return "user_change_role";
+        if (user != null) {
+            model.addAttribute("user", user);
+            model.addAttribute("roles", UserRoleEnum.values());
+            return "user_change_role";
+        } else {
+            WebExceptionHandler.ResponseError error = new WebExceptionHandler.ResponseError();
+            error.setMessage("User not found");
+            model.addAttribute("error", error);
+            return "error";
+        }
     }
 
     @PostMapping("/{id}")
-    public String showUpdateRoleForm(
+    public String updateUserRole(
             @PathVariable(name = "id") Long id,
             @RequestParam(value = "newRole") UserRoleEnum newRole,
             RedirectAttributes redirectAttributes
     ) {
         ExecutionResult result = userService.updateUserRoleById(id, newRole);
-        if (result.getResultType() == EXECUTION_FAILED) {
+        if (result.getResultType().equals(EXECUTED_SUCCESSFULLY)) {
+            redirectAttributes.addFlashAttribute(
+                    SUCCESS_MESSAGE, "User's role updated successfully");
+        } else {
             redirectAttributes.addFlashAttribute(
                     FAILURE_MESSAGE, result.getErrorMessage());
         }
@@ -116,14 +129,17 @@ public class UserController {
             StringBuilder errorMessage = new StringBuilder();
             for (Long id : idList) {
                 ExecutionResult result = userService.deleteById(id);
-                if (result.getResultType() == EXECUTION_FAILED) {
+                if (result.getResultType().equals(EXECUTION_FAILED)) {
                     allUsersDeleted = false;
-                    errorMessage.append(result.getErrorMessage()).append(" ");
+                    errorMessage.append(result.getErrorMessage());
                 }
             }
             if (!allUsersDeleted) {
                 redirectAttributes.addFlashAttribute(
                         FAILURE_MESSAGE, errorMessage.toString());
+            } else {
+                redirectAttributes.addFlashAttribute(
+                        SUCCESS_MESSAGE, "User(s) deleted successfully");
             }
         }
         return "redirect:/users";

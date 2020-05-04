@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sec="http://www.w3.org/1999/xhtml"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+
+<head>
+    <title>Add review</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}"/>
+</head>
+
+<body>
+<div class="container">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" aria-label="Site navigation">
+        <a class="navbar-brand">ShopProject</a>
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" th:href="@{/items}" href="/items">Items</a>
+            <a class="nav-item nav-link" sec:authorize="hasAnyRole('SALE_USER', 'CUSTOMER_USER')" th:href="@{/orders}" href="/orders">Orders</a>
+            <a class="nav-item nav-link" sec:authorize="hasRole('ADMINISTRATOR')" th:href="@{/reviews}" href="/reviews">Reviews</a>
+            <a class="nav-item nav-link" th:href="@{/articles}" href="/articles">Articles</a>
+            <a class="nav-item nav-link" sec:authorize="hasRole('SALE_USER')" th:href="@{/articles/add}" href="/articles/add">Add article</a>
+            <a class="nav-item nav-link" sec:authorize="hasRole('ADMINISTRATOR')" th:href="@{/users}" href="/users">Users</a>
+            <a class="nav-item nav-link" sec:authorize="hasRole('ADMINISTRATOR')" th:href="@{/users/add}" href="/users/add">Add user</a>
+            <a class="nav-item nav-link active">Add review</a>
+            <a class="nav-item nav-link" th:href="@{/profile}" href="/profile">Profile</a>
+            <a class="nav-item nav-link" th:href="@{/login}" href="/login">Log in</a>
+            <a class="nav-item nav-link" th:href="@{/logout}" href="/logout">Log out</a>
+        </div>
+    </nav>
+
+    <div th:if="${successMessage}" th:text="${successMessage}" class="alert alert-success" role="alert">
+        Success Alert
+    </div>
+    <div th:if="${failureMessage}" th:text="${failureMessage}" class="alert alert-danger" role="alert">
+        Failure Alert
+    </div>
+
+    <br>
+    <form th:action="@{/reviews/add}"
+          action="/reviews/add"
+          th:object="${review}"
+          method="post">
+        <span th:if="${#fields.hasErrors ('reviewText')}"
+              th:errors="*{reviewText}"
+              style="color:red">
+        </span>
+        <div class="form-group">
+            <label for="reviewText">Your review:</label>
+            <textarea class="form-control" rows="5" th:field="*{reviewText}" id="reviewText" name="reviewText"></textarea>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-outline-success">Add review</button>
+    </form>
+</div>
+<script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
+</body>
+</html>

@@ -9,14 +9,11 @@ import com.gmail.ezlotnikova.service.model.AddUserDTO;
 import com.gmail.ezlotnikova.service.util.converter.UserConverter;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static com.gmail.ezlotnikova.service.util.converter.UserConverter.convertToAddUserDTO;
-import static com.gmail.ezlotnikova.service.util.converter.UserConverter.convertToDatabaseObject;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -39,7 +36,6 @@ public class UserServiceAddUserTest {
                 userRepository, passwordService);
     }
 
-    @Disabled
     @Test
     public void addValidUser_returnUserDTO() {
         AddUserDTO newUserDTO = getValidAddUserDTO();
@@ -48,12 +44,8 @@ public class UserServiceAddUserTest {
         User newUser = getValidUser();
         User expectedReturnedUser = getValidUser();
         expectedReturnedUser.setId(1L);
-        when(convertToDatabaseObject(newUserDTO))
-                .thenReturn(newUser);
         when(userRepository.persist(newUser))
                 .thenReturn(expectedReturnedUser);
-        when(convertToAddUserDTO(expectedReturnedUser))
-                .thenReturn(expectedReturnedUserDTO);
         AddUserDTO returnedUser = userService.add(newUserDTO);
         verify(userRepository, times(1)).persist(newUser);
         Assertions.assertThat(returnedUser).isNotNull();

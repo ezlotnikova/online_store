@@ -27,7 +27,7 @@ public class ItemRepositoryImpl extends GenericRepositoryImpl<Long, Item> implem
                 pageRequest.getPageNumber(), pageRequest.getPageSize());
         int maxResult = pageRequest.getPageSize();
         Long count = getTotalCount();
-        String hql = "FROM Item as i ORDER BY i.name";
+        String hql = "FROM Item as i WHERE i.isAvailable = 1 ORDER BY i.name";
         Query query = entityManager.createQuery(hql);
         query.setFirstResult(startPosition);
         query.setMaxResults(maxResult);

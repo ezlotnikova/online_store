@@ -1,8 +1,9 @@
 package com.gmail.ezlotnikova.service.model;
 
+import java.util.Objects;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import com.gmail.ezlotnikova.repository.model.сonstant.UserRoleEnum;
@@ -17,19 +18,22 @@ import static com.gmail.ezlotnikova.service.model.validation.ModelValidationMess
 public class AddUserDTO {
 
     private Long id;
-    @NotNull
+
     @NotEmpty(message = NOT_EMPTY_MESSAGE)
     @Size(max = MAX_LAST_NAME_SIZE)
     private String lastName;
-    @NotNull
+
     @NotEmpty(message = NOT_EMPTY_MESSAGE)
     @Size(max = MAX_FIRST_NAME_SIZE)
     private String firstName;
+
     @Size(max = MAX_PATRONYMIC_NAME_SIZE)
     private String patronymicName;
-    @NotNull
-    @Pattern(regexp = EMAIL_ADDRESS_PATTERN, message = INVALID_EMAIL_ADDRESS_MESSAGE)
+
+    @NotEmpty(message = NOT_EMPTY_MESSAGE)
+    @Email(regexp = EMAIL_ADDRESS_PATTERN, message = INVALID_EMAIL_ADDRESS_MESSAGE)
     private String email;
+
     @NotNull(message = NOT_EMPTY_MESSAGE)
     private UserRoleEnum role;
 
@@ -79,6 +83,28 @@ public class AddUserDTO {
 
     public void setRole(UserRoleEnum role) {
         this.role = role;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        AddUserDTO userDTO = (AddUserDTO) o;
+        return Objects.equals(id, userDTO.id) &&
+                Objects.equals(lastName, userDTO.lastName) &&
+                Objects.equals(firstName, userDTO.firstName) &&
+                Objects.equals(patronymicName, userDTO.patronymicName) &&
+                Objects.equals(email, userDTO.email) &&
+                role == userDTO.role;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, lastName, firstName, patronymicName, email, role);
     }
 
 }

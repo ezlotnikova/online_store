@@ -5,7 +5,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import com.gmail.ezlotnikova.service.model.AddArticleDTO;
-import com.gmail.ezlotnikova.service.util.converter.DateTimeUtil;
+import com.gmail.ezlotnikova.service.util.DateTimeUtil;
 
 public class TimestampValidator implements ConstraintValidator<TimestampMatches, Object> {
 

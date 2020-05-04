@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sec="http://www.w3.org/1999/xhtml"
       xsi:schemaLocation="http://www.thymeleaf.org">
 
 <head>
@@ -17,11 +17,13 @@
         <a class="navbar-brand">ShopProject</a>
         <div class="navbar-nav">
             <a class="nav-item nav-link active">Items</a>
-            <a class="nav-item nav-link" th:href="@{/reviews}" href="/reviews">Reviews</a>
+            <a class="nav-item nav-link" sec:authorize="hasAnyRole('SALE_USER', 'CUSTOMER_USER')" th:href="@{/orders}" href="/orders">Orders</a>
+            <a class="nav-item nav-link" sec:authorize="hasRole('ADMINISTRATOR')" th:href="@{/reviews}" href="/reviews">Reviews</a>
             <a class="nav-item nav-link" th:href="@{/articles}" href="/articles">Articles</a>
-            <a class="nav-item nav-link" th:href="@{/articles/add}" href="/articles/add">Add article</a>
-            <a class="nav-item nav-link" th:href="@{/users}" href="/users">Users</a>
-            <a class="nav-item nav-link" th:href="@{/users/add}" href="/users/add">Add user</a>
+            <a class="nav-item nav-link" sec:authorize="hasRole('SALE_USER')" th:href="@{/articles/add}" href="/articles/add">Add article</a>
+            <a class="nav-item nav-link" sec:authorize="hasRole('ADMINISTRATOR')" th:href="@{/users}" href="/users">Users</a>
+            <a class="nav-item nav-link" sec:authorize="hasRole('ADMINISTRATOR')" th:href="@{/users/add}" href="/users/add">Add user</a>
+            <a class="nav-item nav-link" th:href="@{/reviews/add}" href="/reviews/add">Add review</a>
             <a class="nav-item nav-link" th:href="@{/profile}" href="/profile">Profile</a>
             <a class="nav-item nav-link" th:href="@{/login}" href="/login">Log in</a>
             <a class="nav-item nav-link" th:href="@{/logout}" href="/logout">Log out</a>
@@ -48,7 +50,8 @@
                 <p class="card-text" th:text="|*{price} $|">Price</p>
                 <a href="items" th:href="@{/items/{uuid}(uuid=*{uniqueNumber})}" class="card-link">See details</a>
             </div>
-            <div class="card-footer text-muted">
+
+            <div sec:authorize="hasRole('SALE_USER')" class="card-footer text-muted">
                 <div class="row">
                     <div class="col text-left">
                         <a class="btn btn-outline-warning"
@@ -68,6 +71,24 @@
                     </div>
                 </div>
             </div>
+
+            <div sec:authorize="hasRole('CUSTOMER_USER')" class="card-footer text-muted">
+                <form th:action="@{/orders}"
+                      action="/orders"
+                      method="post">
+                    <input type="hidden" th:name="itemId" th:value="*{id}">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Amount</span>
+                        </div>
+                        <input type="number" min="1" max="5" value="1" th:name="amount" id="amount" class="form-control">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-outline-success">Buy</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
         </div>
         <br>
     </div>

@@ -5,7 +5,7 @@
       xsi:schemaLocation="http://www.thymeleaf.org">
 
 <head>
-    <title>Articles</title>
+    <title>Read article</title>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}"/>
 </head>
@@ -16,12 +16,14 @@
         <a class="navbar-brand">ShopProject</a>
         <div class="navbar-nav">
             <a class="nav-item nav-link" th:href="@{/items}" href="/items">Items</a>
-            <a class="nav-item nav-link" th:href="@{/reviews}" href="/reviews">Reviews</a>
+            <a class="nav-item nav-link" sec:authorize="hasAnyRole('SALE_USER', 'CUSTOMER_USER')" th:href="@{/orders}" href="/orders">Orders</a>
+            <a class="nav-item nav-link" sec:authorize="hasRole('ADMINISTRATOR')" th:href="@{/reviews}" href="/reviews">Reviews</a>
             <a class="nav-item nav-link" th:href="@{/articles}" href="/articles">Articles</a>
             <a class="nav-item nav-link active">Read</a>
-            <a class="nav-item nav-link" th:href="@{/articles/add}" href="/articles/add">Add article</a>
-            <a class="nav-item nav-link" th:href="@{/users}" href="/users">Users</a>
-            <a class="nav-item nav-link" th:href="@{/users/add}" href="/users/add">Add user</a>
+            <a class="nav-item nav-link" sec:authorize="hasRole('SALE_USER')" th:href="@{/articles/add}" href="/articles/add">Add article</a>
+            <a class="nav-item nav-link" sec:authorize="hasRole('ADMINISTRATOR')" th:href="@{/users}" href="/users">Users</a>
+            <a class="nav-item nav-link" sec:authorize="hasRole('ADMINISTRATOR')" th:href="@{/users/add}" href="/users/add">Add user</a>
+            <a class="nav-item nav-link" th:href="@{/reviews/add}" href="/reviews/add">Add review</a>
             <a class="nav-item nav-link" th:href="@{/profile}" href="/profile">Profile</a>
             <a class="nav-item nav-link" th:href="@{/login}" href="/login">Log in</a>
             <a class="nav-item nav-link" th:href="@{/logout}" href="/logout">Log out</a>
@@ -38,54 +40,25 @@
 
     <div th:object="${article}">
         <div class="card">
-
             <div class="card-header">
-                <small><i><span th:text="*{date}"></span></i></small><br>
-                <h5 class="card-title" th:text="*{header}">Header</h5>
-                <a sec:authorize="hasRole('SALE_USER')" class="btn btn-link" data-toggle="collapse" href="#editHeader"
-                   role="button" aria-expanded="false"
-                   aria-controls="editHeader">
-                    Edit
-                </a>
-                <div class="collapse" id="editHeader">
-                    <div class="card card-body">
-                        <form th:action="@{/articles/{id}/header(id=*{id})}"
-                              action="/articles"
-                              method="post">
-                            <input type="text" class="form-control" id="header" name="header"
-                                   th:field="*{header}" th:value="*{header}">
-                            <br>
-                            <button type="submit" class="btn btn-outline-success">Save</button>
-                        </form>
+                <div class="row">
+                    <div class="col text-left">
+                        <small><i><span th:text="|Last modified on *{date}|"></span></i></small><br>
+                        <h5 class="card-title" th:text="*{header}">Header</h5>
+                    </div>
+                    <div class="col text-right" sec:authorize="hasRole('SALE_USER')">
+                        <a class="btn btn-outline-warning"
+                           th:href="@{/articles/{id}/edit(id=*{id})}"
+                           href="@{/articles}"
+                           role="button">
+                            Edit
+                        </a>
                     </div>
                 </div>
             </div>
-
             <div class="card-body">
                 <i><span th:text="|*{authorFirstName} *{authorLastName}|"></span></i>
                 <p class="card-text" th:text="*{content}">Content</p>
-                <br>
-                <a sec:authorize="hasRole('SALE_USER')" class="btn btn-link" data-toggle="collapse" href="#editContent"
-                   role="button" aria-expanded="false"
-                   aria-controls="editContent">
-                    Edit
-                </a>
-                <div class="collapse" id="editContent">
-                    <div class="card card-body">
-                        <form th:action="@{/articles/{id}/content(id=*{id})}"
-                              action="/articles"
-                              method="post">
-                            <!--                                    <span th:if="${#fields.hasErrors ('content')}"-->
-                            <!--                                          th:errors="*{content}"-->
-                            <!--                                          style="color:red">-->
-                            <!--                                    </span>-->
-                            <input type="text" class="form-control" id="content" name="content"
-                                   th:field="*{content}" th:value="*{content}">
-                            <br>
-                            <button type="submit" class="btn btn-outline-success">Save</button>
-                        </form>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -118,8 +91,17 @@
             </div>
         </div>
     </div>
+    <br>
+
+    <a class="btn btn-outline-success"
+       th:href="@{/articles/{id}/comments(id=*{id})}"
+       href="@{/articles}"
+       role="button">
+        Add comment
+    </a>
 
 </div>
+
 <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
 <script th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
 </body>

@@ -1,5 +1,7 @@
 package com.gmail.ezlotnikova.service.constant;
 
+import java.util.Objects;
+
 public class ExecutionResult {
 
     public static ExecutionResult ok() {
@@ -35,6 +37,25 @@ public class ExecutionResult {
 
     public String getErrorMessage() {
         return errorMessage;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ExecutionResult result = (ExecutionResult) o;
+        return errorCode == result.errorCode &&
+                resultType == result.resultType &&
+                Objects.equals(errorMessage, result.errorMessage);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(resultType, errorCode, errorMessage);
     }
 
 }

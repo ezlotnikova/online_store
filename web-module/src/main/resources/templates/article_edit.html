@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+
+<head>
+    <title>Edit article</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}"/>
+</head>
+
+<body>
+<div class="container">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" aria-label="Site navigation">
+        <a class="navbar-brand">ShopProject</a>
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" th:href="@{/items}" href="/items">Items</a>
+            <a class="nav-item nav-link" th:href="@{/orders}" href="/orders">Orders</a>
+            <a class="nav-item nav-link" th:href="@{/articles}" href="/articles">Articles</a>
+            <a class="nav-item nav-link active">Edit article</a>
+            <a class="nav-item nav-link" th:href="@{/articles/add}" href="/articles/add">Add article</a>
+            <a class="nav-item nav-link" th:href="@{/reviews/add}" href="/reviews/add">Add review</a>
+            <a class="nav-item nav-link" th:href="@{/profile}" href="/profile">Profile</a>
+            <a class="nav-item nav-link" th:href="@{/login}" href="/login">Log in</a>
+            <a class="nav-item nav-link" th:href="@{/logout}" href="/logout">Log out</a>
+        </div>
+    </nav>
+    <br>
+
+    <form th:object="${article}"
+          th:action="@{/articles/{id}/edit(id=*{id})}"
+          action="/articles"
+          method="post">
+        <span th:if="${#fields.hasErrors ('header')}"
+              th:errors="*{header}"
+              style="color:red">
+        </span>
+        <div class="form-group">
+            <input th:field="*{header}" type="text" class="form-control" id="header" name="header">
+        </div>
+        <span th:if="${#fields.hasErrors ('content')}"
+              th:errors="*{content}"
+              style="color:red">
+        </span>
+        <div class="form-group">
+            <textarea rows="10" th:field="*{content}" class="form-control" id="content" name="content"></textarea>
+        </div>
+        <button type="submit" class="btn btn-outline-success">Save changes</button>
+    </form>
+
+</div>
+<script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
+</body>
+</html>

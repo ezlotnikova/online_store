@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sec="http://www.w3.org/1999/xhtml"
+      xsi:schemaLocation="http://www.thymeleaf.org">
+
+<head>
+    <title>Orders</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}"/>
+</head>
+
+<body>
+<div class="container">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" aria-label="Site navigation">
+        <a class="navbar-brand">ShopProject</a>
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" th:href="@{/items}" href="/items">Items</a>
+            <a class="nav-item nav-link active">Orders</a>
+            <a class="nav-item nav-link" th:href="@{/articles}" href="/articles">Articles</a>
+            <a class="nav-item nav-link" sec:authorize="hasRole('SALE_USER')" th:href="@{/articles/add}" href="/articles/add">Add article</a>
+            <a class="nav-item nav-link" th:href="@{/reviews/add}" href="/reviews/add">Add review</a>
+            <a class="nav-item nav-link" th:href="@{/profile}" href="/profile">Profile</a>
+            <a class="nav-item nav-link" th:href="@{/login}" href="/login">Log in</a>
+            <a class="nav-item nav-link" th:href="@{/logout}" href="/logout">Log out</a>
+        </div>
+    </nav>
+    <br>
+
+    <div th:if="${successMessage}" th:text="${successMessage}" class="alert alert-success" role="alert">
+        Success Alert
+    </div>
+    <div th:if="${failureMessage}" th:text="${failureMessage}" class="alert alert-danger" role="alert">
+        Failure Alert
+    </div>
+
+    <div align="center" th:if="${orders.empty}">
+        No orders yet.
+    </div>
+
+    <div th:unless="${orders.empty}">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>Order Number</th>
+                <th>Status</th>
+                <th>Item name</th>
+                <th>Amount</th>
+                <th>Sum</th>
+                <th sec:authorize="hasRole('SALE_USER')">Details</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order:${orders}" th:object="${order}">
+                <td th:text="*{id}">Order Number</td>
+                <td th:text="*{status}">Status</td>
+                <td th:text="*{itemName}">Item name</td>
+                <td th:text="*{amount}">Amount</td>
+                <td th:text="*{sum}">Sum</td>
+                <td sec:authorize="hasRole('SALE_USER')">
+                    <a class="btn btn-outline-success"
+                       th:href="@{/orders/{id}(id=*{id})}"
+                       href="@{/orders}"
+                       role="button">
+                        See details
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <nav aria-label="Search result pages" th:if="${orders.totalPages gt 0}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${orders.number eq 0} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/orders?page={id}(id=${orders.number lt 2 ? 1 : orders.number})}"
+                   aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item" th:classappend="${i eq orders.number + 1} ? 'disabled'"
+                th:each="i : ${#numbers.sequence( 1, orders.totalPages, 1)}">
+                <a class="page-link" th:href="@{/orders?page={id}(id=${i})}" th:text="${i}"
+                   th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+            </li>
+            <li class="page-item" th:classappend="${orders.number + 1 eq orders.totalPages} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/orders?page={id}(id=${orders.number + 2})}"
+                   aria-label="Next" title="Next Page" data-toggle="tooltip">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+</div>
+<script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
+</body>
+</html>
