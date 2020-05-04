@@ -2,6 +2,7 @@ package com.gmail.ezlotnikova.service.util.converter;
 
 import com.gmail.ezlotnikova.repository.model.Comment;
 import com.gmail.ezlotnikova.service.model.AddCommentDTO;
+import com.gmail.ezlotnikova.service.util.DateTimeUtil;
 
 public class CommentConverter {
 

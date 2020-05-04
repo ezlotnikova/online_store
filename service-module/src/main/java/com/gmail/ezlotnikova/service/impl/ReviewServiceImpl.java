@@ -10,7 +10,7 @@ import com.gmail.ezlotnikova.service.ReviewService;
 import com.gmail.ezlotnikova.service.constant.ExecutionResult;
 import com.gmail.ezlotnikova.service.model.AddReviewDTO;
 import com.gmail.ezlotnikova.service.model.ShowReviewDTO;
-import com.gmail.ezlotnikova.service.util.converter.DateTimeUtil;
+import com.gmail.ezlotnikova.service.util.DateTimeUtil;
 import com.gmail.ezlotnikova.service.util.converter.ReviewConverter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

@@ -2,6 +2,7 @@ package com.gmail.ezlotnikova.web.controller.unit.web;
 
 import java.math.BigDecimal;
 
+import com.gmail.ezlotnikova.repository.model.сonstant.UserRoleEnum;
 import com.gmail.ezlotnikova.service.OrderService;
 import com.gmail.ezlotnikova.service.model.ShowOrderDTO;
 import com.gmail.ezlotnikova.service.model.UserDTO;
@@ -46,7 +47,7 @@ class OrderControllerAddOrderTest {
     private OrderService orderService;
 
     @Test
-    @WithMockUser(roles = "SALE_USER")
+    @WithMockUser(roles = "CUSTOMER_USER")
     void whenValidRequest_returnRedirectAndView() throws Exception {
         ShowOrderDTO order = getShowOrderDTO();
         AppUser appUser = getAppUser();
@@ -63,7 +64,7 @@ class OrderControllerAddOrderTest {
     }
 
     @Test
-    @WithMockUser(roles = "SALE_USER")
+    @WithMockUser(roles = "CUSTOMER_USER")
     void whenInvalidRequest_returnBadRequest() throws Exception {
         mockMvc.perform(
                 post("/orders")
@@ -73,7 +74,7 @@ class OrderControllerAddOrderTest {
     }
 
     @Test
-    @WithMockUser(roles = "SALE_USER")
+    @WithMockUser(roles = "CUSTOMER_USER")
     void whenValidRequest_callBusinessLogic() throws Exception {
         ShowOrderDTO order = getShowOrderDTO();
         AppUser appUser = getAppUser();
@@ -90,7 +91,7 @@ class OrderControllerAddOrderTest {
     }
 
     @Test
-    @WithMockUser(roles = "SALE_USER")
+    @WithMockUser(roles = "CUSTOMER_USER")
     void whenValidRequest_showSuccessMessage() throws Exception {
         ShowOrderDTO order = getShowOrderDTO();
         AppUser appUser = getAppUser();
@@ -123,6 +124,7 @@ class OrderControllerAddOrderTest {
     private AppUser getAppUser() {
         UserDTO user = new UserDTO();
         user.setId(1L);
+        user.setRole(UserRoleEnum.CUSTOMER_USER);
         return new AppUser(user);
     }
 

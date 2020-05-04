@@ -15,8 +15,8 @@ import com.gmail.ezlotnikova.service.model.ArticlePreviewDTO;
 import com.gmail.ezlotnikova.service.model.ArticleWithCommentsDTO;
 import com.gmail.ezlotnikova.service.model.CommentDTO;
 
-import static com.gmail.ezlotnikova.service.util.converter.DateTimeUtil.convertTimestampToString;
-import static com.gmail.ezlotnikova.service.util.converter.DateTimeUtil.getCurrentTimestamp;
+import static com.gmail.ezlotnikova.service.util.DateTimeUtil.convertTimestampToString;
+import static com.gmail.ezlotnikova.service.util.DateTimeUtil.getCurrentTimestamp;
 import static com.gmail.ezlotnikova.service.util.converter.constant.ArticlePreviewConstant.ARTICLE_PREVIEW_LENGTH;
 
 public class ArticleConverter {

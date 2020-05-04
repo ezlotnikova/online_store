@@ -40,19 +40,32 @@ public class SecurityConfig {
             http.httpBasic()
                     .and()
                     .authorizeRequests()
+                    .antMatchers("/reviews/add")
+                    .hasRole(
+                            UserRoleEnum.CUSTOMER_USER.name())
                     .antMatchers("/reviews/**", "/users/**")
                     .hasRole(UserRoleEnum.ADMINISTRATOR.name())
-                    .antMatchers("/articles/add")
+                    .antMatchers("/articles/add", "/articles/*/edit", "/articles/*/delete")
                     .hasRole(
                             UserRoleEnum.SALE_USER.name())
                     .antMatchers("/articles/**")
                     .hasAnyRole(
                             UserRoleEnum.CUSTOMER_USER.name(),
                             UserRoleEnum.SALE_USER.name())
+                    .antMatchers("/items", "/items/*")
+                    .hasAnyRole(
+                            UserRoleEnum.CUSTOMER_USER.name(),
+                            UserRoleEnum.SALE_USER.name())
                     .antMatchers("/items/**")
+                    .hasRole(
+                            UserRoleEnum.SALE_USER.name())
+                    .antMatchers("/orders")
                     .hasAnyRole(
                             UserRoleEnum.SALE_USER.name(),
                             UserRoleEnum.CUSTOMER_USER.name())
+                    .antMatchers("/orders/**")
+                    .hasRole(
+                            UserRoleEnum.SALE_USER.name())
                     .antMatchers("/profile/**")
                     .hasAnyRole(
                             UserRoleEnum.ADMINISTRATOR.name(),
@@ -65,7 +78,6 @@ public class SecurityConfig {
                     .formLogin()
                     .loginPage("/login")
                     .defaultSuccessUrl("/")
-                    .permitAll()
                     .and()
                     .logout()
                     .permitAll()

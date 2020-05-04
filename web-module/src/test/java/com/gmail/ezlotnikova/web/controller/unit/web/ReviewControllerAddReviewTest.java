@@ -1,5 +1,6 @@
 package com.gmail.ezlotnikova.web.controller.unit.web;
 
+import com.gmail.ezlotnikova.repository.model.сonstant.UserRoleEnum;
 import com.gmail.ezlotnikova.service.ReviewService;
 import com.gmail.ezlotnikova.service.model.AddReviewDTO;
 import com.gmail.ezlotnikova.service.model.UserDTO;
@@ -14,7 +15,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.gmail.ezlotnikova.service.model.validation.ModelValidationMessageConstant.NOT_EMPTY_MESSAGE;
-import static com.gmail.ezlotnikova.web.controller.constant.ControllerTestConstant.USER_ROLE;
 import static com.gmail.ezlotnikova.web.controller.constant.ControllerTestConstant.VALID_REVIEW_TEXT;
 import static com.gmail.ezlotnikova.web.controller.constant.ResultMessagesConstant.SUCCESS_MESSAGE;
 import static org.hamcrest.core.StringContains.containsString;
@@ -43,7 +43,7 @@ public class ReviewControllerAddReviewTest {
     private ReviewService reviewService;
 
     @Test
-    @WithMockUser(roles = "ADMINISTRATOR")
+    @WithMockUser(roles = "CUSTOMER_USER")
     void whenRequest_returnAddReviewForm() throws Exception {
         mockMvc.perform(
                 get("/reviews/add")
@@ -53,7 +53,7 @@ public class ReviewControllerAddReviewTest {
     }
 
     @Test
-    @WithMockUser(roles = "ADMINISTRATOR")
+    @WithMockUser(roles = "CUSTOMER_USER")
     void whenValidReview_returnRedirectAndView() throws Exception {
         AppUser appUser = getAppUser();
         AddReviewDTO review = getValidReviewDTO();
@@ -65,11 +65,11 @@ public class ReviewControllerAddReviewTest {
                         .with(user(appUser))
                         .param("reviewText", VALID_REVIEW_TEXT)
         ).andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/reviews"));
+                .andExpect(redirectedUrl("/items"));
     }
 
     @Test
-    @WithMockUser(roles = "ADMINISTRATOR")
+    @WithMockUser(roles = "CUSTOMER_USER")
     void whenInvalidReview_returnFormWithErrorMessage() throws Exception {
         AppUser appUser = getAppUser();
         AddReviewDTO review = getValidReviewDTO();
@@ -86,7 +86,7 @@ public class ReviewControllerAddReviewTest {
     }
 
     @Test
-    @WithMockUser(roles = "ADMINISTRATOR")
+    @WithMockUser(roles = "CUSTOMER_USER")
     void whenValidReview_callBusinessLogic() throws Exception {
         AppUser appUser = getAppUser();
         AddReviewDTO review = getValidReviewDTO();
@@ -103,7 +103,7 @@ public class ReviewControllerAddReviewTest {
     }
 
     @Test
-    @WithMockUser(roles = "ADMINISTRATOR")
+    @WithMockUser(roles = "CUSTOMER_USER")
     void whenValidReview_showSuccessMessage() throws Exception {
         AppUser appUser = getAppUser();
         AddReviewDTO review = getValidReviewDTO();
@@ -115,7 +115,7 @@ public class ReviewControllerAddReviewTest {
                         .with(user(appUser))
                         .param("reviewText", VALID_REVIEW_TEXT)
         ).andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/reviews"))
+                .andExpect(redirectedUrl("/items"))
                 .andExpect(flash().attribute(
                         SUCCESS_MESSAGE, "Thank you for your opinion! Your review will appear on our site after moderation."));
     }
@@ -123,7 +123,7 @@ public class ReviewControllerAddReviewTest {
     private AppUser getAppUser() {
         UserDTO user = new UserDTO();
         user.setId(1L);
-        user.setRole(USER_ROLE);
+        user.setRole(UserRoleEnum.CUSTOMER_USER);
         return new AppUser(user);
     }
 

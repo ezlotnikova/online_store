@@ -56,18 +56,15 @@ public class ProfileController {
     ) {
         Long id = appUser.getId();
         profile.setId(id);
-        UserDetailsDTO databaseProfile = userDetailsService.getUserDetailsById(id);
         if (!errors.hasErrors()) {
-            if (!profile.equals(databaseProfile)) {
-                ExecutionResult result = userDetailsService.updateUserDetails(id, profile);
-                if (result.getResultType() == EXECUTED_SUCCESSFULLY) {
-                    redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Profile updated successfully");
-                } else {
-                    redirectAttributes.addFlashAttribute(FAILURE_MESSAGE,
-                            "Something went wrong and changes wasn't saved. Please try again.");
-                }
-                return "redirect:/profile";
+            ExecutionResult result = userDetailsService.updateUserDetails(id, profile);
+            if (result.getResultType() == EXECUTED_SUCCESSFULLY) {
+                redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Profile updated successfully");
+            } else {
+                redirectAttributes.addFlashAttribute(FAILURE_MESSAGE,
+                        "Something went wrong and changes wasn't saved. Please try again.");
             }
+            return "redirect:/profile";
         }
         return "profile";
     }

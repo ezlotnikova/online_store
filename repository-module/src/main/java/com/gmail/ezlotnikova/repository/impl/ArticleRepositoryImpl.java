@@ -1,5 +1,7 @@
 package com.gmail.ezlotnikova.repository.impl;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import javax.persistence.Query;
 
 import com.gmail.ezlotnikova.repository.ArticleRepository;
@@ -21,11 +23,19 @@ public class ArticleRepositoryImpl extends GenericRepositoryImpl<Long, Article> 
                 pageRequest.getPageNumber(), pageRequest.getPageSize());
         int maxResult = pageRequest.getPageSize();
         Long count = getTotalCount();
-        String hql = "FROM Article as A ORDER BY A.date DESC";
+        Timestamp now = getCurrentTimestamp();
+        String hql = "FROM Article as A WHERE A.date <= :now ORDER BY A.date DESC";
         Query query = entityManager.createQuery(hql);
+        query.setParameter("now", now);
         query.setFirstResult(startPosition);
         query.setMaxResults(maxResult);
         return new PageImpl<Article>(query.getResultList(), pageRequest, count);
+    }
+
+    private Timestamp getCurrentTimestamp() {
+        Date date = new Date();
+        long time = date.getTime();
+        return new Timestamp(time);
     }
 
 }

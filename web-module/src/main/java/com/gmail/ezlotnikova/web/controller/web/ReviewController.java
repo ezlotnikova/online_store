@@ -66,7 +66,7 @@ public class ReviewController {
             reviewService.add(review);
             redirectAttributes.addFlashAttribute(
                     SUCCESS_MESSAGE, "Thank you for your opinion! Your review will appear on our site after moderation.");
-            return "redirect:/reviews";
+            return "redirect:/items";
         }
     }
 

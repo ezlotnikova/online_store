@@ -54,7 +54,7 @@ public class OrderServiceImpl implements OrderService {
     public Page<OrderPreviewDTO> findPaginatedAndOrderedByDate(int pageNumber) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AppUser appUser = (AppUser) authentication.getPrincipal();
-        if (isSaleUser(appUser)) {
+        if (isSaleUser(appUser) || isAPIUser(appUser)) {
             return findAllOrders(pageNumber);
         } else if (isCustomerUser(appUser)) {
             return findOrdersByUserId(pageNumber, appUser.getId());
@@ -101,18 +101,6 @@ public class OrderServiceImpl implements OrderService {
         return order;
     }
 
-    private boolean isSaleUser(AppUser appUser) {
-        return appUser.getAuthorities().stream()
-                .anyMatch(grantedAuthority ->
-                        grantedAuthority.getAuthority().equals("ROLE_" + UserRoleEnum.SALE_USER.name()));
-    }
-
-    private boolean isCustomerUser(AppUser appUser) {
-        return appUser.getAuthorities().stream()
-                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority()
-                        .equals("ROLE_" + UserRoleEnum.CUSTOMER_USER.name()));
-    }
-
     private Page<OrderPreviewDTO> findAllOrders(int pageNumber) {
         /* page numeration in UI starts from 1, but in Pageable and Page objects it starts from zero,
         so parameter passed to PageRequest constructor is "pageNumber - 1" */
@@ -127,6 +115,24 @@ public class OrderServiceImpl implements OrderService {
         Pageable pageRequest = PageRequest.of(pageNumber - 1, ORDERS_BY_PAGE);
         return orderRepository.findPaginatedForUser(pageRequest, id)
                 .map(OrderConverter::convertToOrderPreviewDTO);
+    }
+
+    private boolean isSaleUser(AppUser appUser) {
+        return appUser.getAuthorities().stream()
+                .anyMatch(grantedAuthority ->
+                        grantedAuthority.getAuthority().equals("ROLE_" + UserRoleEnum.SALE_USER.name()));
+    }
+
+    private boolean isAPIUser(AppUser appUser) {
+        return appUser.getAuthorities().stream()
+                .anyMatch(grantedAuthority ->
+                        grantedAuthority.getAuthority().equals("ROLE_" + UserRoleEnum.SECURE_API_USER.name()));
+    }
+
+    private boolean isCustomerUser(AppUser appUser) {
+        return appUser.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority()
+                        .equals("ROLE_" + UserRoleEnum.CUSTOMER_USER.name()));
     }
 
 }

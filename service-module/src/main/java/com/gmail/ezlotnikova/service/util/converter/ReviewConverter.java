@@ -5,7 +5,7 @@ import com.gmail.ezlotnikova.repository.model.UserDetails;
 import com.gmail.ezlotnikova.service.model.AddReviewDTO;
 import com.gmail.ezlotnikova.service.model.ShowReviewDTO;
 
-import static com.gmail.ezlotnikova.service.util.converter.DateTimeUtil.convertTimestampToString;
+import static com.gmail.ezlotnikova.service.util.DateTimeUtil.convertTimestampToString;
 
 public class ReviewConverter {
 
@@ -37,7 +37,7 @@ public class ReviewConverter {
         reviewDTO.setLastName(
                 userDetails.getLastName());
         reviewDTO.setFirstName(
-                userDetails.getLastName());
+                userDetails.getFirstName());
         reviewDTO.setPatronymicName(
                 userDetails.getPatronymicName());
         reviewDTO.setReviewText(

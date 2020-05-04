@@ -142,6 +142,9 @@
             </column>
             <column name="name" type="varchar(100)"/>
             <column name="price" type="DECIMAL(10, 2)"/>
+            <column name="is_available" type="TINYINT" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 

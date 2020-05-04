@@ -24,6 +24,7 @@ public class ArticleAPIControllerIntTest {
     private MockMvc mockMvc;
 
     @Test
+    //    @Sql("/data.sql")
     @WithMockUser(roles = "SECURE_API_USER")
     public void getArticles_returnAllArticles() throws Exception {
         mockMvc.perform(
