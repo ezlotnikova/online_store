@@ -9,4 +9,5 @@ Technologies:
 - Liquibase
 
 Unit и Integration tests.
+
 Project building with GitHub Actions.
