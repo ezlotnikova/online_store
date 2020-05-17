@@ -7,5 +7,6 @@ Technologies:
 - Log4j2
 - MySQL 8
 - Liquibase
+
 Unit и Integration tests.
 Project building with GitHub Actions.
